@@ -12,6 +12,7 @@
 | `realizacie/detske-izby/` | detské a študentské izby, poschodové postele |
 | `realizacie/sklapacie-postele/` | sklápacie (výklopné) postele do skrine |
 | `realizacie/obyvacky/` | TV steny, obývacie zostavy, knižnice |
+| `realizacie/pracovne-technicke-miestnosti/` | práčovne, kotolne, technické miestnosti |
 | `realizacie/komercne-interiery/` | kancelárie, prevádzky, obchody |
 | `realizacie/ostatne/` | stoly, postele, komerčné interiéry, všetko ostatné |
 | `logo/` | logo (najlepšie SVG/PDF, inak PNG) |
