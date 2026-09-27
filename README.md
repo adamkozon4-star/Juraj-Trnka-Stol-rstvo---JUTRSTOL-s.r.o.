@@ -27,13 +27,12 @@ npm run preview  # náhľad buildu
 
 Formulár posiela dopyty cez [Web3Forms](https://web3forms.com) (bezplatný plán). Na stránke Web3Forms zadaj e-mail klienta, získaj *Access Key* a vlož ho do `web3formsKey` v `src/data/site.ts`. Kým kľúč chýba, formulár návštevníka vyzve, aby zavolal.
 
-## Konfigurátor skrine
+## Konfigurátor
 
-Stránka `/konfigurator` má vlastný konfigurátor skrine (rozmery, dvere, úchytky, dekor, vnútro sekcií, doplnky) so živým nákresom a orientačnou cenou. Návrh sa odošle rovnako ako kontaktný formulár (Web3Forms) a v e-maile príde celý súhrn. Na tej istej stránke je prepínač na obyčajný dopyt bez konfigurátora.
+Stránka `/konfigurator` vkladá samostatnú aplikáciu konfigurátora (kuchyne, skrine a ďalší nábytok) a má prepínač na obyčajný dopyt bez konfigurátora. Úvodná stránka na ňu odkazuje zo sekcie „Online konfigurátor“.
 
-- Možnosti a **ceny** sú v `src/data/configurator.ts`. **Ceny sú zatiaľ odhad, treba ich nastaviť podľa Jurajovho cenníka.**
-- Ak cenu nechcete ukazovať, nastavte `showPrice: false`.
-- Logika a nákres sú v `src/scripts/configurator.ts`.
+- Adresa konfigurátora a identifikátor klienta sú v `src/data/site.ts` (`configurator.url`, `configurator.client`). Teraz je nastavené `klient=demo`, po vytvorení profilu pre JUTRSTOL ho treba zmeniť.
+- Aplikácia konfigurátora musí povoliť vloženie do iného webu (nesmie posielať hlavičku `X-Frame-Options: DENY` ani `frame-ancestors` bez domény webu). Pre istotu je pri nej aj tlačidlo „Na celú obrazovku“.
 
 ## Nasadenie
 

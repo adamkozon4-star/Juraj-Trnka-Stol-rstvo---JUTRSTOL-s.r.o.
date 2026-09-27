@@ -25,7 +25,14 @@ export const site = {
   serviceArea: 'Gbely, Záhorie a okolie',
   // Kľúč z https://web3forms.com (zadarmo). Bez neho formulár ponúkne telefonát.
   web3formsKey: '',
+  // Online konfigurátor (samostatná aplikácia). `klient` určuje nastavenia pre konkrétne stolárstvo.
+  // TODO: po nastavení vlastného profilu zmeniť 'demo' na identifikátor JUTRSTOL.
+  configurator: {
+    url: 'https://stolar-konfigurator.vercel.app/',
+    client: 'demo',
+  },
 };
 
+export const configuratorHref = `${site.configurator.url}?klient=${encodeURIComponent(site.configurator.client)}`;
 export const telHref = `tel:${site.phone.replace(/\s/g, '')}`;
 export const fullAddress = `${site.address.street}, ${site.address.zip} ${site.address.city}`;

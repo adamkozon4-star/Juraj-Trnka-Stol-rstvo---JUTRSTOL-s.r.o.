@@ -1,44 +1,97 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
-import Configurator from '../components/Configurator.astro';
 import InquiryForm from '../components/InquiryForm.astro';
 import Icon from '../components/Icon.astro';
-import { site, telHref } from '../data/site';
+import { site, telHref, configuratorHref } from '../data/site';
+
+const steps = [
+  { icon: 'cube', title: 'Vyberte nábytok', text: 'Kuchyňa, skriňa, šatník a ďalšie.' },
+  { icon: 'ruler', title: 'Nastavte rozmery a dekor', text: 'Presne podľa vášho priestoru.' },
+  { icon: 'handshake', title: 'Pošlite nám návrh', text: 'Ozveme sa s presnou ponukou.' },
+] as const;
 ---
 
 <Base
-  title="Konfigurátor skrine na mieru"
-  description="Navrhnite si skriňu na mieru online: rozmery, dvere, dekor a vnútro. Uvidíte nákres aj orientačnú cenu a návrh nám pošlete na presnú ponuku. Stolárstvo JUTRSTOL, Gbely."
+  title="Online konfigurátor nábytku"
+  description="Navrhnite si kuchyňu, skriňu či šatník online a pošlite nám návrh na cenovú ponuku. Stolárstvo JUTRSTOL, Gbely."
   overlayHeader
 >
   <PageHeader
     eyebrow="Online konfigurátor"
-    title="Navrhnite si skriňu na mieru"
-    lead="Zadajte rozmery, vyberte dvere, dekor a vnútro. Nákres aj orientačná cena sa menia hneď. Hotový návrh nám pošlete a my pripravíme presnú ponuku."
-    image="skrine-satniky/skrina-detska-izba-dub-siva-nika-03-otvorena-sirka.jpg"
+    title="Navrhnite si nábytok online"
+    lead="Kuchyne, skrine, šatníky a ďalší nábytok. Poskladajte si ho podľa seba a hotový návrh nám pošlite. Presnú ponuku pripravíme po zameraní."
+    image="kuchyne/kuchyna-dub-ostrov-04-ostrov-sirka.jpg"
     crumbs={[{ href: '/konfigurator', label: 'Konfigurátor' }]}
   />
 
-  <section class="sheet soft-bg pt-16 pb-28 lg:pt-20 lg:pb-32" data-nav="Konfigurátor">
+  <section class="sheet soft-bg pt-14 pb-28 lg:pt-16 lg:pb-32" data-nav="Konfigurátor">
     <div class="container-x">
-      <div class="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
+      <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
         <div class="tabs" role="tablist" aria-label="Spôsob dopytu">
           <button type="button" role="tab" id="tab-cfg" aria-controls="panel-cfg" aria-selected="true">
-            <Icon name="cube" size={17} /> Konfigurátor skrine
+            <Icon name="cube" size={17} /> Konfigurátor
           </button>
           <button type="button" role="tab" id="tab-form" aria-controls="panel-form" aria-selected="false">
             <Icon name="mail" size={17} /> Obyčajný dopyt
           </button>
         </div>
-        <p class="text-sm text-stone">
-          Nechce sa vám klikať? Zavolajte:{' '}
-          <a href={telHref} class="font-semibold text-ink hover:text-copper">{site.phoneDisplay}</a>
-        </p>
+        <ol class="flex flex-wrap gap-x-6 gap-y-3">
+          {
+            steps.map((s, i) => (
+              <li class="flex items-center gap-3">
+                <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-walnut text-oak">
+                  <Icon name={s.icon} size={17} />
+                </span>
+                <span class="text-sm leading-tight">
+                  <b class="block">
+                    {i + 1}. {s.title}
+                  </b>
+                  <span class="text-stone">{s.text}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
       </div>
 
       <div id="panel-cfg" role="tabpanel" aria-labelledby="tab-cfg" class="mt-8">
-        <Configurator />
+        <div class="app-window overflow-hidden rounded-[1.75rem]">
+          <div class="flex items-center gap-3 border-b border-line bg-white/80 px-4 py-3 backdrop-blur sm:px-5">
+            <span class="hidden gap-1.5 sm:flex" aria-hidden="true">
+              <i class="h-3 w-3 rounded-full bg-[#e4776a]"></i><i class="h-3 w-3 rounded-full bg-[#e8c05a]"></i><i
+                class="h-3 w-3 rounded-full bg-[#7fbf7a]"></i>
+            </span>
+            <p class="flex-1 truncate text-sm font-semibold">Konfigurátor nábytku JUTRSTOL</p>
+            <a
+              href={configuratorHref}
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-2 rounded-xl bg-walnut px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-copper"
+            >
+              <Icon name="expand" size={14} /> Na celú obrazovku
+            </a>
+          </div>
+          <div class="relative bg-paper">
+            <div class="cfg-loading absolute inset-0 flex flex-col items-center justify-center gap-3 text-stone" aria-hidden="true">
+              <span class="h-8 w-8 animate-spin rounded-full border-2 border-line border-t-copper"></span>
+              Načítavam konfigurátor…
+            </div>
+            <iframe
+              id="cfg-frame"
+              src={configuratorHref}
+              title="Konfigurátor nábytku JUTRSTOL"
+              class="relative block h-[82svh] min-h-[640px] w-full"
+              allow="fullscreen; clipboard-write"
+              loading="lazy"></iframe>
+          </div>
+        </div>
+        <p class="mt-4 text-center text-sm text-stone">
+          Na mobile je pohodlnejšie{' '}
+          <a href={configuratorHref} target="_blank" rel="noopener" class="font-semibold text-ink underline decoration-oak underline-offset-4"
+            >otvoriť konfigurátor na celú obrazovku</a
+          >. Radšej voláte? <a href={telHref} class="font-semibold text-ink">{site.phoneDisplay}</a>
+        </p>
       </div>
 
       <div id="panel-form" role="tabpanel" aria-labelledby="tab-form" class="mt-8" hidden>
@@ -46,8 +99,7 @@ import { site, telHref } from '../data/site';
           <div>
             <h2 class="text-3xl font-semibold sm:text-4xl">Radšej bez konfigurátora?</h2>
             <p class="mt-4 text-lg leading-relaxed text-stone">
-              Kuchyňa, predsieň, posteľ alebo niečo úplne iné? Napíšte pár viet, pridajte približné rozmery a ozveme sa
-              vám. Návrh pripravíme spolu pri zameraní.
+              Napíšte pár viet, pridajte približné rozmery a ozveme sa vám. Návrh pripravíme spolu pri zameraní.
             </p>
             <ul class="mt-6 space-y-3 text-stone">
               {
@@ -70,6 +122,7 @@ import { site, telHref } from '../data/site';
 <style>
   .tabs {
     display: inline-flex;
+    align-self: flex-start;
     gap: 4px;
     border-radius: 1.2rem;
     background: rgb(255 255 255 / 0.65);
@@ -94,6 +147,12 @@ import { site, telHref } from '../data/site';
     background: var(--color-walnut);
     color: white;
   }
+  .app-window {
+    background: white;
+    box-shadow:
+      0 0 0 1px rgb(29 26 23 / 0.08),
+      0 50px 100px -50px rgb(29 26 23 / 0.6);
+  }
 </style>
 
 <script>
@@ -109,5 +168,8 @@ import { site, telHref } from '../data/site';
     };
     tabs.forEach((t) => t.addEventListener('click', () => select(t)));
     if (location.hash === '#dopyt') select(tabs[1]);
+
+    const frame = document.getElementById('cfg-frame');
+    frame?.addEventListener('load', () => document.querySelector<HTMLElement>('.cfg-loading')?.remove());
   });
 </script>
