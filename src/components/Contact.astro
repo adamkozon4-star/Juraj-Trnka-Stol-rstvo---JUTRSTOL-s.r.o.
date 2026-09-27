@@ -10,13 +10,15 @@ const { preselect } = Astro.props;
 const mapQuery = encodeURIComponent(`${site.address.street}, ${site.address.zip} ${site.address.city}, Slovensko`);
 ---
 
-<section id="kontakt" class="wood-grain relative overflow-hidden bg-walnut py-24 text-white lg:py-32">
+<section id="kontakt" class="sheet wood-grain !bg-walnut pt-24 pb-28 text-white lg:pt-28 lg:pb-32">
+  <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
+
   <div class="container-x grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
     <div>
       <div data-reveal>
-        <p class="eyebrow !text-oak">Kontakt</p>
+        <p class="eyebrow eyebrow-dark">Kontakt</p>
         <h2 class="mt-5 text-4xl leading-[1.08] font-medium sm:text-5xl">
-          Máte predstavu? <em class="text-oak italic">Poďme ju vyrobiť.</em>
+          Máte predstavu? Poďme ju vyrobiť.
         </h2>
         <p class="mt-5 max-w-md text-lg leading-relaxed text-white/70">
           Napíšte nám pár slov o tom, čo potrebujete. Ozveme sa, dohodneme zameranie a pripravíme nezáväznú cenovú
@@ -96,6 +98,7 @@ const mapQuery = encodeURIComponent(`${site.address.street}, ${site.address.zip}
 
     <form
       id="contact-form"
+      data-web3
       data-key={site.web3formsKey}
       class="relative rounded-[1.75rem] bg-paper p-6 text-ink shadow-2xl sm:p-10"
       data-reveal
@@ -174,7 +177,7 @@ const mapQuery = encodeURIComponent(`${site.address.street}, ${site.address.zip}
         Odoslať dopyt <Icon name="arrow" size={18} />
       </button>
 
-      <p id="form-status" role="status" aria-live="polite" class="mt-4 hidden rounded-xl px-4 py-3 text-sm"></p>
+      <p data-status role="status" aria-live="polite" class="mt-4 hidden rounded-xl px-4 py-3 text-sm"></p>
       <p class="mt-4 text-center text-sm text-stone">
         Alebo rovno zavolajte: <a href={telHref} class="font-semibold text-ink hover:text-copper">{site.phoneDisplay}</a>
       </p>
@@ -183,49 +186,6 @@ const mapQuery = encodeURIComponent(`${site.address.street}, ${site.address.zip}
 </section>
 
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement | null;
-  const status = document.getElementById('form-status')!;
-
-  const show = (msg: string, ok: boolean) => {
-    status.textContent = msg;
-    status.className = `mt-4 rounded-xl px-4 py-3 text-sm ${ok ? 'bg-emerald-50 text-emerald-800' : 'bg-red-50 text-red-800'}`;
-  };
-
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return;
-    }
-    const key = form.dataset.key;
-    if (!key) {
-      show('Formulár ešte nie je aktívny. Prosím, zavolajte nám – radi vám poradíme.', false);
-      return;
-    }
-    const data = new FormData(form);
-    const types = data.getAll('type').join(', ');
-    data.delete('type');
-    data.set('type', types || '—');
-    data.delete('gdpr');
-    data.set('access_key', key);
-
-    const btn = form.querySelector('button[type=submit]') as HTMLButtonElement;
-    btn.disabled = true;
-    btn.classList.add('opacity-70');
-    try {
-      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
-      const json = await res.json();
-      if (json.success) {
-        form.reset();
-        show('Ďakujeme! Dopyt sme prijali a čoskoro sa vám ozveme.', true);
-      } else {
-        throw new Error(json.message);
-      }
-    } catch {
-      show('Odoslanie sa nepodarilo. Skúste to znova alebo nám zavolajte.', false);
-    } finally {
-      btn.disabled = false;
-      btn.classList.remove('opacity-70');
-    }
-  });
+  import { bindForms } from '../scripts/forms';
+  bindForms();
 </script>

@@ -1,0 +1,95 @@
+---
+// Skladací stolársky meter ako dekorácia – kreslený v SVG, aby bol ostrý v každej veľkosti.
+// Každý článok má 20 cm, dieliky po 1 cm a čísla ako na skutočnom metri.
+interface Props {
+  angles?: number[]; // natočenie jednotlivých článkov v stupňoch
+  start?: number; // číslo, od ktorého sa počíta (v cm)
+  class?: string;
+}
+const { angles = [0, 152, 18, 160], start = 20, class: className = '' } = Astro.props;
+
+const L = 200; // dĺžka článku (20 cm, 1 cm = 10 jednotiek)
+const W = 26; // šírka článku
+const rad = (d: number) => (d * Math.PI) / 180;
+
+let x = 0;
+let y = 0;
+const segments = angles.map((a, i) => {
+  const seg = { x, y, a, from: start + i * 20 };
+  x += Math.cos(rad(a)) * L;
+  y += Math.sin(rad(a)) * L;
+  return seg;
+});
+
+// hranice pre viewBox
+const pts = segments.flatMap((s) => {
+  const c = Math.cos(rad(s.a));
+  const n = Math.sin(rad(s.a));
+  const corners = [
+    [0, -W / 2],
+    [L, -W / 2],
+    [0, W / 2],
+    [L, W / 2],
+  ];
+  return corners.map(([u, v]) => [s.x + u * c - v * n, s.y + u * n + v * c]);
+});
+const pad = 20;
+const minX = Math.min(...pts.map((p) => p[0])) - pad;
+const minY = Math.min(...pts.map((p) => p[1])) - pad;
+const vbW = Math.max(...pts.map((p) => p[0])) - minX + pad;
+const vbH = Math.max(...pts.map((p) => p[1])) - minY + pad;
+
+const ticks = Array.from({ length: 41 }, (_, i) => i * 5); // po 0,5 cm
+---
+
+<svg
+  class={className}
+  viewBox={`${minX} ${minY} ${vbW} ${vbH}`}
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <linearGradient id="ruler-face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6dc7a"></stop>
+      <stop offset="1" stop-color="#e6bf4c"></stop>
+    </linearGradient>
+    <filter id="ruler-shadow" x="-10%" y="-30%" width="120%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#1d1a17" flood-opacity="0.28"></feDropShadow>
+    </filter>
+  </defs>
+  <g filter="url(#ruler-shadow)">
+    {
+      segments.map((s) => (
+        <g transform={`translate(${s.x} ${s.y}) rotate(${s.a})`}>
+          <rect x="-4" y={-W / 2} width={L + 8} height={W} rx="3" fill="url(#ruler-face)" stroke="#b8932f" stroke-width="1" />
+          {ticks.map((t) => (
+            <line
+              x1={t}
+              x2={t}
+              y1={-W / 2}
+              y2={-W / 2 + (t % 50 === 0 ? 10 : t % 10 === 0 ? 7 : 4)}
+              stroke={t % 50 === 0 ? '#b3261e' : '#2a221a'}
+              stroke-width={t % 10 === 0 ? 1.1 : 0.7}
+            />
+          ))}
+          {Array.from({ length: 19 }, (_, k) => k + 1).map((k) => (
+            <text
+              x={k * 10}
+              y={W / 2 - 4}
+              text-anchor="middle"
+              font-family="Arial, sans-serif"
+              font-size="7.5"
+              font-weight="700"
+              fill={(s.from + k) % 10 === 0 ? '#b3261e' : '#2a221a'}
+            >
+              {s.from + k}
+            </text>
+          ))}
+          <circle cx="0" cy="0" r="3.2" fill="#9c9488" stroke="#6f685e" stroke-width="0.8" />
+          <circle cx={L} cy="0" r="3.2" fill="#9c9488" stroke="#6f685e" stroke-width="0.8" />
+        </g>
+      ))
+    }
+  </g>
+</svg>

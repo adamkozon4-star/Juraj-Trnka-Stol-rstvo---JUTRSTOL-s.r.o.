@@ -5,55 +5,88 @@ import { photo } from '../../lib/images';
 import { site, telHref } from '../../data/site';
 
 const heroImage = photo('kuchyne/kuchyna-kasmir-dub-ostrov-lamely-jedalen-00-HERO.webp');
+
+// TODO: overiť formulácie s klientom
+const audience = [
+  { icon: 'ruler', text: 'chcú využiť každý centimeter priestoru' },
+  { icon: 'handshake', text: 'chcú jeden kontakt od návrhu po montáž' },
+  { icon: 'shield', text: 'chcú nábytok, ktorý vydrží roky' },
+] as const;
 ---
 
-<section class="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-walnut text-white">
-  <Picture
-    src={heroImage}
-    alt="Kuchyňa na mieru s ostrovom obloženým lamelami a jedálenským stolom"
-    widths={[640, 960, 1280, 1670]}
-    sizes="100vw"
-    formats={['avif', 'webp']}
-    fallbackFormat="jpg"
-    loading="eager"
-    fetchpriority="high"
-    class="hero-img absolute inset-0 -z-20 h-full w-full"
-    pictureAttributes={{ class: 'absolute inset-0 -z-20' }}
-  />
-  <!-- Teplé stmavenie zľava, aby text vynikol -->
-  <div
-    class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(26,20,16,0.55)_0%,rgba(26,20,16,0.35)_30%,rgba(26,20,16,0.85)_75%)] sm:bg-[linear-gradient(95deg,rgba(26,20,16,0.92)_0%,rgba(33,25,20,0.78)_38%,rgba(33,25,20,0.25)_70%,rgba(33,25,20,0.1)_100%)]"
-  >
-  </div>
-  <div class="absolute inset-x-0 bottom-0 -z-10 h-56 bg-gradient-to-t from-walnut/80 to-transparent"></div>
+<section class="relative z-20 bg-walnut text-white">
+  <div class="relative isolate flex min-h-[92svh] flex-col overflow-hidden lg:min-h-[100svh]">
+    <Picture
+      src={heroImage}
+      alt="Kuchyňa na mieru s ostrovom obloženým lamelami a jedálenským stolom"
+      widths={[640, 960, 1280, 1670]}
+      sizes="100vw"
+      formats={['avif', 'webp']}
+      fallbackFormat="jpg"
+      loading="eager"
+      fetchpriority="high"
+      class="hero-img absolute inset-0 -z-20 h-full w-full"
+      pictureAttributes={{ class: 'absolute inset-0 -z-20' }}
+    />
+    <div
+      class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(20,17,14,0.55)_0%,rgba(20,17,14,0.3)_35%,rgba(20,17,14,0.88)_85%)] lg:bg-[linear-gradient(90deg,rgba(20,17,14,0.1)_0%,rgba(20,17,14,0.15)_40%,rgba(20,17,14,0.8)_70%,rgba(20,17,14,0.9)_100%)]"
+    >
+    </div>
 
-  <div class="container-x flex flex-1 flex-col justify-center pt-32 pb-40 lg:pb-48">
-    <div class="max-w-2xl">
-      <p class="eyebrow !text-oak" data-reveal>Stolárstvo Juraj Trnka · Gbely</p>
-      <h1 class="mt-6 text-[2.75rem] leading-[1.02] font-medium sm:text-6xl lg:text-[5.25rem]" data-reveal style="--d:80ms">
-        Nábytok <em class="font-normal whitespace-nowrap text-oak italic">na mieru</em>, ktorý sadne presne.
-      </h1>
-      <p class="mt-7 max-w-lg text-lg leading-relaxed text-white/80" data-reveal style="--d:160ms">
-        Kuchyne, vstavané skrine, predsiene a celé interiéry. Zameriame, navrhneme, vyrobíme v našej dielni a
-        namontujeme – na milimeter do vášho priestoru.
-      </p>
-      <div class="mt-10 flex flex-col gap-3 sm:flex-row" data-reveal style="--d:240ms">
-        <a href="#kontakt" class="btn-primary !px-7 !py-4 text-[15px]">
-          Nezáväzná cenová ponuka <Icon name="arrow" size={18} />
+    <div class="container-x flex flex-1 flex-col justify-center pt-32 pb-44 lg:items-end lg:pb-52">
+      <div class="max-w-2xl lg:text-right">
+        <a
+          href="#kontakt"
+          class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[13px] font-medium text-white/85 ring-1 ring-white/20 backdrop-blur-md"
+          data-reveal
+        >
+          <Icon name="pin" size={16} class="text-oak" />
+          {site.address.city}, Záhorie · vlastná dielňa
         </a>
-        <a href="/realizacie" class="btn-ghost !px-7 !py-4 text-[15px]">Pozrieť realizácie</a>
+        <h1 class="mt-7 text-[3rem] leading-[0.95] font-semibold sm:text-7xl lg:text-[5.2rem]" data-reveal style="--d:80ms">
+          Nábytok na mieru
+          <span class="script mt-3 block text-[0.92em] text-oak">zo stolárskej dielne</span>
+        </h1>
+        <p class="mt-7 text-lg leading-relaxed text-white/80 lg:ml-auto lg:max-w-md" data-reveal style="--d:160ms">
+          Kuchyne, vstavané skrine, predsiene a celé interiéry. Zameriame, navrhneme, vyrobíme a namontujeme – presne do
+          vášho priestoru.
+        </p>
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row lg:justify-end" data-reveal style="--d:240ms">
+          <a href="#kontakt" class="btn-primary flex-col !items-start !gap-0 !px-6 !py-3 text-left">
+            <span class="flex items-center gap-2 text-[15px]">Nezáväzná cenová ponuka <Icon name="arrow" size={17} /></span>
+            <span class="text-xs font-normal text-white/75">návrh a cena pre váš priestor</span>
+          </a>
+          <a href={telHref} class="btn-ghost !px-6">
+            <Icon name="phone" size={18} class="text-oak" />
+            {site.phoneDisplay}
+          </a>
+        </div>
       </div>
-      <a
-        href={telHref}
-        class="mt-8 inline-flex items-center gap-3 text-sm text-white/70 transition hover:text-white"
+    </div>
+  </div>
+
+  <!-- Sklenený panel, ktorý presahuje do ďalšej sekcie -->
+  <div class="absolute inset-x-0 bottom-0 z-30 translate-y-1/2">
+    <div class="container-x">
+      <div
+        class="mx-auto max-w-4xl rounded-[1.75rem] bg-[#1f1b18]/80 p-5 shadow-[0_30px_60px_-25px_rgba(0,0,0,0.6)] ring-1 ring-white/10 backdrop-blur-xl sm:p-6"
         data-reveal
         style="--d:320ms"
       >
-        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-oak ring-1 ring-white/15">
-          <Icon name="phone" size={18} />
-        </span>
-        <span>Radšej voláte? <strong class="font-semibold text-white">{site.phoneDisplay}</strong></span>
-      </a>
+        <p class="text-center text-xs font-medium tracking-[0.14em] text-white/55 uppercase">Robíme pre tých, ktorí</p>
+        <ul class="mt-4 grid gap-3 sm:grid-cols-3 sm:gap-2">
+          {
+            audience.map((a) => (
+              <li class="flex items-center gap-3 sm:flex-col sm:text-center">
+                <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-oak/15 text-oak ring-1 ring-oak/30">
+                  <Icon name={a.icon} size={22} />
+                </span>
+                <span class="text-[15px] leading-snug text-white/90">{a.text}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -61,7 +94,7 @@ const heroImage = photo('kuchyne/kuchyna-kasmir-dub-ostrov-lamely-jedalen-00-HER
 <style>
   .hero-img {
     object-fit: cover;
-    object-position: 62% 50%;
+    object-position: 35% 50%;
     animation: hero-zoom 18s var(--ease-out-soft) both;
   }
   @keyframes hero-zoom {

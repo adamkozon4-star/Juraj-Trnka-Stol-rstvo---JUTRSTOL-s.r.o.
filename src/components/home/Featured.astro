@@ -8,11 +8,13 @@ const featured = projects.filter((p) => p.featured);
 const [first, second, ...rest] = featured;
 ---
 
-<section id="realizacie" class="border-y border-line bg-paper py-24 lg:py-32">
+<section id="realizacie" class="sheet pt-24 pb-32 lg:pt-28 lg:pb-40">
+  <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
+
   <div class="container-x">
     <SectionHeading
       eyebrow="Vybrané realizácie"
-      title="Práca, ktorá hovorí <em class='italic text-copper'>sama za seba</em>"
+      title="Práca, ktorá hovorí sama za seba"
       lead="Pár projektov z posledných rokov. Každý je iný, pretože každý priestor a každý zákazník je iný."
     />
 

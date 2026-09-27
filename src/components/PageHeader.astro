@@ -50,8 +50,8 @@ const { eyebrow, title, lead, image, crumbs = [] } = Astro.props;
         </nav>
       )
     }
-    <p class="eyebrow !text-oak">{eyebrow}</p>
-    <h1 class="mt-5 max-w-4xl text-4xl leading-[1.05] font-medium sm:text-6xl" set:html={title} />
+    <p class="eyebrow eyebrow-dark">{eyebrow}</p>
+    <h1 class="mt-5 max-w-4xl text-4xl leading-[1] font-semibold sm:text-6xl" set:html={title} />
     {lead && <p class="mt-6 max-w-2xl text-lg leading-relaxed text-white/70">{lead}</p>}
   </div>
 </section>

@@ -7,15 +7,17 @@ import { site } from '../../data/site';
 const ready = Boolean(site.configuratorUrl);
 ---
 
-<section id="konfigurator" class="py-24 lg:py-32">
+<section id="konfigurator" class="sheet pt-24 pb-32 lg:pt-28 lg:pb-40">
+  <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
+
   <div class="container-x">
-    <div class="relative grid overflow-hidden rounded-[2rem] bg-sand lg:grid-cols-2">
+    <div class="relative grid overflow-hidden rounded-[2.5rem] bg-cream lg:grid-cols-2">
       <div class="relative z-10 p-8 sm:p-12 lg:p-16" data-reveal>
         <p class="eyebrow">
           {ready ? 'Online konfigurátor' : 'Pripravujeme'}
         </p>
         <h2 class="mt-5 text-4xl leading-[1.08] font-medium sm:text-5xl">
-          Navrhnite si nábytok <em class="text-copper italic">online</em>
+          Navrhnite si nábytok online
         </h2>
         <p class="mt-5 max-w-md text-lg leading-relaxed text-stone">
           {
@@ -52,7 +54,7 @@ const ready = Boolean(site.configuratorUrl);
           sizes="(min-width: 1024px) 50vw, 100vw"
           class="absolute inset-0 h-full w-full object-cover"
         />
-        <span class="absolute inset-0 bg-gradient-to-r from-sand via-sand/10 to-transparent max-lg:bg-gradient-to-b" />
+        <span class="absolute inset-0 bg-gradient-to-r from-cream via-cream/10 to-transparent max-lg:bg-gradient-to-b max-lg:from-cream" />
       </div>
     </div>
   </div>

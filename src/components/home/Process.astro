@@ -1,5 +1,6 @@
 ---
 import SectionHeading from '../SectionHeading.astro';
+import Icon from '../Icon.astro';
 
 const steps = [
   {
@@ -25,13 +26,15 @@ const steps = [
 ];
 ---
 
-<section id="postup" class="wood-grain relative overflow-hidden bg-walnut py-24 text-white lg:py-32">
+<section id="postup" class="sheet wood-grain !bg-walnut pt-24 pb-32 text-white lg:pt-28 lg:pb-40">
+  <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
+
   <div class="container-x grid gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
     <div class="lg:sticky lg:top-32 lg:self-start">
       <SectionHeading
         tone="light"
         eyebrow="Ako pracujeme"
-        title="Od prvého telefonátu po <em class='italic text-oak'>hotový nábytok</em>"
+        title="Od prvého telefonátu po hotový nábytok"
         lead="Celý proces máme v rukách my – nemusíte koordinovať návrhára, výrobu ani montážnikov."
       />
     </div>
@@ -44,7 +47,7 @@ const steps = [
             style={`--d:${i * 70}ms`}
             class="group relative grid grid-cols-[auto_1fr] gap-6 rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition duration-500 hover:border-oak/40 hover:bg-white/[0.06] sm:p-8"
           >
-            <span class="font-serif text-5xl leading-none font-light text-oak/80 tabular-nums transition group-hover:text-oak">
+            <span class="font-display text-5xl leading-none font-light text-oak/80 tabular-nums transition group-hover:text-oak">
               {String(i + 1).padStart(2, '0')}
             </span>
             <div>

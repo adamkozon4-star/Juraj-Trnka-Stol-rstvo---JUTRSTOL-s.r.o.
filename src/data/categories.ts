@@ -6,11 +6,13 @@ export interface Category {
   seoTitle: string;
   seoDescription: string;
   cover: string;
+  icon: 'kitchen' | 'hanger' | 'wardrobe' | 'bunk' | 'sofa' | 'bed' | 'washer' | 'office';
 }
 
 export const categories: Category[] = [
   {
     slug: 'kuchyne',
+    icon: 'kitchen',
     title: 'Kuchyne na mieru',
     short: 'Linky do L, U, s ostrovom alebo barovým pultom – bez úchytiek aj s nimi.',
     intro:
@@ -22,6 +24,7 @@ export const categories: Category[] = [
   },
   {
     slug: 'predsiene',
+    icon: 'hanger',
     title: 'Predsiene',
     short: 'Skrinkové steny, lavice, vešiaky, zrkadlá a lamelové obklady.',
     intro:
@@ -33,6 +36,7 @@ export const categories: Category[] = [
   },
   {
     slug: 'skrine-a-satniky',
+    icon: 'wardrobe',
     title: 'Skrine a šatníky',
     short: 'Vstavané skrine, posuvné dvere a šatníky s premysleným vnútrom.',
     intro:
@@ -44,6 +48,7 @@ export const categories: Category[] = [
   },
   {
     slug: 'detske-izby',
+    icon: 'bunk',
     title: 'Detské izby',
     short: 'Poschodové postele, písacie stoly, skrine a úložné riešenia.',
     intro:
@@ -55,6 +60,7 @@ export const categories: Category[] = [
   },
   {
     slug: 'obyvacky',
+    icon: 'sofa',
     title: 'Obývačky a TV steny',
     short: 'TV steny s lamelami, knižnice a závesné komody.',
     intro:
@@ -66,6 +72,7 @@ export const categories: Category[] = [
   },
   {
     slug: 'sklapacie-postele',
+    icon: 'bed',
     title: 'Sklápacie postele',
     short: 'Posteľ, ktorá sa cez deň schová do skrine.',
     intro:
@@ -77,6 +84,7 @@ export const categories: Category[] = [
   },
   {
     slug: 'pracovne-a-technicke-miestnosti',
+    icon: 'washer',
     title: 'Práčovne a technické miestnosti',
     short: 'Práčka so sušičkou v stĺpci, skrinky a skrytý kotol.',
     intro:
@@ -88,6 +96,7 @@ export const categories: Category[] = [
   },
   {
     slug: 'komercne-interiery',
+    icon: 'office',
     title: 'Kancelárie a prevádzky',
     short: 'Kuchynky, lamelové steny so skrytými dverami a kancelársky nábytok.',
     intro:

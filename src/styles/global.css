@@ -1,22 +1,31 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/fraunces';
-@import '@fontsource-variable/inter';
+@import '@fontsource-variable/bricolage-grotesque/standard.css';
+@import '@fontsource-variable/hanken-grotesk';
+@import '@fontsource/great-vibes/latin-400.css';
+@import '@fontsource/great-vibes/latin-ext-400.css';
 
+/*
+  Vizuálny jazyk: svetlé „listy“ papiera poukladané cez seba na teplom sivom podklade,
+  tmavé antracitové sekcie a jeden hrejivý medený akcent. Nadpisy vo výraznom
+  groteskovom písme, ručne písaný akcent len výnimočne.
+*/
 @theme {
-  --color-cream: #f7f3ec;
-  --color-paper: #fbf9f5;
-  --color-sand: #ece3d5;
-  --color-line: #ddd2c1;
-  --color-oak: #c89560;
-  --color-copper: #a0612d;
-  --color-copper-dark: #844d20;
-  --color-walnut: #2a211b;
-  --color-walnut-2: #3a2e25;
-  --color-ink: #1f1a16;
-  --color-stone: #6b6158;
+  --color-cream: #e9e4dd; /* podklad stránky */
+  --color-paper: #fbfaf7; /* list */
+  --color-sand: #e2dbd1;
+  --color-line: #ddd5ca;
+  --color-oak: #dba676; /* akcent na tmavom */
+  --color-copper: #c4733a; /* hlavný akcent */
+  --color-copper-dark: #a95e29;
+  --color-apricot: #f4e4d4;
+  --color-walnut: #1f1b18; /* tmavé sekcie */
+  --color-walnut-2: #2b2521;
+  --color-ink: #1d1a17;
+  --color-stone: #6d655d;
 
-  --font-serif: 'Fraunces Variable', 'Georgia', serif;
-  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', 'Arial Narrow', system-ui, sans-serif;
+  --font-sans: 'Hanken Grotesk Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-script: 'Great Vibes', 'Brush Script MT', cursive;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -29,27 +38,27 @@
   }
   body {
     @apply bg-cream font-sans text-ink antialiased;
-    font-feature-settings: 'ss01', 'cv11';
   }
   h1,
   h2,
   h3,
   h4 {
-    @apply font-serif;
+    @apply font-display;
+    font-stretch: 94%;
     font-optical-sizing: auto;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.018em;
     text-wrap: balance;
   }
   p {
     text-wrap: pretty;
   }
   ::selection {
-    @apply bg-oak/40;
+    @apply bg-copper/25;
   }
   :focus-visible {
     outline: 2px solid var(--color-copper);
     outline-offset: 3px;
-    border-radius: 4px;
+    border-radius: 6px;
   }
 }
 
@@ -57,35 +66,63 @@
   .container-x {
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10;
   }
+  /* Malý štítok nad nadpisom */
   .eyebrow {
-    @apply inline-flex items-center gap-3 font-sans text-xs font-semibold tracking-[0.22em] text-copper uppercase;
+    @apply inline-flex items-center gap-2 rounded-full bg-apricot px-3.5 py-1.5 font-sans text-[12px] font-semibold tracking-[0.08em] text-copper-dark uppercase;
+  }
+  .eyebrow-dark {
+    @apply bg-white/10 text-oak ring-1 ring-white/10;
   }
   .eyebrow::before {
     content: '';
-    @apply block h-px w-8 bg-current;
+    @apply block h-1.5 w-1.5 rounded-full bg-copper;
+  }
+  .script {
+    font-family: var(--font-script);
+    font-weight: 400;
+    letter-spacing: 0;
+    font-size: 1.18em;
+    line-height: 0.9;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-wide transition duration-300 bg-copper text-white shadow-[0_10px_30px_-12px_rgba(160,97,45,0.8)] hover:-translate-y-0.5 hover:bg-copper-dark;
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#d9894d] to-copper px-6 py-3.5 text-sm font-semibold text-white shadow-[0_14px_30px_-14px_rgba(196,115,58,0.9),inset_0_1px_0_rgba(255,255,255,0.25)] transition duration-300 hover:-translate-y-0.5 hover:from-copper hover:to-copper-dark;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-wide transition duration-300 border border-white/40 text-white backdrop-blur-sm hover:border-white hover:bg-white/10;
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-white/35 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition duration-300 hover:border-white hover:bg-white/10;
   }
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-wide transition duration-300 border border-ink/20 text-ink hover:border-copper hover:text-copper;
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-ink/15 bg-paper px-6 py-3.5 text-sm font-semibold text-ink transition duration-300 hover:border-copper hover:text-copper;
   }
   .field {
-    @apply w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] text-ink transition outline-none placeholder:text-stone/60 focus:border-copper focus:ring-4 focus:ring-copper/15;
+    @apply w-full rounded-xl border border-line bg-white px-4 py-3 text-[15px] text-ink transition outline-none placeholder:text-stone/60 focus:border-copper focus:ring-4 focus:ring-copper/15;
+  }
+  /* Zaoblený „list“, ktorý sa prekrýva s predchádzajúcou sekciou */
+  .sheet {
+    @apply relative z-10 -mt-12 rounded-t-[2.5rem] bg-paper shadow-[0_-24px_50px_-30px_rgba(29,26,23,0.35)] lg:-mt-16 lg:rounded-t-[3.5rem];
+  }
+  .sheet-notch {
+    @apply absolute top-0 left-1/2 inline-flex h-9 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-inherit text-stone/70 shadow-[0_-8px_16px_-10px_rgba(29,26,23,0.35)];
+  }
+  /* Parametrická pilulka: hodnota | popis */
+  .spec {
+    @apply flex items-center gap-3 rounded-full bg-white py-1.5 pr-5 pl-1.5 text-sm text-stone ring-1 ring-line;
+  }
+  .spec b {
+    @apply rounded-full bg-walnut px-3.5 py-1.5 text-[13px] font-semibold whitespace-nowrap text-white;
+  }
+  .arch {
+    border-radius: 999px 999px 1.25rem 1.25rem;
   }
   .wood-grain {
     background-image:
       repeating-linear-gradient(
         97deg,
-        rgba(255, 255, 255, 0.035) 0 2px,
+        rgba(255, 255, 255, 0.025) 0 2px,
         transparent 2px 9px,
-        rgba(0, 0, 0, 0.04) 9px 10px,
+        rgba(0, 0, 0, 0.035) 9px 10px,
         transparent 10px 23px
       ),
-      radial-gradient(120% 80% at 10% 0%, rgba(200, 149, 96, 0.18), transparent 60%);
+      radial-gradient(120% 80% at 10% 0%, rgba(219, 166, 118, 0.14), transparent 60%);
   }
 }
 

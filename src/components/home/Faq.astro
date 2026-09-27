@@ -42,12 +42,14 @@ const faqSchema = {
 };
 ---
 
-<section id="faq" class="py-24 lg:py-32">
+<section id="faq" class="sheet !bg-cream pt-24 pb-32 lg:pt-28 lg:pb-40">
+  <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
+
   <div class="container-x grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
     <div class="lg:sticky lg:top-32 lg:self-start">
       <SectionHeading
         eyebrow="Časté otázky"
-        title="Čo sa nás ľudia <em class='italic text-copper'>najčastejšie</em> pýtajú"
+        title="Čo sa nás ľudia najčastejšie pýtajú"
       />
       <p class="mt-6 text-stone" data-reveal>
         Nenašli ste odpoveď? Zavolajte na{' '}
@@ -59,7 +61,7 @@ const faqSchema = {
       {
         faqs.map((f) => (
           <details class="group py-2">
-            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left font-serif text-xl font-medium [&::-webkit-details-marker]:hidden">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left font-display text-xl font-medium [&::-webkit-details-marker]:hidden">
               {f.q}
               <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-copper transition duration-300 group-open:rotate-45 group-open:bg-copper group-open:text-white">
                 <Icon name="plus" size={18} />

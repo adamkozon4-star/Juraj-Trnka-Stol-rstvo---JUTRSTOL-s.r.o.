@@ -1,6 +1,5 @@
 ---
 import { Image } from 'astro:assets';
-import SectionHeading from '../SectionHeading.astro';
 import Icon from '../Icon.astro';
 import { categories } from '../../data/categories';
 import { projectsInCategory } from '../../data/projects';
@@ -10,64 +9,205 @@ import { plural } from '../../lib/plural';
 const photoCount = (slug: string) => projectsInCategory(slug).reduce((n, p) => n + p.images.length, 0);
 ---
 
-<section id="sluzby" class="py-24 lg:py-32">
+<section id="sluzby" class="sheet !bg-cream pt-24 pb-28 lg:pt-28 lg:pb-36">
+  <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
+
   <div class="container-x">
-    <div class="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-      <SectionHeading
-        eyebrow="Čo vyrábame"
-        title="Od kuchyne až po <em class='italic text-copper'>práčovňu</em>"
-        lead="Robíme nábytok do celého domu aj firmy. Vyberte si, čo riešite, a pozrite si, ako sme to urobili iným."
-      />
-      <a href="/realizacie" class="btn-outline shrink-0 self-start lg:self-end" data-reveal>
-        Všetky realizácie <Icon name="arrow" size={18} />
-      </a>
+    <div class="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+      <div class="max-w-2xl" data-reveal>
+        <p class="eyebrow">Čo vyrábame</p>
+        <h2 class="mt-5 text-4xl leading-[1.02] font-semibold sm:text-5xl">Od kuchyne až po práčovňu</h2>
+      </div>
+      <p class="max-w-sm text-stone lg:text-right" data-reveal>
+        Prejdite po pásoch a vyberte, čo riešite. Ku každej oblasti nájdete naše realizácie.
+      </p>
     </div>
 
-    <ul class="mt-14 grid auto-rows-[15rem] gap-3 sm:grid-cols-2 lg:auto-rows-[16.5rem] lg:grid-cols-4 lg:gap-4">
+    <ul id="svc" class="svc mt-12" data-reveal style="--d:100ms">
       {
         categories.map((c, i) => (
-          <li
-            data-reveal
-            style={`--d:${(i % 4) * 70}ms`}
-            class:list={[i === 0 && 'sm:col-span-2 sm:row-span-2', i === 3 && 'lg:row-span-2']}
-          >
-            <a
-              href={`/sluzby/${c.slug}`}
-              class="group relative flex h-full flex-col justify-end overflow-hidden rounded-2xl bg-walnut p-6 text-white"
-            >
-              <Image
-                src={photo(c.cover)}
-                alt=""
-                widths={i === 0 ? [640, 960, 1280] : [480, 720]}
-                sizes={i === 0 ? '(min-width: 1024px) 50vw, 100vw' : '(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw'}
-                class="absolute inset-0 h-full w-full object-cover transition duration-[1.2s] ease-out group-hover:scale-105"
-              />
-              <span class="absolute inset-0 bg-gradient-to-t from-walnut/95 via-walnut/35 to-transparent transition duration-500 group-hover:from-walnut" />
-              <span class="relative">
-                <span class="text-xs font-medium tracking-[0.18em] text-oak uppercase">
-                  {projectsInCategory(c.slug).length > 1 &&
-                    `${plural(projectsInCategory(c.slug).length, 'projekt', 'projekty', 'projektov')} · `}
+          <li class="svc-item" data-active={i === 0 ? 'true' : 'false'}>
+            <Image
+              src={photo(c.cover)}
+              alt=""
+              widths={[480, 800, 1100]}
+              sizes="(min-width: 1024px) 55vw, 100vw"
+              class="svc-img"
+            />
+            <span class="svc-shade" />
+            <button type="button" class="svc-toggle" aria-expanded={i === 0 ? 'true' : 'false'} aria-label={c.title} />
+            <div class="svc-body">
+              <span class="svc-icon">
+                <Icon name={c.icon} size={22} />
+              </span>
+              <div class="svc-text">
+                <p class="text-[11px] font-semibold tracking-[0.16em] text-oak uppercase">
+                  {plural(projectsInCategory(c.slug).length, 'projekt', 'projekty', 'projektov')} ·{' '}
                   {plural(photoCount(c.slug), 'fotka', 'fotky', 'fotiek')}
-                </span>
-                <span class:list={['mt-2 block font-serif font-medium', i === 0 ? 'text-3xl lg:text-4xl' : 'text-2xl']}>
-                  {c.title}
-                </span>
-                <span
-                  class:list={[
-                    'mt-2 block max-w-md overflow-hidden text-sm leading-relaxed text-white/75',
-                    i !== 0 && 'lg:max-h-0 lg:opacity-0 lg:transition-all lg:duration-500 lg:group-hover:max-h-24 lg:group-hover:opacity-100',
-                  ]}
+                </p>
+                <h3 class="mt-1 text-2xl leading-tight font-semibold text-white sm:text-3xl">{c.title}</h3>
+                <p class="mt-2 max-w-md text-sm leading-relaxed text-white/75">{c.short}</p>
+                <a
+                  href={`/sluzby/${c.slug}`}
+                  class="mt-4 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-apricot"
+                  tabindex={i === 0 ? 0 : -1}
                 >
-                  {c.short}
-                </span>
-              </span>
-              <span class="absolute top-5 right-5 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/20 backdrop-blur transition duration-500 group-hover:rotate-[-45deg] group-hover:bg-copper group-hover:ring-copper">
-                <Icon name="arrow" size={18} />
-              </span>
-            </a>
+                  Pozrieť realizácie <Icon name="arrow" size={16} />
+                </a>
+              </div>
+            </div>
           </li>
         ))
       }
     </ul>
   </div>
 </section>
+
+<style>
+  .svc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .svc-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2.25rem;
+    background: var(--color-walnut);
+    height: 4.75rem;
+    transition:
+      height 0.7s var(--ease-out-soft),
+      flex-grow 0.7s var(--ease-out-soft);
+    isolation: isolate;
+  }
+  .svc-item[data-active='true'] {
+    height: 25rem;
+  }
+  .svc-img {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.85) brightness(0.8);
+    transform: scale(1.06);
+    transition:
+      transform 1.2s var(--ease-out-soft),
+      filter 0.7s;
+  }
+  .svc-item[data-active='true'] .svc-img {
+    filter: none;
+    transform: scale(1);
+  }
+  .svc-shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(0deg, rgba(20, 17, 14, 0.85), rgba(20, 17, 14, 0.1) 60%);
+  }
+  .svc-toggle {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+  }
+  .svc-item[data-active='true'] .svc-toggle {
+    pointer-events: none;
+  }
+  .svc-body {
+    position: absolute;
+    left: 0.9rem;
+    right: 0.9rem;
+    bottom: 0.9rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    pointer-events: none;
+  }
+  .svc-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: white;
+    color: var(--color-copper);
+    box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.5);
+  }
+  .svc-text {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.4s,
+      transform 0.6s var(--ease-out-soft);
+    pointer-events: none;
+    min-width: 0;
+  }
+  /* V zbalenom stave na mobile ukáž aspoň názov */
+  .svc-item:not([data-active='true']) .svc-text {
+    opacity: 1;
+    transform: none;
+    align-self: center;
+  }
+  .svc-item:not([data-active='true']) .svc-text > :not(h3) {
+    display: none;
+  }
+  .svc-item:not([data-active='true']) .svc-text h3 {
+    font-size: 1.15rem;
+    margin: 0;
+  }
+  .svc-item[data-active='true'] .svc-text {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.25s;
+    pointer-events: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .svc {
+      flex-direction: row;
+      height: 34rem;
+    }
+    .svc-item,
+    .svc-item[data-active='true'] {
+      height: auto;
+      flex: 1 1 0;
+      min-width: 4.75rem;
+    }
+    .svc-item[data-active='true'] {
+      flex-grow: 9;
+    }
+    .svc-body {
+      left: 0.85rem;
+      bottom: 0.85rem;
+    }
+    .svc-item:not([data-active='true']) .svc-text {
+      display: none;
+    }
+    .svc-text {
+      width: 30rem;
+    }
+  }
+</style>
+
+<script>
+  const list = document.getElementById('svc');
+  if (list) {
+    const items = [...list.querySelectorAll<HTMLElement>('.svc-item')];
+    const activate = (el: HTMLElement) => {
+      items.forEach((it) => {
+        const on = it === el;
+        it.dataset.active = String(on);
+        it.querySelector('.svc-toggle')?.setAttribute('aria-expanded', String(on));
+        it.querySelector('a')?.setAttribute('tabindex', on ? '0' : '-1');
+      });
+    };
+    const desktop = window.matchMedia('(min-width: 1024px) and (hover: hover)');
+    items.forEach((it) => {
+      it.querySelector('.svc-toggle')?.addEventListener('click', () => activate(it));
+      it.addEventListener('mouseenter', () => desktop.matches && activate(it));
+    });
+  }
+</script>
