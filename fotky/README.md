@@ -10,6 +10,7 @@
 | `realizacie/predsiene/` | predsiene, vstavané skrine v chodbe, konzoly |
 | `realizacie/lamelove-obklady-priecky/` | lamelové obklady stien, deliace priečky |
 | `realizacie/detske-izby/` | detské a študentské izby, poschodové postele |
+| `realizacie/sklapacie-postele/` | sklápacie (výklopné) postele do skrine |
 | `realizacie/obyvacky/` | TV steny, obývacie zostavy, knižnice |
 | `realizacie/komercne-interiery/` | kancelárie, prevádzky, obchody |
 | `realizacie/ostatne/` | stoly, postele, komerčné interiéry, všetko ostatné |
