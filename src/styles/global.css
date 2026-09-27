@@ -38,6 +38,18 @@
   }
   body {
     @apply bg-cream font-sans text-ink antialiased;
+    /* Milimetrový papier ako na stolárskom výkrese */
+    background-image:
+      linear-gradient(rgba(29, 26, 23, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(29, 26, 23, 0.055) 1px, transparent 1px),
+      linear-gradient(rgba(29, 26, 23, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(29, 26, 23, 0.025) 1px, transparent 1px);
+    background-size:
+      80px 80px,
+      80px 80px,
+      16px 16px,
+      16px 16px;
+    background-attachment: fixed;
   }
   h1,
   h2,
@@ -96,9 +108,24 @@
   .field {
     @apply w-full rounded-xl border border-line bg-white px-4 py-3 text-[15px] text-ink transition outline-none placeholder:text-stone/60 focus:border-copper focus:ring-4 focus:ring-copper/15;
   }
+  /* Obsah odsadený od ľavého metra a okrajov, aby presvitala mriežka */
+  .shell {
+    @apply lg:pr-3 lg:pl-[4.5rem];
+  }
+  .grain {
+    @apply pointer-events-none fixed inset-0 z-[70] opacity-[0.07] mix-blend-multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
   /* Zaoblený „list“, ktorý sa prekrýva s predchádzajúcou sekciou */
   .sheet {
     @apply relative z-10 -mt-12 rounded-t-[2.5rem] bg-paper shadow-[0_-24px_50px_-30px_rgba(29,26,23,0.35)] lg:-mt-16 lg:rounded-t-[3.5rem];
+  }
+  /* Tmavá sekcia s jemnou mriežkou, ktorá nadväzuje na pozadie */
+  .sheet-dark {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 80px 80px;
   }
   .sheet-notch {
     @apply absolute top-0 left-1/2 inline-flex h-9 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-inherit text-stone/70 shadow-[0_-8px_16px_-10px_rgba(29,26,23,0.35)];

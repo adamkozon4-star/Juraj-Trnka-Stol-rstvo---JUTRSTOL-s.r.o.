@@ -1,4 +1,5 @@
 ---
+import SheetNotch from '../components/SheetNotch.astro';
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { site, fullAddress, telHref } from '../data/site';
@@ -17,7 +18,8 @@ import { site, fullAddress, telHref } from '../data/site';
     crumbs={[{ href: '/ochrana-osobnych-udajov', label: 'Ochrana osobných údajov' }]}
   />
 
-  <section class="py-16 lg:py-24">
+  <section class="sheet pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="GDPR">
+    <SheetNotch />
     <div class="container-x max-w-3xl space-y-8 text-[17px] leading-relaxed text-stone [&_h2]:mt-12 [&_h2]:text-2xl [&_h2]:font-medium [&_h2]:text-ink">
       <p>
         Prevádzkovateľom webu a správcom osobných údajov je <strong class="text-ink">{site.legalName}</strong>, {fullAddress}{

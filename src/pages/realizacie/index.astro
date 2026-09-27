@@ -1,4 +1,5 @@
 ---
+import SheetNotch from '../../components/SheetNotch.astro';
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
@@ -24,10 +25,11 @@ const usedCategories = categories.filter((c) => projects.some((p) => p.category 
     crumbs={[{ href: '/realizacie', label: 'Realizácie' }]}
   />
 
-  <section class="py-16 lg:py-24">
+  <section class="sheet pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="Galéria">
+    <SheetNotch />
     <div class="container-x">
       <div
-        class="sticky top-20 z-30 -mx-4 mb-12 overflow-x-auto bg-cream/90 px-4 py-4 backdrop-blur sm:mx-0 sm:rounded-full sm:px-0"
+        class="sticky top-[5.5rem] z-30 -mx-4 mb-12 overflow-x-auto bg-cream/90 px-4 py-4 backdrop-blur sm:mx-0 sm:rounded-full sm:px-0"
         role="toolbar"
         aria-label="Filter realizácií"
       >
@@ -92,26 +94,28 @@ const usedCategories = categories.filter((c) => projects.some((p) => p.category 
 </style>
 
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
-  const items = document.querySelectorAll<HTMLElement>('#projects-grid > li');
-
-  const apply = (filter: string) => {
-    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
-    items.forEach((li) => {
-      const show = filter === 'all' || li.dataset.category === filter;
-      li.hidden = !show;
-      if (show) li.classList.add('is-visible');
-    });
-  };
-
-  buttons.forEach((b) =>
-    b.addEventListener('click', () => {
-      const f = b.dataset.filter!;
-      apply(f);
-      history.replaceState(null, '', f === 'all' ? location.pathname : `#${f}`);
-    }),
-  );
-
-  const initial = location.hash.slice(1);
-  if (initial && [...buttons].some((b) => b.dataset.filter === initial)) apply(initial);
+  document.addEventListener('astro:page-load', () => {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const items = document.querySelectorAll<HTMLElement>('#projects-grid > li');
+  
+    const apply = (filter: string) => {
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+      items.forEach((li) => {
+        const show = filter === 'all' || li.dataset.category === filter;
+        li.hidden = !show;
+        if (show) li.classList.add('is-visible');
+      });
+    };
+  
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        const f = b.dataset.filter!;
+        apply(f);
+        history.replaceState(history.state, '', f === 'all' ? location.pathname : `#${f}`);
+      }),
+    );
+  
+    const initial = location.hash.slice(1);
+    if (initial && [...buttons].some((b) => b.dataset.filter === initial)) apply(initial);
+  });
 </script>

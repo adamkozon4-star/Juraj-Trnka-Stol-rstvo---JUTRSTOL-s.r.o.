@@ -4,7 +4,7 @@ import Icon from './Icon.astro';
 import { site, telHref } from '../data/site';
 
 interface Props {
-  overlay?: boolean; // priehľadná hlavička nad hero fotkou
+  overlay?: boolean; // hlavička nad tmavou fotkou (biely text)
 }
 const { overlay = false } = Astro.props;
 
@@ -15,62 +15,61 @@ const nav = [
   { href: '/konfigurator', label: 'Konfigurátor' },
   { href: '/#kontakt', label: 'Kontakt' },
 ];
+const path = Astro.url.pathname.replace(/\/$/, '');
 ---
 
-<header
-  id="site-header"
-  data-overlay={overlay ? 'true' : 'false'}
-  class="group/header fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,color] duration-500"
->
-  <div class="container-x flex h-20 items-center justify-between gap-6">
-    <a href="/" aria-label="JUTRSTOL – úvod" class="header-logo relative">
-      <span class="logo-light"><Logo tone="light" /></span>
-      <span class="logo-dark"><Logo tone="dark" /></span>
-    </a>
-
-    <nav aria-label="Hlavné menu" class="hidden lg:block">
-      <ul class="flex items-center gap-8 text-[15px] font-medium">
-        {
-          nav.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class="header-link relative py-2 transition after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-oak after:transition after:duration-300 hover:after:scale-x-100"
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
-
-    <div class="flex items-center gap-3">
-      <a href={telHref} class="header-phone hidden items-center gap-2 text-sm font-semibold xl:inline-flex">
-        <Icon name="phone" size={18} class="text-oak" />
-        {site.phoneDisplay}
+<header id="site-header" data-overlay={overlay ? 'true' : 'false'} class="fixed inset-x-0 top-0 z-50 lg:pr-3 lg:pl-[4.5rem]">
+  <div class="mx-auto max-w-7xl px-3 pt-3 sm:px-4 lg:px-6">
+    <div class="header-pill flex h-16 items-center justify-between gap-4 rounded-[1.4rem] pr-2 pl-4 sm:pl-5">
+      <a href="/" aria-label="JUTRSTOL – úvod" class="relative shrink-0">
+        <span class="logo-light"><Logo tone="light" /></span>
+        <span class="logo-dark"><Logo tone="dark" /></span>
       </a>
-      <a href="/#kontakt" class="btn-primary hidden !px-5 !py-2.5 sm:inline-flex">Cenová ponuka</a>
-      <button
-        type="button"
-        id="menu-open"
-        class="header-link -mr-2 inline-flex h-11 w-11 items-center justify-center rounded-full lg:hidden"
-        aria-label="Otvoriť menu"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-      >
-        <Icon name="menu" size={26} />
-      </button>
+
+      <nav aria-label="Hlavné menu" class="hidden lg:block">
+        <ul class="flex items-center gap-1 text-[14.5px] font-medium">
+          {
+            nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={['nav-link rounded-full px-3.5 py-2 transition', path === item.href && 'is-current']}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a href={telHref} class="nav-link hidden items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold xl:inline-flex">
+          <Icon name="phone" size={17} class="text-copper" />
+          {site.phoneDisplay}
+        </a>
+        <a href="/#kontakt" class="btn-primary hidden !rounded-[1rem] !px-5 !py-2.5 sm:inline-flex">Cenová ponuka</a>
+        <button
+          type="button"
+          id="menu-open"
+          class="nav-link inline-flex h-11 w-11 items-center justify-center rounded-full lg:hidden"
+          aria-label="Otvoriť menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <Icon name="menu" size={24} />
+        </button>
+      </div>
     </div>
   </div>
 </header>
 
 <div
   id="mobile-menu"
-  class="wood-grain pointer-events-none fixed inset-0 z-[60] flex flex-col bg-walnut text-white opacity-0 transition-opacity duration-300 lg:hidden"
+  class="sheet-dark pointer-events-none fixed inset-0 z-[60] flex flex-col bg-walnut text-white opacity-0 transition-opacity duration-300 lg:hidden"
   aria-hidden="true"
 >
-  <div class="container-x flex h-20 items-center justify-between">
+  <div class="flex h-[5.5rem] items-center justify-between px-7">
     <Logo tone="light" />
     <button
       type="button"
@@ -81,14 +80,15 @@ const nav = [
       <Icon name="close" size={26} />
     </button>
   </div>
-  <nav aria-label="Mobilné menu" class="container-x flex flex-1 flex-col justify-center gap-2 pb-10">
+  <nav aria-label="Mobilné menu" class="flex flex-1 flex-col justify-center gap-1 px-7 pb-10">
     {
       nav.map((item, i) => (
         <a
           href={item.href}
-          class="mobile-link border-b border-white/10 py-4 font-display text-3xl"
+          class="mobile-link flex items-baseline gap-4 border-b border-white/10 py-4 font-display text-3xl font-semibold"
           style={`--d:${i * 50}ms`}
         >
+          <span class="font-sans text-xs font-medium text-oak tabular-nums">{String(i + 1).padStart(2, '0')}</span>
           {item.label}
         </a>
       ))
@@ -103,20 +103,33 @@ const nav = [
 </div>
 
 <style>
-  #site-header {
+  .header-pill {
     color: var(--color-ink);
-    background: rgb(247 243 236 / 0.92);
-    backdrop-filter: saturate(1.4) blur(14px);
-    box-shadow: 0 1px 0 rgb(31 26 22 / 0.08);
+    background: rgb(251 250 247 / 0.82);
+    backdrop-filter: saturate(1.5) blur(18px);
+    box-shadow:
+      0 0 0 1px rgb(29 26 23 / 0.07),
+      0 18px 40px -24px rgb(29 26 23 / 0.45);
+    transition:
+      background-color 0.4s,
+      color 0.4s,
+      box-shadow 0.4s;
   }
-  #site-header .logo-light {
+  .nav-link:hover,
+  .nav-link.is-current {
+    background: rgb(29 26 23 / 0.06);
+  }
+  .logo-light {
     display: none;
   }
-  #site-header[data-overlay='true']:not(.is-scrolled) {
+  #site-header[data-overlay='true']:not(.is-scrolled) .header-pill {
     color: white;
-    background: transparent;
-    backdrop-filter: none;
-    box-shadow: none;
+    background: rgb(20 17 14 / 0.28);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.14);
+  }
+  #site-header[data-overlay='true']:not(.is-scrolled) .nav-link:hover,
+  #site-header[data-overlay='true']:not(.is-scrolled) .nav-link.is-current {
+    background: rgb(255 255 255 / 0.12);
   }
   #site-header[data-overlay='true']:not(.is-scrolled) .logo-light {
     display: inline;
@@ -143,25 +156,28 @@ const nav = [
 </style>
 
 <script>
-  const header = document.getElementById('site-header')!;
-  const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 40);
-  onScroll();
+  const onScroll = () =>
+    document.getElementById('site-header')?.classList.toggle('is-scrolled', window.scrollY > 40);
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  const menu = document.getElementById('mobile-menu')!;
-  const openBtn = document.getElementById('menu-open')!;
-  const closeBtn = document.getElementById('menu-close')!;
-  const setOpen = (open: boolean) => {
-    menu.classList.toggle('is-open', open);
-    menu.setAttribute('aria-hidden', String(!open));
-    openBtn.setAttribute('aria-expanded', String(open));
-    document.documentElement.style.overflow = open ? 'hidden' : '';
-    if (open) closeBtn.focus();
-  };
-  openBtn.addEventListener('click', () => setOpen(true));
-  closeBtn.addEventListener('click', () => setOpen(false));
-  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && menu.classList.contains('is-open')) setOpen(false);
+  document.addEventListener('astro:page-load', () => {
+    onScroll();
+    const menu = document.getElementById('mobile-menu')!;
+    const openBtn = document.getElementById('menu-open')!;
+    const closeBtn = document.getElementById('menu-close')!;
+    const setOpen = (open: boolean) => {
+      menu.classList.toggle('is-open', open);
+      menu.setAttribute('aria-hidden', String(!open));
+      openBtn.setAttribute('aria-expanded', String(open));
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      if (open) closeBtn.focus();
+    };
+    openBtn.addEventListener('click', () => setOpen(true));
+    closeBtn.addEventListener('click', () => setOpen(false));
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+    menu.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+    document.documentElement.style.overflow = '';
   });
 </script>

@@ -1,0 +1,179 @@
+---
+// Zvislý stolársky meter na ľavom okraji (len na veľkých obrazovkách).
+// Dieliky sa posúvajú spolu so stránkou (1 cm = 10 px), ukazovateľ v strede
+// hovorí, koľko „centimetrov“ webu máte za sebou a v ktorej ste sekcii.
+---
+
+<aside class="scroll-ruler" aria-hidden="true" transition:persist>
+  <div class="sr-strip">
+    <div class="sr-ticks"></div>
+    <div class="sr-numbers"></div>
+  </div>
+  <div class="sr-marker">
+    <span class="sr-value"><b>0</b> cm</span>
+  </div>
+  <div class="sr-section"><span></span></div>
+</aside>
+
+<style>
+  .scroll-ruler {
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .scroll-ruler {
+      display: block;
+      position: fixed;
+      z-index: 40;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 4.5rem;
+      pointer-events: none;
+    }
+  }
+  .sr-strip {
+    position: absolute;
+    top: 0.75rem;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    width: 2.6rem;
+    overflow: hidden;
+    border-radius: 0.6rem;
+    background: linear-gradient(90deg, #f6dc7a, #e9c552);
+    box-shadow:
+      inset -1px 0 0 rgba(120, 90, 20, 0.35),
+      0 10px 30px -12px rgba(29, 26, 23, 0.45);
+  }
+  .sr-ticks {
+    position: absolute;
+    inset: 0;
+    --sy: 0;
+    background-image:
+      linear-gradient(to bottom, #b3261e 1.5px, transparent 1.5px),
+      linear-gradient(to bottom, #2a221a 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(42, 34, 26, 0.8) 1px, transparent 1px);
+    background-size:
+      22px 100px,
+      15px 50px,
+      9px 10px;
+    background-repeat: repeat-y;
+    background-position:
+      right 0 top calc(var(--sy) * -1px),
+      right 0 top calc(var(--sy) * -1px),
+      right 0 top calc(var(--sy) * -1px);
+  }
+  .sr-numbers :global(span) {
+    position: absolute;
+    left: 5px;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: left center;
+    translate: 7px 0;
+    font:
+      700 9px/1 Arial,
+      sans-serif;
+    color: #2a221a;
+  }
+  .sr-numbers :global(span.m) {
+    color: #b3261e;
+  }
+  .sr-marker {
+    position: absolute;
+    top: 50%;
+    left: 0.35rem;
+    right: -2.6rem;
+    height: 2px;
+    background: var(--color-copper);
+    box-shadow: 0 0 0 3px rgba(196, 115, 58, 0.18);
+  }
+  .sr-value {
+    position: absolute;
+    left: 3.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    border-radius: 999px;
+    background: var(--color-walnut);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 0.2rem 0.55rem;
+    font:
+      500 10px/1.4 var(--font-sans),
+      sans-serif;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .scroll-ruler.is-moving .sr-value {
+    opacity: 1;
+  }
+  .sr-value b {
+    color: white;
+    font-variant-numeric: tabular-nums;
+  }
+  .sr-section {
+    position: absolute;
+    left: 0.75rem;
+    width: 2.6rem;
+    bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+  .sr-section span {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    border-radius: 999px;
+    background: var(--color-walnut);
+    color: white;
+    padding: 0.7rem 0.3rem;
+    font:
+      600 10px/1 var(--font-sans),
+      sans-serif;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: opacity 0.3s;
+  }
+  .sr-section span:empty {
+    opacity: 0;
+  }
+</style>
+
+<script>
+  let raf = 0;
+  let idle: ReturnType<typeof setTimeout>;
+
+  const update = () => {
+    raf = 0;
+    const root = document.querySelector<HTMLElement>('.scroll-ruler');
+    if (!root || getComputedStyle(root).display === 'none') return;
+    const y = window.scrollY;
+    const h = window.innerHeight;
+    root.querySelector<HTMLElement>('.sr-ticks')!.style.setProperty('--sy', String(y));
+
+    // čísla každých 10 cm
+    const nums = root.querySelector<HTMLElement>('.sr-numbers')!;
+    const from = Math.floor(y / 100);
+    const to = Math.ceil((y + h) / 100);
+    let html = '';
+    for (let k = Math.max(1, from); k <= to; k++) {
+      html += `<span class="${k % 10 === 0 ? 'm' : ''}" style="top:${k * 100 - y}px">${k * 10}</span>`;
+    }
+    nums.innerHTML = html;
+
+    root.querySelector('.sr-value b')!.textContent = String(Math.round((y + h / 2) / 10));
+
+    // aktuálna sekcia
+    const sections = [...document.querySelectorAll<HTMLElement>('[data-nav]')];
+    let current = '';
+    for (const s of sections) if (s.getBoundingClientRect().top <= h / 2) current = s.dataset.nav!;
+    const label = root.querySelector('.sr-section span')!;
+    if (label.textContent !== current) label.textContent = current;
+
+    root.classList.add('is-moving');
+    clearTimeout(idle);
+    idle = setTimeout(() => root.classList.remove('is-moving'), 900);
+  };
+  const schedule = () => {
+    if (!raf) raf = requestAnimationFrame(update);
+  };
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule);
+  document.addEventListener('astro:page-load', update);
+</script>

@@ -10,7 +10,7 @@ const { preselect } = Astro.props;
 const mapQuery = encodeURIComponent(`${site.address.street}, ${site.address.zip} ${site.address.city}, Slovensko`);
 ---
 
-<section id="kontakt" class="sheet wood-grain !bg-walnut pt-24 pb-28 text-white lg:pt-28 lg:pb-32">
+<section id="kontakt" data-nav="Kontakt" class="sheet sheet-dark !bg-walnut pt-24 pb-28 text-white lg:pt-28 lg:pb-32">
   <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
 
   <div class="container-x grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
@@ -187,5 +187,5 @@ const mapQuery = encodeURIComponent(`${site.address.street}, ${site.address.zip}
 
 <script>
   import { bindForms } from '../scripts/forms';
-  bindForms();
+  document.addEventListener('astro:page-load', bindForms);
 </script>

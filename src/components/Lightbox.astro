@@ -43,22 +43,21 @@ import Icon from './Icon.astro';
 </dialog>
 
 <script>
-  const dialog = document.getElementById('lightbox') as HTMLDialogElement;
-  const img = document.getElementById('lb-img') as HTMLImageElement;
-  const caption = document.getElementById('lb-caption')!;
-  const count = document.getElementById('lb-count')!;
+  // Lightbox pre odkazy [data-lightbox]. Prvky hľadáme vždy nanovo, lebo stránky sa vymieňajú bez načítania.
   let items: HTMLAnchorElement[] = [];
   let index = 0;
+  const $ = (id: string) => document.getElementById(id);
 
   const render = () => {
+    const img = $('lb-img') as HTMLImageElement | null;
+    if (!img) return;
     const a = items[index];
     img.style.opacity = '0';
     img.onload = () => (img.style.opacity = '1');
     img.src = a.href;
     img.alt = a.dataset.caption ?? '';
-    caption.textContent = a.dataset.caption ?? '';
-    count.textContent = `${index + 1} / ${items.length}`;
-    // prednačítanie ďalšej
+    $('lb-caption')!.textContent = a.dataset.caption ?? '';
+    $('lb-count')!.textContent = `${index + 1} / ${items.length}`;
     const next = items[(index + 1) % items.length];
     if (next) new Image().src = next.href;
   };
@@ -66,37 +65,48 @@ import Icon from './Icon.astro';
     index = (index + step + items.length) % items.length;
     render();
   };
+  const dialog = () => $('lightbox') as HTMLDialogElement | null;
 
-  document.addEventListener('click', (e) => {
-    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-lightbox]');
-    if (!a) return;
-    e.preventDefault();
-    items = [...document.querySelectorAll<HTMLAnchorElement>(`a[data-lightbox="${a.dataset.lightbox}"]`)];
-    index = items.indexOf(a);
-    render();
-    dialog.showModal();
-    document.documentElement.style.overflow = 'hidden';
-  });
-
-  dialog.addEventListener('close', () => (document.documentElement.style.overflow = ''));
-  dialog.addEventListener('click', (e) => {
+  document.addEventListener(
+    'click',
+    (e) => {
     const t = e.target as HTMLElement;
+    const a = t.closest<HTMLAnchorElement>('a[data-lightbox]');
+    const d = dialog();
+    if (a && d) {
+      e.preventDefault();
+      items = [...document.querySelectorAll<HTMLAnchorElement>(`a[data-lightbox="${a.dataset.lightbox}"]`)];
+      index = items.indexOf(a);
+      render();
+      d.showModal();
+      document.documentElement.style.overflow = 'hidden';
+      return;
+    }
+    if (!d?.open || !d.contains(t)) return;
     const action = t.closest<HTMLElement>('[data-lb]')?.dataset.lb;
-    if (action === 'close') dialog.close();
+    if (action === 'close') d.close();
     else if (action === 'prev') go(-1);
     else if (action === 'next') go(1);
-    else if (t.tagName === 'FIGURE' || t === dialog) dialog.close();
-  });
+    else if (t.tagName === 'FIGURE' || t === d) d.close();
+    },
+    true,
+  );
   document.addEventListener('keydown', (e) => {
-    if (!dialog.open) return;
+    if (!dialog()?.open) return;
     if (e.key === 'ArrowLeft') go(-1);
     if (e.key === 'ArrowRight') go(1);
   });
-
-  // Swipe na mobile
+  document.addEventListener(
+    'close',
+    (e) => {
+      if ((e.target as HTMLElement).id === 'lightbox') document.documentElement.style.overflow = '';
+    },
+    true,
+  );
   let startX = 0;
-  dialog.addEventListener('touchstart', (e) => (startX = e.touches[0].clientX), { passive: true });
-  dialog.addEventListener('touchend', (e) => {
+  document.addEventListener('touchstart', (e) => (startX = e.touches[0].clientX), { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (!dialog()?.open) return;
     const dx = e.changedTouches[0].clientX - startX;
     if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
   });

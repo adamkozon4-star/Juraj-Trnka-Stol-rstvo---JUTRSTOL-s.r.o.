@@ -1,4 +1,5 @@
 ---
+import SheetNotch from '../components/SheetNotch.astro';
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Contact from '../components/Contact.astro';
@@ -27,7 +28,8 @@ const url = site.configuratorUrl;
 
   {
     url ? (
-      <section class="py-12 lg:py-16">
+      <section class="sheet pt-16 pb-28 lg:pt-20" data-nav="Konfigurátor">
+        <SheetNotch />
         <div class="container-x">
           <div class="overflow-hidden rounded-[1.75rem] border border-line bg-paper shadow-xl">
             <iframe
@@ -41,7 +43,8 @@ const url = site.configuratorUrl;
         </div>
       </section>
     ) : (
-      <section class="py-20 lg:py-28">
+      <section class="sheet pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="Ako to bude fungovať">
+        <SheetNotch />
         <div class="container-x grid gap-4 md:grid-cols-3">
           {[
             { icon: 'ruler', title: 'Zadáte rozmery', text: 'Šírka, výška, hĺbka – na centimeter presne podľa vášho priestoru.' },

@@ -14,8 +14,8 @@ const audience = [
 ] as const;
 ---
 
-<section class="relative z-20 bg-walnut text-white">
-  <div class="relative isolate flex min-h-[92svh] flex-col overflow-hidden lg:min-h-[100svh]">
+<section class="relative z-20 text-white" data-nav="Úvod">
+  <div class="relative isolate flex min-h-[92svh] flex-col overflow-hidden bg-walnut lg:mt-3 lg:min-h-[calc(100svh-0.75rem)] lg:rounded-[2.5rem]">
     <Picture
       src={heroImage}
       alt="Kuchyňa na mieru s ostrovom obloženým lamelami a jedálenským stolom"
@@ -26,7 +26,7 @@ const audience = [
       loading="eager"
       fetchpriority="high"
       class="hero-img absolute inset-0 -z-20 h-full w-full"
-      pictureAttributes={{ class: 'absolute inset-0 -z-20' }}
+      pictureAttributes={{ class: 'hero-pic absolute inset-0 -z-20' }}
     />
     <div
       class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(20,17,14,0.55)_0%,rgba(20,17,14,0.3)_35%,rgba(20,17,14,0.88)_85%)] lg:bg-[linear-gradient(90deg,rgba(20,17,14,0.1)_0%,rgba(20,17,14,0.15)_40%,rgba(20,17,14,0.8)_70%,rgba(20,17,14,0.9)_100%)]"
@@ -96,6 +96,19 @@ const audience = [
     object-fit: cover;
     object-position: 35% 50%;
     animation: hero-zoom 18s var(--ease-out-soft) both;
+  }
+  /* Paralaxa pri scrollovaní (moderné prehliadače, bez JavaScriptu) */
+  @supports (animation-timeline: scroll()) {
+    :global(.hero-pic) {
+      animation: hero-parallax linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+  }
+  @keyframes hero-parallax {
+    to {
+      transform: translateY(18%) scale(1.05);
+    }
   }
   @keyframes hero-zoom {
     from {

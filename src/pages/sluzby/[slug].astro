@@ -1,4 +1,5 @@
 ---
+import SheetNotch from '../../components/SheetNotch.astro';
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
@@ -30,7 +31,8 @@ const others = categories.filter((c) => c.slug !== category.slug);
     crumbs={[{ href: `/sluzby/${category.slug}`, label: category.title }]}
   />
 
-  <section class="py-16 lg:py-24">
+  <section class="sheet pt-20 pb-12 lg:pt-24 lg:pb-16" data-nav="O službe">
+    <SheetNotch />
     <div class="container-x grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
       <p class="font-display text-2xl leading-snug font-light text-ink sm:text-3xl" data-reveal>{category.intro}</p>
       <div class="flex flex-col gap-3 lg:pt-2" data-reveal style="--d:100ms">
@@ -40,7 +42,8 @@ const others = categories.filter((c) => c.slug !== category.slug);
     </div>
   </section>
 
-  <section class="pb-20 lg:pb-28">
+  <section class="sheet !bg-cream pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="Realizácie">
+    <SheetNotch />
     <div class="container-x">
       <h2 class="text-3xl font-medium sm:text-4xl" data-reveal>Realizácie – {category.title.toLowerCase()}</h2>
       <div class:list={['mt-10 grid gap-x-6 gap-y-14', items.length > 1 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'max-w-xl']}>
@@ -57,7 +60,8 @@ const others = categories.filter((c) => c.slug !== category.slug);
 
   <Process />
 
-  <section class="py-20 lg:py-28">
+  <section class="sheet pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="Ďalej vyrábame">
+    <SheetNotch />
     <div class="container-x">
       <h2 class="text-3xl font-medium sm:text-4xl" data-reveal>Ďalej vyrábame</h2>
       <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

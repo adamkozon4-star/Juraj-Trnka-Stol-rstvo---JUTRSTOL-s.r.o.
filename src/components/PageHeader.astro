@@ -7,51 +7,57 @@ interface Props {
   title: string;
   lead?: string;
   image?: string;
+  imageTransition?: string; // názov pre plynulý prechod fotky z karty projektu
   crumbs?: { href: string; label: string }[];
 }
-const { eyebrow, title, lead, image, crumbs = [] } = Astro.props;
+const { eyebrow, title, lead, image, imageTransition, crumbs = [] } = Astro.props;
 ---
 
-<section class="wood-grain relative isolate overflow-hidden bg-walnut pt-36 pb-20 text-white lg:pt-44 lg:pb-28">
-  {
-    image && (
-      <>
-        <Image
-          src={photo(image)}
-          alt=""
-          widths={[640, 1280, 1920]}
-          sizes="100vw"
-          loading="eager"
-          class="absolute inset-0 -z-20 h-full w-full object-cover opacity-35"
-        />
-        <div class="absolute inset-0 -z-10 bg-gradient-to-r from-walnut via-walnut/85 to-walnut/40" />
-      </>
-    )
-  }
-  <div class="container-x">
+<section class="relative z-0" data-nav={eyebrow}>
+  <div
+    class="sheet-dark relative isolate overflow-hidden bg-walnut pt-36 pb-28 text-white lg:mt-3 lg:rounded-[2.5rem] lg:pt-44 lg:pb-36"
+  >
     {
-      crumbs.length > 0 && (
-        <nav aria-label="Omrvinky" class="mb-8 text-sm text-white/55">
-          <ol class="flex flex-wrap items-center gap-2">
-            <li>
-              <a href="/" class="hover:text-white">
-                Úvod
-              </a>
-            </li>
-            {crumbs.map((c) => (
-              <li class="flex items-center gap-2">
-                <span aria-hidden="true">/</span>
-                <a href={c.href} class="hover:text-white">
-                  {c.label}
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
+      image && (
+        <>
+          <Image
+            src={photo(image)}
+            alt=""
+            widths={[640, 1280, 1920]}
+            sizes="100vw"
+            loading="eager"
+            class="absolute inset-0 -z-20 h-full w-full object-cover"
+            transition:name={imageTransition}
+          />
+          <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(20,17,14,0.92)_0%,rgba(20,17,14,0.75)_45%,rgba(20,17,14,0.35)_100%)]" />
+        </>
       )
     }
-    <p class="eyebrow eyebrow-dark">{eyebrow}</p>
-    <h1 class="mt-5 max-w-4xl text-4xl leading-[1] font-semibold sm:text-6xl" set:html={title} />
-    {lead && <p class="mt-6 max-w-2xl text-lg leading-relaxed text-white/70">{lead}</p>}
+    <div class="container-x">
+      {
+        crumbs.length > 0 && (
+          <nav aria-label="Omrvinky" class="mb-8 text-sm text-white/55">
+            <ol class="flex flex-wrap items-center gap-2">
+              <li>
+                <a href="/" class="hover:text-white">
+                  Úvod
+                </a>
+              </li>
+              {crumbs.map((c) => (
+                <li class="flex items-center gap-2">
+                  <span aria-hidden="true">/</span>
+                  <a href={c.href} class="hover:text-white">
+                    {c.label}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+      <p class="eyebrow eyebrow-dark">{eyebrow}</p>
+      <h1 class="mt-5 max-w-4xl text-4xl leading-[1] font-semibold sm:text-6xl lg:text-7xl" set:html={title} />
+      {lead && <p class="mt-6 max-w-2xl text-lg leading-relaxed text-white/75">{lead}</p>}
+    </div>
   </div>
 </section>

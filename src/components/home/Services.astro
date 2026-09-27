@@ -9,7 +9,7 @@ import { plural } from '../../lib/plural';
 const photoCount = (slug: string) => projectsInCategory(slug).reduce((n, p) => n + p.images.length, 0);
 ---
 
-<section id="sluzby" class="sheet !bg-cream pt-24 pb-28 lg:pt-28 lg:pb-36">
+<section id="sluzby" data-nav="Čo vyrábame" class="sheet !bg-cream pt-24 pb-28 lg:pt-28 lg:pb-36">
   <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
 
   <div class="container-x">
@@ -193,8 +193,9 @@ const photoCount = (slug: string) => projectsInCategory(slug).reduce((n, p) => n
 </style>
 
 <script>
-  const list = document.getElementById('svc');
-  if (list) {
+  document.addEventListener('astro:page-load', () => {
+    const list = document.getElementById('svc');
+    if (!list) return;
     const items = [...list.querySelectorAll<HTMLElement>('.svc-item')];
     const activate = (el: HTMLElement) => {
       items.forEach((it) => {
@@ -209,5 +210,5 @@ const photoCount = (slug: string) => projectsInCategory(slug).reduce((n, p) => n
       it.querySelector('.svc-toggle')?.addEventListener('click', () => activate(it));
       it.addEventListener('mouseenter', () => desktop.matches && activate(it));
     });
-  }
+  });
 </script>
