@@ -9,6 +9,8 @@
 | `realizacie/kupelne/` | kúpeľňový nábytok |
 | `realizacie/predsiene/` | predsiene, vstavané skrine v chodbe, konzoly |
 | `realizacie/lamelove-obklady-priecky/` | lamelové obklady stien, deliace priečky |
+| `realizacie/detske-izby/` | detské a študentské izby, poschodové postele |
+| `realizacie/obyvacky/` | TV steny, obývacie zostavy, knižnice |
 | `realizacie/komercne-interiery/` | kancelárie, prevádzky, obchody |
 | `realizacie/ostatne/` | stoly, postele, komerčné interiéry, všetko ostatné |
 | `logo/` | logo (najlepšie SVG/PDF, inak PNG) |
