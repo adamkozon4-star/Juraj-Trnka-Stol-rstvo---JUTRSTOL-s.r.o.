@@ -1,6 +1,7 @@
 ---
 import { Picture } from 'astro:assets';
 import Icon from '../Icon.astro';
+import FoldingRuler from '../FoldingRuler.astro';
 import { photo } from '../../lib/images';
 import { site, telHref } from '../../data/site';
 
@@ -14,7 +15,7 @@ const audience = [
 ] as const;
 ---
 
-<section class="relative z-20 text-white" data-nav="Úvod">
+<section class="relative z-20 overflow-x-clip text-white" data-nav="Úvod">
   <div class="relative isolate flex min-h-[92svh] flex-col overflow-hidden bg-walnut lg:mt-3 lg:min-h-[calc(100svh-0.75rem)] lg:rounded-[2.5rem]">
     <Picture
       src={heroImage}
@@ -65,6 +66,11 @@ const audience = [
     </div>
   </div>
 
+  <!-- Skladací meter leží cez hranu hera a sekcie O nás -->
+  <div class="hero-ruler pointer-events-none absolute right-0 bottom-0 z-40 hidden xl:block xl:w-64 2xl:right-4 2xl:w-[28rem]" aria-hidden="true">
+    <FoldingRuler class="w-full" angles={[180, 28, 200]} start={120} />
+  </div>
+
   <!-- Sklenený panel, ktorý presahuje do ďalšej sekcie -->
   <div class="absolute inset-x-0 bottom-0 z-30 translate-y-1/2">
     <div class="container-x">
@@ -96,6 +102,9 @@ const audience = [
     object-fit: cover;
     object-position: 35% 50%;
     animation: hero-zoom 18s var(--ease-out-soft) both;
+  }
+  .hero-ruler {
+    transform: translate(2%, 50%) rotate(8deg);
   }
   /* Paralaxa pri scrollovaní (moderné prehliadače, bez JavaScriptu) */
   @supports (animation-timeline: scroll()) {
