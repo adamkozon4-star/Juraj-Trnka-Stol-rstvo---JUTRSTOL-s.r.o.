@@ -7,6 +7,8 @@
 | `realizacie/interierove-dvere/` | dvere, zárubne |
 | `realizacie/schody/` | schodiská |
 | `realizacie/kupelne/` | kúpeľňový nábytok |
+| `realizacie/predsiene/` | predsiene, vstavané skrine v chodbe, konzoly |
+| `realizacie/lamelove-obklady-priecky/` | lamelové obklady stien, deliace priečky |
 | `realizacie/ostatne/` | stoly, postele, komerčné interiéry, všetko ostatné |
 | `logo/` | logo (najlepšie SVG/PDF, inak PNG) |
 | `inspiracia/` | screenshot z Pinterestu a iné inšpirácie |
