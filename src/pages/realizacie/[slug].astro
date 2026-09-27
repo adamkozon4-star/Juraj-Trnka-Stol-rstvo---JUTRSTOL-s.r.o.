@@ -1,6 +1,5 @@
 ---
 import Bridge from '../../components/Bridge.astro';
-import SheetNotch from '../../components/SheetNotch.astro';
 import { Image, getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
@@ -57,7 +56,6 @@ const isWide = (path: string) => photo(path).width > photo(path).height * 1.2;
   />
 
   <section class="sheet pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="Fotky">
-    <SheetNotch />
   <Bridge kind="photo" side="right" inset="7%" rotate={6} size="lg" image={project.images[1] ?? project.images[0]} />
     <div class="container-x grid gap-12 lg:grid-cols-[1fr_20rem] lg:gap-16">
       <ul class="grid grid-flow-dense auto-rows-[14rem] gap-3 sm:auto-rows-[18rem] sm:grid-cols-2 lg:auto-rows-[20rem]">
@@ -134,7 +132,6 @@ const isWide = (path: string) => photo(path).width > photo(path).height * 1.2;
   </section>
 
   <section class="sheet !bg-cream pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="Ďalšie">
-    <SheetNotch />
     <div class="container-x">
       <h2 class="text-3xl font-medium sm:text-4xl" data-reveal>Ďalšie realizácie</h2>
       <div class="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">

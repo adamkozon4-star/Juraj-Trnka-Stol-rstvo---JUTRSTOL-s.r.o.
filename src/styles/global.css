@@ -110,7 +110,7 @@
   }
   /* Obsah odsadený od ľavého metra a okrajov, aby presvitala mriežka */
   .shell {
-    @apply lg:pr-3 lg:pl-[4.5rem];
+    @apply lg:px-3;
   }
   .grain {
     @apply pointer-events-none fixed inset-0 z-[70] opacity-[0.07] mix-blend-multiply;
@@ -126,9 +126,6 @@
       linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
     background-size: 80px 80px;
-  }
-  .sheet-notch {
-    @apply absolute top-0 left-1/2 inline-flex h-9 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-inherit text-stone/70 shadow-[0_-8px_16px_-10px_rgba(29,26,23,0.35)];
   }
   /* Parametrická pilulka: hodnota | popis */
   .spec {

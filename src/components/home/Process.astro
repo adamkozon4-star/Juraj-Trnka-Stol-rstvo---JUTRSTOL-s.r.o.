@@ -28,7 +28,6 @@ const steps = [
 ---
 
 <section id="postup" data-nav="Ako pracujeme" class="sheet sheet-dark !bg-walnut pt-24 pb-32 text-white lg:pt-28 lg:pb-40">
-  <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
   <Bridge kind="photo" side="right" inset="6%" rotate={6} size="lg" image="predsiene/predsien-vstavana-skrina-led-01.jpg" label="LED" />
 
   <div class="container-x grid gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
@@ -41,24 +40,32 @@ const steps = [
       />
     </div>
 
-    <ol class="relative space-y-4">
-      {
-        steps.map((s, i) => (
-          <li
-            data-reveal
-            style={`--d:${i * 70}ms`}
-            class="group relative grid grid-cols-[auto_1fr] gap-6 rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition duration-500 hover:border-oak/40 hover:bg-white/[0.06] sm:p-8"
-          >
-            <span class="font-display text-5xl leading-none font-light text-oak/80 tabular-nums transition group-hover:text-oak">
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <div>
-              <h3 class="text-2xl font-medium">{s.title}</h3>
-              <p class="mt-2 leading-relaxed text-white/65">{s.text}</p>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
+    <div class="relative pl-14 sm:pl-20">
+      <!-- Meter ako os postupu -->
+      <div class="step-ruler absolute top-2 bottom-2 left-0 w-8 rounded-md sm:w-10" aria-hidden="true"></div>
+      <ol class="relative space-y-12 sm:space-y-14">
+        {
+          steps.map((s, i) => (
+            <li data-reveal style={`--d:${i * 70}ms`} class="group relative">
+              <span class="absolute top-3 -left-14 h-0.5 w-10 bg-copper sm:-left-20 sm:w-14" aria-hidden="true" />
+              <p class="text-xs font-semibold tracking-[0.18em] text-oak uppercase">Krok {i + 1}</p>
+              <h3 class="mt-2 text-2xl font-semibold sm:text-[1.7rem]">{s.title}</h3>
+              <p class="mt-2 max-w-md leading-relaxed text-white/65">{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
   </div>
 </section>
+
+<style>
+  .step-ruler {
+    background:
+      linear-gradient(to bottom, #b3261e 1.5px, transparent 1.5px) right top / 60% 50px repeat-y,
+      linear-gradient(to bottom, #2a221a 1px, transparent 1px) right top / 40% 25px repeat-y,
+      linear-gradient(to bottom, rgba(42, 34, 26, 0.7) 1px, transparent 1px) right top / 22% 5px repeat-y,
+      linear-gradient(90deg, #f6dc7a, #e6bf4c);
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
+  }
+</style>

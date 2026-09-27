@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 import SectionHeading from '../SectionHeading.astro';
 import ProjectCard from '../ProjectCard.astro';
 import Icon from '../Icon.astro';
-import SheetNotch from '../SheetNotch.astro';
 import Bridge from '../Bridge.astro';
 import { projects } from '../../data/projects';
 import { categoryBySlug } from '../../data/categories';
@@ -16,7 +15,6 @@ const rest = featured.slice(3, 6);
 ---
 
 <section id="realizacie" data-nav="Realizácie" class="sheet pt-24 pb-32 lg:pt-28 lg:pb-40">
-  <SheetNotch />
   <Bridge kind="pencil" side="right" inset="3%" rotate={-14} />
 
   <div class="container-x">

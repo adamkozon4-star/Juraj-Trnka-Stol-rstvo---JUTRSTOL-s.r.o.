@@ -1,5 +1,4 @@
 ---
-import Bridge from './Bridge.astro';
 import Icon from './Icon.astro';
 import { site, telHref, fullAddress } from '../data/site';
 import { categories } from '../data/categories';
@@ -12,8 +11,6 @@ const mapQuery = encodeURIComponent(`${site.address.street}, ${site.address.zip}
 ---
 
 <section id="kontakt" data-nav="Kontakt" class="sheet sheet-dark !bg-walnut pt-24 pb-28 text-white lg:pt-28 lg:pb-32">
-  <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
-  <Bridge kind="photo" side="right" inset="6%" rotate={8} image="obyvacky/tv-stena-lamely-policova-skrina-01-sirka-web.jpg" label="lamely" />
 
   <div class="container-x grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
     <div>

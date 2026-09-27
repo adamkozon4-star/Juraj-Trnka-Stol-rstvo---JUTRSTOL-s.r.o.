@@ -1,5 +1,4 @@
 ---
-import Bridge from '../Bridge.astro';
 import { Image } from 'astro:assets';
 import Icon from '../Icon.astro';
 import { categories } from '../../data/categories';
@@ -11,8 +10,6 @@ const photoCount = (slug: string) => projectsInCategory(slug).reduce((n, p) => n
 ---
 
 <section id="sluzby" data-nav="Čo vyrábame" class="sheet !bg-cream pt-24 pb-28 lg:pt-28 lg:pb-36">
-  <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
-  <Bridge kind="photo" side="left" inset="5%" rotate={-8} image="kuchyne/kuchyna-dub-ostrov-05-ostrov-detail-sirka.jpg" label="dub" />
 
   <div class="container-x">
     <div class="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
