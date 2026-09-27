@@ -33,6 +33,7 @@ const localBusiness = {
   '@type': 'FurnitureStore',
   name: `${site.legalName} – Stolárstvo Juraj Trnka`,
   image: ogUrl.href,
+  logo: new URL('/logo-512.png', Astro.site).href,
   url: Astro.site?.href,
   telephone: site.phone,
   ...(site.email ? { email: site.email } : {}),
@@ -66,6 +67,7 @@ const localBusiness = {
     <meta name="theme-color" content="#1f1b18" />
     <ClientRouter />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <meta property="og:type" content="website" />
