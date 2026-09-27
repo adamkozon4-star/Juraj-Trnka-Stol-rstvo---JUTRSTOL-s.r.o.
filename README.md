@@ -27,9 +27,13 @@ npm run preview  # náhľad buildu
 
 Formulár posiela dopyty cez [Web3Forms](https://web3forms.com) (bezplatný plán). Na stránke Web3Forms zadaj e-mail klienta, získaj *Access Key* a vlož ho do `web3formsKey` v `src/data/site.ts`. Kým kľúč chýba, formulár návštevníka vyzve, aby zavolal.
 
-## Konfigurátor
+## Konfigurátor skrine
 
-Keď bude konfigurátor hotový, vlož jeho URL do `configuratorUrl` v `src/data/site.ts`. Stránka `/konfigurator` ho automaticky zobrazí (iframe) a tlačidlá na webe sa prepnú z „Pripravujeme“ na „Spustiť konfigurátor“. Ak bude konfigurátor React komponent v tomto repozitári, vloží sa priamo do `src/pages/konfigurator.astro`.
+Stránka `/konfigurator` má vlastný konfigurátor skrine (rozmery, dvere, úchytky, dekor, vnútro sekcií, doplnky) so živým nákresom a orientačnou cenou. Návrh sa odošle rovnako ako kontaktný formulár (Web3Forms) a v e-maile príde celý súhrn. Na tej istej stránke je prepínač na obyčajný dopyt bez konfigurátora.
+
+- Možnosti a **ceny** sú v `src/data/configurator.ts`. **Ceny sú zatiaľ odhad, treba ich nastaviť podľa Jurajovho cenníka.**
+- Ak cenu nechcete ukazovať, nastavte `showPrice: false`.
+- Logika a nákres sú v `src/scripts/configurator.ts`.
 
 ## Nasadenie
 

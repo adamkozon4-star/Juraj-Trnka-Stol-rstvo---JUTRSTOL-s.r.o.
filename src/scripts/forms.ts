@@ -27,6 +27,7 @@ export function bindForms() {
       data.delete('type');
       if (types) data.set('type', types);
       data.delete('gdpr');
+      [...data.keys()].filter((k) => k.startsWith('cfg-')).forEach((k) => data.delete(k));
       data.set('access_key', key);
 
       const btn = form.querySelector<HTMLButtonElement>('button[type=submit]');

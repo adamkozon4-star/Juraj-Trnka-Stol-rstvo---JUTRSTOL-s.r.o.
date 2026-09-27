@@ -6,99 +6,92 @@ import { photo } from '../../lib/images';
 import { projects } from '../../data/projects';
 import { categories } from '../../data/categories';
 import { site } from '../../data/site';
-import { plural } from '../../lib/plural';
 
 // TODO: doplniť skutočný príbeh a fotku Juraja/dielne
-const specs = [
-  ...(site.yearsExperience ? [{ b: `${site.yearsExperience}+ rokov`, t: 'praxe v remesle' }] : []),
-  { b: plural(projects.length, 'realizácia', 'realizácie', 'realizácií'), t: 'v našej galérii' },
-  { b: `${categories.length} oblastí`, t: 'od kuchyne po práčovňu' },
-  { b: 'návrh → montáž', t: 'všetko z jednej ruky' },
-  { b: site.address.city, t: 'dielňa, pôsobíme na Záhorí' },
+const facts = [
+  site.yearsExperience
+    ? { value: `${site.yearsExperience}+`, label: 'rokov praxe' }
+    : { value: String(projects.length), label: 'realizácií v galérii' },
+  { value: String(categories.length), label: 'druhov nábytku' },
+  { value: '1', label: 'kontakt od návrhu po montáž' },
 ];
 ---
 
 <section id="o-nas" data-nav="O nás" class="sheet overflow-x-clip pt-40 pb-28 sm:pt-44 lg:pt-48 lg:pb-36">
-
   <FoldingRuler
     class="pointer-events-none absolute -top-16 -right-24 hidden w-[26rem] rotate-[8deg] lg:block xl:-right-10"
     angles={[180, 30, 200]}
     start={120}
   />
 
-  <div class="container-x grid gap-12 lg:grid-cols-[1.15fr_0.8fr_1fr] lg:gap-10">
+  <div class="container-x grid items-center gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
     <div data-reveal>
       <p class="eyebrow">O nás</p>
-      <h2 class="mt-5 text-4xl leading-[1.02] font-semibold sm:text-5xl">Stolárstvo JUTRSTOL</h2>
-      <p class="mt-6 text-lg leading-relaxed text-stone">
-        Stolárstvo z Gbiel, ktoré robí nábytok <strong class="font-semibold text-ink">presne na mieru</strong> vášho
-        priestoru – do šikmín, pod schody aj na centimeter k stropu.
+      <h2 class="mt-5 text-4xl leading-[1.02] font-semibold sm:text-5xl">
+        Stolárstvo, kde vás od návrhu po montáž vedie jeden človek
+      </h2>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-stone">
+        Za značkou JUTRSTOL stojí stolár {site.owner}. Nábytok navrhujeme presne do vášho priestoru, do šikmín, pod schody
+        aj na centimeter k stropu, a vyrábame ho vo vlastnej dielni v Gbeloch.
       </p>
-      <ul class="mt-8 space-y-5">
-        <li class="flex gap-4">
-          <span class="mt-1.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-walnut">
-            <span class="h-1.5 w-1.5 rounded-full bg-oak"></span>
-          </span>
-          <p class="leading-relaxed text-stone">
-            Za každou zákazkou stojí osobne <strong class="font-semibold text-ink">{site.owner}</strong> – od prvého
-            stretnutia po poslednú nastavenú dvierku.
-          </p>
-        </li>
-        <li class="flex gap-4">
-          <span class="mt-1.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-walnut">
-            <span class="h-1.5 w-1.5 rounded-full bg-oak"></span>
-          </span>
-          <p class="leading-relaxed text-stone">
-            Vyrábame vo <strong class="font-semibold text-ink">vlastnej dielni v Gbeloch</strong> a pracujeme najmä na
-            Záhorí.
-          </p>
-        </li>
-      </ul>
-      <p class="script mt-8 text-5xl text-copper" aria-hidden="true">{site.owner}</p>
-    </div>
 
-    <figure class="self-start rounded-[2rem] bg-white p-3 shadow-[0_24px_50px_-30px_rgba(29,26,23,0.45)] ring-1 ring-line" data-reveal style="--d:100ms">
-      <Image
-        src={photo('predsiene/predsien-lamely-zasuvka-okruhle-zrkadlo-01.jpg')}
-        alt="Predsieň s lamelovou stenou a závesnou zásuvkou v dekore dub"
-        widths={[360, 540, 720]}
-        sizes="(min-width: 1024px) 22vw, 100vw"
-        class="arch aspect-[4/5] w-full object-cover"
-      />
-      <figcaption class="px-3 pt-4 pb-2 text-[15px] leading-relaxed text-stone">
-        Lamely, LED podsvietenie, skryté úchytky a kvalitné kovanie – <strong class="font-semibold text-ink"
-          >detaily, ktoré robia nábytok na mieru</strong
-        >.
-      </figcaption>
-    </figure>
-
-    <div class="flex flex-col gap-6" data-reveal style="--d:180ms">
-      <ul class="flex flex-col gap-2.5">
+      <dl class="mt-10 grid max-w-xl grid-cols-3 divide-x divide-line border-y border-line">
         {
-          specs.map((s) => (
-            <li class="spec">
-              <b>{s.b}</b>
-              {s.t}
-            </li>
+          facts.map((f, i) => (
+            <div class:list={['flex flex-col-reverse justify-end py-6', i === 0 ? 'pr-4' : 'px-4 sm:px-6']}>
+              <dt class="mt-1 text-sm leading-snug text-stone">{f.label}</dt>
+              <dd class="font-display text-4xl font-semibold tabular-nums sm:text-5xl">{f.value}</dd>
+            </div>
           ))
         }
-      </ul>
-      <div class="grid grid-cols-2 gap-3">
+      </dl>
+
+      <div class="mt-9 flex items-center gap-5">
+        <p class="script text-5xl text-copper" aria-hidden="true">{site.owner}</p>
+        <span class="h-px flex-1 bg-line"></span>
+        <a href="#kontakt" class="btn-outline shrink-0">Spoznajme sa <Icon name="arrow" size={16} /></a>
+      </div>
+    </div>
+
+    <div class="relative" data-reveal style="--d:120ms">
+      <div class="overflow-hidden rounded-[2.5rem] shadow-[0_40px_80px_-40px_rgba(29,26,23,0.55)]">
         <Image
-          src={photo('kuchyne/kuchyna-dub-ostrov-05-ostrov-detail-sirka.jpg')}
-          alt="Detail ostrova kuchyne v dekore dub"
-          widths={[240, 400]}
-          sizes="(min-width: 1024px) 12vw, 45vw"
-          class="arch aspect-[3/4] w-full object-cover"
+          src={photo('predsiene/predsien-lamely-zasuvka-okruhle-zrkadlo-01.jpg')}
+          alt="Predsieň s lamelovou stenou a závesnou zásuvkou v dekore dub"
+          widths={[480, 720, 960]}
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          class="aspect-[4/5] w-full object-cover"
         />
-        <Image
-          src={photo('detske-izby/poschodova-postel-schody-zasuvky-03.jpg')}
-          alt="Schodíky poschodovej postele so zásuvkami"
-          widths={[240, 400]}
-          sizes="(min-width: 1024px) 12vw, 45vw"
-          class="arch aspect-[3/4] w-full object-cover"
-        />
+      </div>
+
+      <div class="glass-card absolute -bottom-8 -left-4 max-w-[17rem] p-5 sm:-left-12">
+        <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-walnut text-oak">
+          <Icon name="saw" size={20} />
+        </span>
+        <p class="mt-3 font-semibold">Vlastná dielňa v Gbeloch</p>
+        <p class="mt-1 text-sm leading-relaxed text-stone">Vyrábame sami, bez sprostredkovateľov.</p>
+      </div>
+
+      <div class="glass-card absolute top-8 -right-3 flex items-center gap-3 p-3 pr-5 sm:-right-8">
+        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-copper text-white">
+          <Icon name="ruler" size={19} />
+        </span>
+        <span class="text-sm leading-tight">
+          <b class="block">Na centimeter</b>
+          <span class="text-stone">zameriame aj montujeme</span>
+        </span>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .glass-card {
+    border-radius: 1.5rem;
+    background: rgb(255 255 255 / 0.74);
+    backdrop-filter: blur(16px) saturate(1.3);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.8),
+      0 24px 50px -24px rgb(29 26 23 / 0.45);
+  }
+</style>

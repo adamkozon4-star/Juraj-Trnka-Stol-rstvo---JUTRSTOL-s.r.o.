@@ -1,0 +1,101 @@
+---
+import Icon from './Icon.astro';
+import { site, telHref } from '../data/site';
+import { categories } from '../data/categories';
+
+interface Props {
+  preselect?: string;
+  title?: string;
+  flat?: boolean; // bez veľkého tieňa (keď je formulár na svetlom liste)
+}
+const { preselect, title = 'Nezáväzný dopyt', flat = false } = Astro.props;
+---
+
+<form
+  data-web3
+  data-key={site.web3formsKey}
+  class:list={['relative rounded-[1.75rem] bg-paper p-6 text-ink sm:p-10', flat ? 'ring-1 ring-line' : 'shadow-2xl']}
+  novalidate
+>
+  <h3 class="text-3xl font-semibold">{title}</h3>
+  <p class="mt-2 text-stone">Ozveme sa vám čo najskôr.</p>
+
+  <input type="hidden" name="subject" value="Nový dopyt z webu JUTRSTOL" />
+  <input type="hidden" name="from_name" value="Web JUTRSTOL" />
+  <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
+
+  <div class="mt-8 grid gap-5 sm:grid-cols-2">
+    <label class="block">
+      <span class="mb-2 block text-sm font-medium">Meno a priezvisko *</span>
+      <input name="name" required autocomplete="name" class="field" placeholder="Ján Novák" />
+    </label>
+    <label class="block">
+      <span class="mb-2 block text-sm font-medium">Telefón *</span>
+      <input name="phone" type="tel" required autocomplete="tel" class="field" placeholder="09xx xxx xxx" />
+    </label>
+    <label class="block">
+      <span class="mb-2 block text-sm font-medium">E-mail</span>
+      <input name="email" type="email" autocomplete="email" class="field" placeholder="vas@email.sk" />
+    </label>
+    <label class="block">
+      <span class="mb-2 block text-sm font-medium">Mesto / obec</span>
+      <input name="city" autocomplete="address-level2" class="field" placeholder="Gbely" />
+    </label>
+  </div>
+
+  <fieldset class="mt-6">
+    <legend class="mb-3 text-sm font-medium">Čo potrebujete?</legend>
+    <div class="flex flex-wrap gap-2">
+      {
+        [...categories.map((c) => c.title), 'Iné'].map((label) => (
+          <label class="cursor-pointer">
+            <input
+              type="checkbox"
+              name="type"
+              value={label}
+              checked={label === preselect}
+              class="peer sr-only"
+            />
+            <span class="inline-block rounded-full border border-line px-4 py-2 text-sm transition peer-checked:border-copper peer-checked:bg-copper peer-checked:text-white peer-focus-visible:ring-4 peer-focus-visible:ring-copper/25 hover:border-copper">
+              {label}
+            </span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <label class="mt-6 block">
+    <span class="mb-2 block text-sm font-medium">Popíšte váš projekt *</span>
+    <textarea
+      name="message"
+      required
+      rows="5"
+      class="field resize-y"
+      placeholder="Napr. kuchyňa do L, cca 3,2 × 2,4 m, biele matné dvierka, termín na jar…"></textarea>
+  </label>
+
+  <label class="mt-6 flex items-start gap-3 text-sm text-stone">
+    <input type="checkbox" name="gdpr" required class="mt-0.5 h-5 w-5 shrink-0 accent-copper" />
+    <span>
+      Súhlasím so spracovaním osobných údajov za účelom vybavenia dopytu podľa{' '}
+      <a href="/ochrana-osobnych-udajov" class="underline decoration-oak underline-offset-2 hover:text-copper"
+        >zásad ochrany osobných údajov</a
+      >. *
+    </span>
+  </label>
+
+  <button type="submit" class="btn-primary mt-8 w-full !py-4 text-base">
+    Odoslať dopyt <Icon name="arrow" size={18} />
+  </button>
+
+  <p data-status role="status" aria-live="polite" class="mt-4 hidden rounded-xl px-4 py-3 text-sm"></p>
+  <p class="mt-4 text-center text-sm text-stone">
+    Alebo rovno zavolajte: <a href={telHref} class="font-semibold text-ink hover:text-copper">{site.phoneDisplay}</a>
+  </p>
+</form>
+
+<script>
+  import { bindForms } from '../scripts/forms';
+  document.addEventListener('astro:page-load', bindForms);
+</script>

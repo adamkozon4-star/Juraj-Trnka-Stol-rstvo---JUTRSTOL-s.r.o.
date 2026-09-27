@@ -25,8 +25,6 @@ export const site = {
   serviceArea: 'Gbely, Záhorie a okolie',
   // Kľúč z https://web3forms.com (zadarmo). Bez neho formulár ponúkne telefonát.
   web3formsKey: '',
-  // Keď bude konfigurátor hotový, sem príde jeho adresa (vloží sa na /konfigurator).
-  configuratorUrl: '',
 };
 
 export const telHref = `tel:${site.phone.replace(/\s/g, '')}`;

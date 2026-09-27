@@ -1,71 +1,113 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
-import Contact from '../components/Contact.astro';
+import Configurator from '../components/Configurator.astro';
+import InquiryForm from '../components/InquiryForm.astro';
 import Icon from '../components/Icon.astro';
-import { site } from '../data/site';
-
-// Keď bude konfigurátor hotový, stačí v src/data/site.ts vyplniť configuratorUrl
-// a tu sa automaticky zobrazí vložený konfigurátor.
-const url = site.configuratorUrl;
+import { site, telHref } from '../data/site';
 ---
 
 <Base
-  title="Konfigurátor nábytku na mieru"
-  description="Online konfigurátor nábytku na mieru od stolárstva JUTRSTOL. Navrhnite si skriňu či kuchyňu – rozmery, dekor aj vnútorné usporiadanie."
+  title="Konfigurátor skrine na mieru"
+  description="Navrhnite si skriňu na mieru online: rozmery, dvere, dekor a vnútro. Uvidíte nákres aj orientačnú cenu a návrh nám pošlete na presnú ponuku. Stolárstvo JUTRSTOL, Gbely."
   overlayHeader
 >
   <PageHeader
-    eyebrow={url ? 'Online konfigurátor' : 'Pripravujeme'}
-    title="Navrhnite si nábytok online"
-    lead={url
-      ? 'Zadajte rozmery, vyberte dekor a usporiadanie. Hotový návrh nám jedným klikom pošlete na cenovú ponuku.'
-      : 'Pracujeme na konfigurátore, v ktorom si sami poskladáte skriňu či kuchyňu. Dovtedy vám návrh radi pripravíme osobne – nezáväzne.'}
+    eyebrow="Online konfigurátor"
+    title="Navrhnite si skriňu na mieru"
+    lead="Zadajte rozmery, vyberte dvere, dekor a vnútro. Nákres aj orientačná cena sa menia hneď. Hotový návrh nám pošlete a my pripravíme presnú ponuku."
     image="skrine-satniky/skrina-detska-izba-dub-siva-nika-03-otvorena-sirka.jpg"
     crumbs={[{ href: '/konfigurator', label: 'Konfigurátor' }]}
   />
 
-  {
-    url ? (
-      <section class="sheet pt-16 pb-28 lg:pt-20" data-nav="Konfigurátor">
-        <div class="container-x">
-          <div class="overflow-hidden rounded-[1.75rem] border border-line bg-paper shadow-xl">
-            <iframe
-              src={url}
-              title="Konfigurátor nábytku JUTRSTOL"
-              class="h-[85svh] min-h-[640px] w-full"
-              loading="lazy"
-              allow="fullscreen"
-            />
-          </div>
+  <section class="sheet soft-bg pt-16 pb-28 lg:pt-20 lg:pb-32" data-nav="Konfigurátor">
+    <div class="container-x">
+      <div class="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
+        <div class="tabs" role="tablist" aria-label="Spôsob dopytu">
+          <button type="button" role="tab" id="tab-cfg" aria-controls="panel-cfg" aria-selected="true">
+            <Icon name="cube" size={17} /> Konfigurátor skrine
+          </button>
+          <button type="button" role="tab" id="tab-form" aria-controls="panel-form" aria-selected="false">
+            <Icon name="mail" size={17} /> Obyčajný dopyt
+          </button>
         </div>
-      </section>
-    ) : (
-      <section class="sheet pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="Ako to bude fungovať">
-        <div class="container-x grid gap-4 md:grid-cols-3">
-          {[
-            { icon: 'ruler', title: 'Zadáte rozmery', text: 'Šírka, výška, hĺbka – na centimeter presne podľa vášho priestoru.' },
-            { icon: 'cube', title: 'Vyberiete dekor a vnútro', text: 'Farby, dekory dreva, police, zásuvky či tyče na vešanie.' },
-            { icon: 'handshake', title: 'Pošlete nám návrh', text: 'Návrh príde priamo k nám a my vám pripravíme presnú cenu.' },
-          ].map((s, i) => (
-            <div class="rounded-2xl border border-line bg-paper p-8" data-reveal style={`--d:${i * 90}ms`}>
-              <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-copper/12 text-copper">
-                <Icon name={s.icon as 'ruler'} size={24} />
-              </span>
-              <p class="mt-6 text-xs font-semibold tracking-[0.2em] text-stone uppercase">Krok {i + 1}</p>
-              <h2 class="mt-2 text-2xl font-medium">{s.title}</h2>
-              <p class="mt-3 leading-relaxed text-stone">{s.text}</p>
-            </div>
-          ))}
-        </div>
-        <div class="container-x mt-12 text-center" data-reveal>
-          <a href="#kontakt" class="btn-primary !px-8 !py-4">
-            Chcem návrh už teraz <Icon name="arrow" size={18} />
-          </a>
-        </div>
-      </section>
-    )
-  }
+        <p class="text-sm text-stone">
+          Nechce sa vám klikať? Zavolajte:{' '}
+          <a href={telHref} class="font-semibold text-ink hover:text-copper">{site.phoneDisplay}</a>
+        </p>
+      </div>
 
-  <Contact />
+      <div id="panel-cfg" role="tabpanel" aria-labelledby="tab-cfg" class="mt-8">
+        <Configurator />
+      </div>
+
+      <div id="panel-form" role="tabpanel" aria-labelledby="tab-form" class="mt-8" hidden>
+        <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+          <div>
+            <h2 class="text-3xl font-semibold sm:text-4xl">Radšej bez konfigurátora?</h2>
+            <p class="mt-4 text-lg leading-relaxed text-stone">
+              Kuchyňa, predsieň, posteľ alebo niečo úplne iné? Napíšte pár viet, pridajte približné rozmery a ozveme sa
+              vám. Návrh pripravíme spolu pri zameraní.
+            </p>
+            <ul class="mt-6 space-y-3 text-stone">
+              {
+                ['stačí krátky popis a telefón', 'rozmery zameriame sami', 'ponuka je nezáväzná'].map((t) => (
+                  <li class="flex items-center gap-3">
+                    <Icon name="check" size={18} class="text-copper" />
+                    {t}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <InquiryForm flat />
+        </div>
+      </div>
+    </div>
+  </section>
 </Base>
+
+<style>
+  .tabs {
+    display: inline-flex;
+    gap: 4px;
+    border-radius: 1.2rem;
+    background: rgb(255 255 255 / 0.65);
+    padding: 5px;
+    box-shadow:
+      inset 0 0 0 1px rgb(29 26 23 / 0.07),
+      0 14px 30px -22px rgb(29 26 23 / 0.5);
+    backdrop-filter: blur(12px);
+  }
+  .tabs button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.9rem;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-stone);
+    transition: all 0.2s;
+  }
+  .tabs button[aria-selected='true'] {
+    background: var(--color-walnut);
+    color: white;
+  }
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>('.tabs [role="tab"]')];
+    if (!tabs.length) return;
+    const select = (tab: HTMLButtonElement) => {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        document.getElementById(t.getAttribute('aria-controls')!)!.hidden = !on;
+      });
+    };
+    tabs.forEach((t) => t.addEventListener('click', () => select(t)));
+    if (location.hash === '#dopyt') select(tabs[1]);
+  });
+</script>

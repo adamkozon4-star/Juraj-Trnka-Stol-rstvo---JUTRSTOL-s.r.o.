@@ -2,59 +2,100 @@
 import { Image } from 'astro:assets';
 import Icon from '../Icon.astro';
 import { photo } from '../../lib/images';
-import { site } from '../../data/site';
+import { configurator as cfg } from '../../data/configurator';
+import { estimate, sectionCount } from '../../scripts/configurator';
 
-const ready = Boolean(site.configuratorUrl);
+// Príklad z konfigurátora s rovnakým výpočtom ceny ako na stránke konfigurátora
+const sample = {
+  width: 240,
+  height: 250,
+  depth: 60,
+  door: 'posuvne',
+  handle: 'profil',
+  decor: 'dub',
+  interiors: ['tyc', 'police', 'kombi'].slice(0, sectionCount(240)),
+  extras: new Set(['led']),
+  view: 'doors' as const,
+};
+const est = estimate(cfg, sample);
+const fmt = (v: number) => v.toLocaleString('sk-SK').replace(/ /g, ' ');
 ---
 
-<section id="konfigurator" data-nav="Konfigurátor" class="sheet pt-24 pb-32 lg:pt-28 lg:pb-40">
+<section id="konfigurator" data-nav="Konfigurátor" class="sheet soft-bg overflow-x-clip pt-24 pb-32 lg:pt-28 lg:pb-40">
+  <div class="container-x grid items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
+    <div data-reveal>
+      <p class="eyebrow">Online konfigurátor</p>
+      <h2 class="mt-5 text-4xl leading-[1.02] font-semibold sm:text-5xl">Navrhnite si skriňu a hneď uvidíte cenu</h2>
+      <p class="mt-5 max-w-md text-lg leading-relaxed text-stone">
+        Rozmery, dvere, dekor aj vnútro každej sekcie. Nákres s kótami sa kreslí priamo pred vami a hotový návrh nám
+        pošlete jedným klikom.
+      </p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+        <a href="/konfigurator" class="btn-primary !px-7 !py-4">
+          <Icon name="cube" size={18} /> Otvoriť konfigurátor
+        </a>
+        <a href="/konfigurator#dopyt" class="btn-outline !px-7 !py-4">Radšej obyčajný dopyt</a>
+      </div>
+    </div>
 
-  <div class="container-x">
-    <div class="relative grid overflow-hidden rounded-[2.5rem] bg-cream lg:grid-cols-2">
-      <div class="relative z-10 p-8 sm:p-12 lg:p-16" data-reveal>
-        <p class="eyebrow">
-          {ready ? 'Online konfigurátor' : 'Pripravujeme'}
+    <div class="relative" data-reveal style="--d:120ms">
+      <div class="overflow-hidden rounded-[2.5rem] shadow-[0_40px_80px_-40px_rgba(29,26,23,0.6)]">
+        <Image
+          src={photo('skrine-satniky/skrina-detska-izba-dub-siva-nika-02.jpg')}
+          alt="Skriňa na mieru v dekore dub so sivou nikou"
+          widths={[480, 720, 960]}
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          class="aspect-[4/5] w-full object-cover sm:aspect-[5/5]"
+        />
+      </div>
+
+      <!-- plávajúce sklenené karty s ukážkou volieb -->
+      <div class="float-card absolute top-8 -left-3 w-56 p-4 sm:-left-10">
+        <p class="text-[11px] font-semibold tracking-[0.14em] text-stone uppercase">Rozmery</p>
+        <p class="mt-1 font-display text-2xl font-semibold tabular-nums">
+          {sample.width} × {sample.height} <span class="text-base font-medium text-stone">cm</span>
         </p>
-        <h2 class="mt-5 text-4xl leading-[1.08] font-medium sm:text-5xl">
-          Navrhnite si nábytok online
-        </h2>
-        <p class="mt-5 max-w-md text-lg leading-relaxed text-stone">
-          {
-            ready
-              ? 'Zadajte rozmery, vyberte dekor a vnútorné usporiadanie – a hneď uvidíte, ako bude váš nábytok vyzerať.'
-              : 'Čoskoro si tu sami poskladáte skriňu či kuchyňu – rozmery, dekor aj vnútro. Dovtedy vám návrh radi pripravíme osobne.'
-          }
-        </p>
-        <ul class="mt-8 space-y-3 text-[15px]">
-          {
-            ['Vlastné rozmery na centimeter', 'Výber dekorov a farieb', 'Návrh priamo odošlete nám'].map((t) => (
-              <li class="flex items-center gap-3">
-                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-copper/15 text-copper">
-                  <Icon name="check" size={14} />
-                </span>
-                {t}
-              </li>
-            ))
-          }
-        </ul>
-        <div class="mt-10 flex flex-col gap-3 sm:flex-row">
-          <a href="/konfigurator" class="btn-primary">
-            <Icon name="cube" size={18} />
-            {ready ? 'Spustiť konfigurátor' : 'Viac o konfigurátore'}
-          </a>
-          {!ready && <a href="#kontakt" class="btn-outline">Chcem návrh hneď</a>}
+        <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-line">
+          <div class="h-full w-2/3 rounded-full bg-copper"></div>
         </div>
       </div>
-      <div class="relative min-h-72 lg:min-h-full">
-        <Image
-          src={photo('skrine-satniky/skrina-detska-izba-dub-siva-nika-03-otvorena-sirka.jpg')}
-          alt="Otvorená skriňa na mieru s policami a zásuvkami"
-          widths={[640, 960, 1280]}
-          sizes="(min-width: 1024px) 50vw, 100vw"
-          class="absolute inset-0 h-full w-full object-cover"
-        />
-        <span class="absolute inset-0 bg-gradient-to-r from-cream via-cream/10 to-transparent max-lg:bg-gradient-to-b max-lg:from-cream" />
+
+      <div class="float-card absolute top-1/2 -right-3 w-52 p-4 sm:-right-8">
+        <p class="text-[11px] font-semibold tracking-[0.14em] text-stone uppercase">Dekor</p>
+        <div class="mt-3 flex gap-2">
+          {
+            cfg.decors.slice(0, 5).map((d) => (
+              <span
+                class:list={['h-8 w-8 rounded-xl ring-1 ring-black/10', d.id === sample.decor && 'ring-2 ring-copper ring-offset-2']}
+                style={`background:${d.fill}`}
+              />
+            ))
+          }
+        </div>
       </div>
+
+      {
+        cfg.showPrice && (
+          <div class="absolute -bottom-6 left-6 rounded-[1.4rem] bg-walnut p-5 text-white shadow-2xl sm:left-10">
+            <p class="text-[11px] font-semibold tracking-[0.14em] text-oak uppercase">Napríklad takáto skriňa</p>
+            <p class="mt-1 font-display text-2xl font-semibold tabular-nums">
+              {fmt(est.lo)} – {fmt(est.hi)} {cfg.currency}
+            </p>
+            <p class="text-xs text-white/60">orientačne, posuvné dvere, LED</p>
+          </div>
+        )
+      }
     </div>
   </div>
 </section>
+
+<style>
+  .float-card {
+    border-radius: 1.4rem;
+    background: rgb(255 255 255 / 0.72);
+    backdrop-filter: blur(16px) saturate(1.3);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.8),
+      0 24px 50px -24px rgb(29 26 23 / 0.45);
+  }
+</style>
