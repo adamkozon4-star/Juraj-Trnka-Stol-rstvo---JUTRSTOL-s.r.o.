@@ -1,0 +1,80 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from '../Icon.astro';
+import { photo } from '../../lib/images';
+import { site, telHref } from '../../data/site';
+
+const heroImage = photo('kuchyne/kuchyna-kasmir-dub-ostrov-lamely-jedalen-00-HERO.webp');
+---
+
+<section class="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-walnut text-white">
+  <Picture
+    src={heroImage}
+    alt="Kuchyňa na mieru s ostrovom obloženým lamelami a jedálenským stolom"
+    widths={[640, 960, 1280, 1670]}
+    sizes="100vw"
+    formats={['avif', 'webp']}
+    fallbackFormat="jpg"
+    loading="eager"
+    fetchpriority="high"
+    class="hero-img absolute inset-0 -z-20 h-full w-full"
+    pictureAttributes={{ class: 'absolute inset-0 -z-20' }}
+  />
+  <!-- Teplé stmavenie zľava, aby text vynikol -->
+  <div
+    class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(26,20,16,0.55)_0%,rgba(26,20,16,0.35)_30%,rgba(26,20,16,0.85)_75%)] sm:bg-[linear-gradient(95deg,rgba(26,20,16,0.92)_0%,rgba(33,25,20,0.78)_38%,rgba(33,25,20,0.25)_70%,rgba(33,25,20,0.1)_100%)]"
+  >
+  </div>
+  <div class="absolute inset-x-0 bottom-0 -z-10 h-56 bg-gradient-to-t from-walnut/80 to-transparent"></div>
+
+  <div class="container-x flex flex-1 flex-col justify-center pt-32 pb-40 lg:pb-48">
+    <div class="max-w-2xl">
+      <p class="eyebrow !text-oak" data-reveal>Stolárstvo Juraj Trnka · Gbely</p>
+      <h1 class="mt-6 text-[2.75rem] leading-[1.02] font-medium sm:text-6xl lg:text-[5.25rem]" data-reveal style="--d:80ms">
+        Nábytok <em class="font-normal whitespace-nowrap text-oak italic">na mieru</em>, ktorý sadne presne.
+      </h1>
+      <p class="mt-7 max-w-lg text-lg leading-relaxed text-white/80" data-reveal style="--d:160ms">
+        Kuchyne, vstavané skrine, predsiene a celé interiéry. Zameriame, navrhneme, vyrobíme v našej dielni a
+        namontujeme – na milimeter do vášho priestoru.
+      </p>
+      <div class="mt-10 flex flex-col gap-3 sm:flex-row" data-reveal style="--d:240ms">
+        <a href="#kontakt" class="btn-primary !px-7 !py-4 text-[15px]">
+          Nezáväzná cenová ponuka <Icon name="arrow" size={18} />
+        </a>
+        <a href="/realizacie" class="btn-ghost !px-7 !py-4 text-[15px]">Pozrieť realizácie</a>
+      </div>
+      <a
+        href={telHref}
+        class="mt-8 inline-flex items-center gap-3 text-sm text-white/70 transition hover:text-white"
+        data-reveal
+        style="--d:320ms"
+      >
+        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-oak ring-1 ring-white/15">
+          <Icon name="phone" size={18} />
+        </span>
+        <span>Radšej voláte? <strong class="font-semibold text-white">{site.phoneDisplay}</strong></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-img {
+    object-fit: cover;
+    object-position: 62% 50%;
+    animation: hero-zoom 18s var(--ease-out-soft) both;
+  }
+  @keyframes hero-zoom {
+    from {
+      transform: scale(1.08);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-img {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Contact from '../components/Contact.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+// Keď bude konfigurátor hotový, stačí v src/data/site.ts vyplniť configuratorUrl
+// a tu sa automaticky zobrazí vložený konfigurátor.
+const url = site.configuratorUrl;
+---
+
+<Base
+  title="Konfigurátor nábytku na mieru"
+  description="Online konfigurátor nábytku na mieru od stolárstva JUTRSTOL. Navrhnite si skriňu či kuchyňu – rozmery, dekor aj vnútorné usporiadanie."
+  overlayHeader
+>
+  <PageHeader
+    eyebrow={url ? 'Online konfigurátor' : 'Pripravujeme'}
+    title="Navrhnite si nábytok <em class='italic text-oak'>online</em>"
+    lead={url
+      ? 'Zadajte rozmery, vyberte dekor a usporiadanie. Hotový návrh nám jedným klikom pošlete na cenovú ponuku.'
+      : 'Pracujeme na konfigurátore, v ktorom si sami poskladáte skriňu či kuchyňu. Dovtedy vám návrh radi pripravíme osobne – nezáväzne.'}
+    image="skrine-satniky/skrina-detska-izba-dub-siva-nika-03-otvorena-sirka.jpg"
+    crumbs={[{ href: '/konfigurator', label: 'Konfigurátor' }]}
+  />
+
+  {
+    url ? (
+      <section class="py-12 lg:py-16">
+        <div class="container-x">
+          <div class="overflow-hidden rounded-[1.75rem] border border-line bg-paper shadow-xl">
+            <iframe
+              src={url}
+              title="Konfigurátor nábytku JUTRSTOL"
+              class="h-[85svh] min-h-[640px] w-full"
+              loading="lazy"
+              allow="fullscreen"
+            />
+          </div>
+        </div>
+      </section>
+    ) : (
+      <section class="py-20 lg:py-28">
+        <div class="container-x grid gap-4 md:grid-cols-3">
+          {[
+            { icon: 'ruler', title: 'Zadáte rozmery', text: 'Šírka, výška, hĺbka – na centimeter presne podľa vášho priestoru.' },
+            { icon: 'cube', title: 'Vyberiete dekor a vnútro', text: 'Farby, dekory dreva, police, zásuvky či tyče na vešanie.' },
+            { icon: 'handshake', title: 'Pošlete nám návrh', text: 'Návrh príde priamo k nám a my vám pripravíme presnú cenu.' },
+          ].map((s, i) => (
+            <div class="rounded-2xl border border-line bg-paper p-8" data-reveal style={`--d:${i * 90}ms`}>
+              <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-copper/12 text-copper">
+                <Icon name={s.icon as 'ruler'} size={24} />
+              </span>
+              <p class="mt-6 text-xs font-semibold tracking-[0.2em] text-stone uppercase">Krok {i + 1}</p>
+              <h2 class="mt-2 text-2xl font-medium">{s.title}</h2>
+              <p class="mt-3 leading-relaxed text-stone">{s.text}</p>
+            </div>
+          ))}
+        </div>
+        <div class="container-x mt-12 text-center" data-reveal>
+          <a href="#kontakt" class="btn-primary !px-8 !py-4">
+            Chcem návrh už teraz <Icon name="arrow" size={18} />
+          </a>
+        </div>
+      </section>
+    )
+  }
+
+  <Contact />
+</Base>

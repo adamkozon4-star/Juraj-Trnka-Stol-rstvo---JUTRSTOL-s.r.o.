@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/inter';
+
+@theme {
+  --color-cream: #f7f3ec;
+  --color-paper: #fbf9f5;
+  --color-sand: #ece3d5;
+  --color-line: #ddd2c1;
+  --color-oak: #c89560;
+  --color-copper: #a0612d;
+  --color-copper-dark: #844d20;
+  --color-walnut: #2a211b;
+  --color-walnut-2: #3a2e25;
+  --color-ink: #1f1a16;
+  --color-stone: #6b6158;
+
+  --font-serif: 'Fraunces Variable', 'Georgia', serif;
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif;
+    font-optical-sizing: auto;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    @apply bg-oak/40;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-copper);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-3 font-sans text-xs font-semibold tracking-[0.22em] text-copper uppercase;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply block h-px w-8 bg-current;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-wide transition duration-300 bg-copper text-white shadow-[0_10px_30px_-12px_rgba(160,97,45,0.8)] hover:-translate-y-0.5 hover:bg-copper-dark;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-wide transition duration-300 border border-white/40 text-white backdrop-blur-sm hover:border-white hover:bg-white/10;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-wide transition duration-300 border border-ink/20 text-ink hover:border-copper hover:text-copper;
+  }
+  .field {
+    @apply w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] text-ink transition outline-none placeholder:text-stone/60 focus:border-copper focus:ring-4 focus:ring-copper/15;
+  }
+  .wood-grain {
+    background-image:
+      repeating-linear-gradient(
+        97deg,
+        rgba(255, 255, 255, 0.035) 0 2px,
+        transparent 2px 9px,
+        rgba(0, 0, 0, 0.04) 9px 10px,
+        transparent 10px 23px
+      ),
+      radial-gradient(120% 80% at 10% 0%, rgba(200, 149, 96, 0.18), transparent 60%);
+  }
+}
+
+/* Plynulé zobrazenie pri scrollovaní */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.9s var(--ease-out-soft),
+    transform 0.9s var(--ease-out-soft);
+  transition-delay: var(--d, 0ms);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+.no-js [data-reveal] {
+  opacity: 1;
+  transform: none;
+}

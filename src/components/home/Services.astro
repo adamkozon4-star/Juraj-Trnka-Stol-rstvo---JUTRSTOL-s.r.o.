@@ -1,0 +1,73 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeading from '../SectionHeading.astro';
+import Icon from '../Icon.astro';
+import { categories } from '../../data/categories';
+import { projectsInCategory } from '../../data/projects';
+import { photo } from '../../lib/images';
+import { plural } from '../../lib/plural';
+
+const photoCount = (slug: string) => projectsInCategory(slug).reduce((n, p) => n + p.images.length, 0);
+---
+
+<section id="sluzby" class="py-24 lg:py-32">
+  <div class="container-x">
+    <div class="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+      <SectionHeading
+        eyebrow="Čo vyrábame"
+        title="Od kuchyne až po <em class='italic text-copper'>práčovňu</em>"
+        lead="Robíme nábytok do celého domu aj firmy. Vyberte si, čo riešite, a pozrite si, ako sme to urobili iným."
+      />
+      <a href="/realizacie" class="btn-outline shrink-0 self-start lg:self-end" data-reveal>
+        Všetky realizácie <Icon name="arrow" size={18} />
+      </a>
+    </div>
+
+    <ul class="mt-14 grid auto-rows-[15rem] gap-3 sm:grid-cols-2 lg:auto-rows-[16.5rem] lg:grid-cols-4 lg:gap-4">
+      {
+        categories.map((c, i) => (
+          <li
+            data-reveal
+            style={`--d:${(i % 4) * 70}ms`}
+            class:list={[i === 0 && 'sm:col-span-2 sm:row-span-2', i === 3 && 'lg:row-span-2']}
+          >
+            <a
+              href={`/sluzby/${c.slug}`}
+              class="group relative flex h-full flex-col justify-end overflow-hidden rounded-2xl bg-walnut p-6 text-white"
+            >
+              <Image
+                src={photo(c.cover)}
+                alt=""
+                widths={i === 0 ? [640, 960, 1280] : [480, 720]}
+                sizes={i === 0 ? '(min-width: 1024px) 50vw, 100vw' : '(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw'}
+                class="absolute inset-0 h-full w-full object-cover transition duration-[1.2s] ease-out group-hover:scale-105"
+              />
+              <span class="absolute inset-0 bg-gradient-to-t from-walnut/95 via-walnut/35 to-transparent transition duration-500 group-hover:from-walnut" />
+              <span class="relative">
+                <span class="text-xs font-medium tracking-[0.18em] text-oak uppercase">
+                  {projectsInCategory(c.slug).length > 1 &&
+                    `${plural(projectsInCategory(c.slug).length, 'projekt', 'projekty', 'projektov')} · `}
+                  {plural(photoCount(c.slug), 'fotka', 'fotky', 'fotiek')}
+                </span>
+                <span class:list={['mt-2 block font-serif font-medium', i === 0 ? 'text-3xl lg:text-4xl' : 'text-2xl']}>
+                  {c.title}
+                </span>
+                <span
+                  class:list={[
+                    'mt-2 block max-w-md overflow-hidden text-sm leading-relaxed text-white/75',
+                    i !== 0 && 'lg:max-h-0 lg:opacity-0 lg:transition-all lg:duration-500 lg:group-hover:max-h-24 lg:group-hover:opacity-100',
+                  ]}
+                >
+                  {c.short}
+                </span>
+              </span>
+              <span class="absolute top-5 right-5 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/20 backdrop-blur transition duration-500 group-hover:rotate-[-45deg] group-hover:bg-copper group-hover:ring-copper">
+                <Icon name="arrow" size={18} />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

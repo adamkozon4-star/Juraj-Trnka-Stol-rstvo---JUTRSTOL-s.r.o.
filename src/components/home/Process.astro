@@ -1,0 +1,59 @@
+---
+import SectionHeading from '../SectionHeading.astro';
+
+const steps = [
+  {
+    title: 'Ozvete sa nám',
+    text: 'Zavolajte alebo vyplňte formulár. Stačí pár viet a ak máte, pridajte fotku či náčrt priestoru.',
+  },
+  {
+    title: 'Konzultácia a zameranie',
+    text: 'Prídeme k vám, všetko presne zameriame a spolu prejdeme vaše predstavy, materiály a farby.',
+  },
+  {
+    title: 'Návrh a cenová ponuka',
+    text: 'Pripravíme návrh na mieru a jasnú cenovú ponuku. Upravujeme, kým nie ste spokojní.',
+  },
+  {
+    title: 'Výroba v dielni',
+    text: 'Nábytok vyrobíme v našej dielni v Gbeloch s dôrazom na presnosť každého spoja a hrany.',
+  },
+  {
+    title: 'Montáž a odovzdanie',
+    text: 'Všetko privezieme, namontujeme, nastavíme a po sebe upraceme. Vy si len užívate výsledok.',
+  },
+];
+---
+
+<section id="postup" class="wood-grain relative overflow-hidden bg-walnut py-24 text-white lg:py-32">
+  <div class="container-x grid gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
+    <div class="lg:sticky lg:top-32 lg:self-start">
+      <SectionHeading
+        tone="light"
+        eyebrow="Ako pracujeme"
+        title="Od prvého telefonátu po <em class='italic text-oak'>hotový nábytok</em>"
+        lead="Celý proces máme v rukách my – nemusíte koordinovať návrhára, výrobu ani montážnikov."
+      />
+    </div>
+
+    <ol class="relative space-y-4">
+      {
+        steps.map((s, i) => (
+          <li
+            data-reveal
+            style={`--d:${i * 70}ms`}
+            class="group relative grid grid-cols-[auto_1fr] gap-6 rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition duration-500 hover:border-oak/40 hover:bg-white/[0.06] sm:p-8"
+          >
+            <span class="font-serif text-5xl leading-none font-light text-oak/80 tabular-nums transition group-hover:text-oak">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <div>
+              <h3 class="text-2xl font-medium">{s.title}</h3>
+              <p class="mt-2 leading-relaxed text-white/65">{s.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

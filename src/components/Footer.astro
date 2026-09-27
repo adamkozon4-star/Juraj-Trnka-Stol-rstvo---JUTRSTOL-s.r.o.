@@ -1,0 +1,112 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { site, telHref, fullAddress } from '../data/site';
+import { categories } from '../data/categories';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="wood-grain relative bg-walnut pt-20 pb-28 text-white/75 lg:pb-12">
+  <div class="container-x grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
+    <div>
+      <Logo tone="light" />
+      <p class="mt-6 max-w-xs text-sm leading-relaxed">
+        Kuchyne, vstavané skrine, predsiene a kompletné interiéry na mieru. Navrhujeme, vyrábame a montujeme – {site.serviceArea}.
+      </p>
+      <a
+        href={site.facebook}
+        target="_blank"
+        rel="noopener"
+        class="mt-6 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 transition hover:border-oak hover:text-oak"
+        aria-label="JUTRSTOL na Facebooku"
+      >
+        <Icon name="facebook" size={20} />
+      </a>
+    </div>
+
+    <div>
+      <h2 class="font-sans text-xs font-semibold tracking-[0.22em] text-oak uppercase">Čo vyrábame</h2>
+      <ul class="mt-5 space-y-2.5 text-sm">
+        {
+          categories.map((c) => (
+            <li>
+              <a href={`/sluzby/${c.slug}`} class="transition hover:text-white">
+                {c.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-sans text-xs font-semibold tracking-[0.22em] text-oak uppercase">Web</h2>
+      <ul class="mt-5 space-y-2.5 text-sm">
+        <li><a href="/realizacie" class="transition hover:text-white">Realizácie</a></li>
+        <li><a href="/#postup" class="transition hover:text-white">Ako pracujeme</a></li>
+        <li><a href="/konfigurator" class="transition hover:text-white">Konfigurátor</a></li>
+        <li><a href="/#faq" class="transition hover:text-white">Časté otázky</a></li>
+        <li><a href="/#kontakt" class="transition hover:text-white">Kontakt</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-sans text-xs font-semibold tracking-[0.22em] text-oak uppercase">Kontakt</h2>
+      <ul class="mt-5 space-y-3 text-sm">
+        <li>
+          <a href={telHref} class="inline-flex items-center gap-2.5 text-base font-semibold text-white hover:text-oak">
+            <Icon name="phone" size={18} class="text-oak" />
+            {site.phoneDisplay}
+          </a>
+        </li>
+        {
+          site.email && (
+            <li>
+              <a href={`mailto:${site.email}`} class="inline-flex items-center gap-2.5 hover:text-white">
+                <Icon name="mail" size={18} class="text-oak" />
+                {site.email}
+              </a>
+            </li>
+          )
+        }
+        <li class="flex gap-2.5">
+          <Icon name="pin" size={18} class="mt-0.5 shrink-0 text-oak" />
+          <span>{fullAddress}</span>
+        </li>
+        {
+          site.openingHours && (
+            <li class="flex gap-2.5">
+              <Icon name="clock" size={18} class="mt-0.5 shrink-0 text-oak" />
+              <span>{site.openingHours}</span>
+            </li>
+          )
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div
+    class="container-x mt-16 flex flex-col gap-3 border-t border-white/10 pt-8 text-xs text-white/50 md:flex-row md:items-center md:justify-between"
+  >
+    <p>
+      © {year} {site.legalName}
+      {site.ico && <span> · IČO: {site.ico}</span>}
+      {site.dic && <span> · DIČ: {site.dic}</span>}
+      {site.icDph && <span> · IČ DPH: {site.icDph}</span>}
+    </p>
+    <a href="/ochrana-osobnych-udajov" class="hover:text-white">Ochrana osobných údajov</a>
+  </div>
+</footer>
+
+<!-- Mobilná lišta s rýchlym kontaktom -->
+<div
+  class="fixed inset-x-3 bottom-3 z-40 grid grid-cols-2 gap-2 rounded-full bg-walnut/95 p-1.5 shadow-2xl ring-1 shadow-black/30 ring-white/10 backdrop-blur lg:hidden"
+>
+  <a href={telHref} class="flex items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold text-white">
+    <Icon name="phone" size={18} class="text-oak" /> Zavolať
+  </a>
+  <a href="/#kontakt" class="flex items-center justify-center gap-2 rounded-full bg-copper py-3 text-sm font-semibold text-white">
+    Cenová ponuka
+  </a>
+</div>

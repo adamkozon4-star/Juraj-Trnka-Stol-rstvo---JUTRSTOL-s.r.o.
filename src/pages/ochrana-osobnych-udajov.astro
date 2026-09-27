@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { site, fullAddress, telHref } from '../data/site';
+
+// TODO: doplniť IČO a e-mail; text dať skontrolovať podľa skutočného spracúvania.
+---
+
+<Base
+  title="Ochrana osobných údajov"
+  description="Informácie o spracúvaní osobných údajov na webe stolárstva JUTRSTOL."
+  overlayHeader
+>
+  <PageHeader
+    eyebrow="GDPR"
+    title="Ochrana osobných údajov"
+    crumbs={[{ href: '/ochrana-osobnych-udajov', label: 'Ochrana osobných údajov' }]}
+  />
+
+  <section class="py-16 lg:py-24">
+    <div class="container-x max-w-3xl space-y-8 text-[17px] leading-relaxed text-stone [&_h2]:mt-12 [&_h2]:text-2xl [&_h2]:font-medium [&_h2]:text-ink">
+      <p>
+        Prevádzkovateľom webu a správcom osobných údajov je <strong class="text-ink">{site.legalName}</strong>, {fullAddress}{
+          site.ico && <>, IČO: {site.ico}</>
+        }. V prípade otázok nás kontaktujte na telefóne <a href={telHref} class="text-copper underline">{site.phoneDisplay}</a>{
+          site.email && (
+            <>
+              {' '}alebo e-mailom na <a href={`mailto:${site.email}`} class="text-copper underline">{site.email}</a>
+            </>
+          )
+        }.
+      </p>
+
+      <h2>Aké údaje spracúvame</h2>
+      <p>
+        Cez kontaktný formulár spracúvame údaje, ktoré nám sami poskytnete: meno, telefón, e-mail, obec a popis vášho
+        projektu.
+      </p>
+
+      <h2>Na aký účel</h2>
+      <p>
+        Údaje používame výlučne na vybavenie vášho dopytu – aby sme vás mohli kontaktovať, dohodnúť zameranie a pripraviť
+        cenovú ponuku. Právnym základom je vykonanie opatrení pred uzavretím zmluvy na vašu žiadosť (čl. 6 ods. 1 písm. b)
+        GDPR).
+      </p>
+
+      <h2>Ako dlho ich uchovávame</h2>
+      <p>
+        Údaje uchovávame po dobu nevyhnutnú na vybavenie dopytu. Ak nedôjde k uzavretiu zmluvy, vymažeme ich najneskôr do
+        12 mesiacov.
+      </p>
+
+      <h2>Komu ich poskytujeme</h2>
+      <p>
+        Odoslanie formulára zabezpečuje služba Web3Forms, ktorá správu doručí na náš e-mail. Web je hosťovaný u
+        poskytovateľa Vercel. Údaje nepredávame ani neposkytujeme tretím stranám na marketing.
+      </p>
+
+      <h2>Vaše práva</h2>
+      <p>
+        Máte právo na prístup k údajom, ich opravu, vymazanie, obmedzenie spracúvania, prenosnosť a právo podať sťažnosť na
+        Úrad na ochranu osobných údajov SR.
+      </p>
+
+      <h2>Cookies</h2>
+      <p>
+        Web nepoužíva reklamné ani sledovacie cookies. Vložená mapa Google môže pri zobrazení použiť vlastné cookies
+        spoločnosti Google.
+      </p>
+    </div>
+  </section>
+</Base>

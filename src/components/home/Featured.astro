@@ -1,0 +1,40 @@
+---
+import SectionHeading from '../SectionHeading.astro';
+import ProjectCard from '../ProjectCard.astro';
+import Icon from '../Icon.astro';
+import { projects } from '../../data/projects';
+
+const featured = projects.filter((p) => p.featured);
+const [first, second, ...rest] = featured;
+---
+
+<section id="realizacie" class="border-y border-line bg-paper py-24 lg:py-32">
+  <div class="container-x">
+    <SectionHeading
+      eyebrow="Vybrané realizácie"
+      title="Práca, ktorá hovorí <em class='italic text-copper'>sama za seba</em>"
+      lead="Pár projektov z posledných rokov. Každý je iný, pretože každý priestor a každý zákazník je iný."
+    />
+
+    <div class="mt-14 grid gap-x-6 gap-y-14 lg:grid-cols-12">
+      <div class="lg:col-span-7" data-reveal><ProjectCard project={first} size="large" /></div>
+      <div class="lg:col-span-5 lg:pt-24" data-reveal style="--d:120ms"><ProjectCard project={second} /></div>
+    </div>
+
+    <div class="mt-14 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        rest.slice(0, 6).map((p, i) => (
+          <div data-reveal style={`--d:${(i % 3) * 90}ms`} class:list={[i % 3 === 1 && 'lg:translate-y-12']}>
+            <ProjectCard project={p} />
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-20 flex justify-center lg:mt-28" data-reveal>
+      <a href="/realizacie" class="btn-primary !px-8 !py-4">
+        Pozrieť všetky realizácie <Icon name="arrow" size={18} />
+      </a>
+    </div>
+  </div>
+</section>

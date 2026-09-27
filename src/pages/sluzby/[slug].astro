@@ -1,0 +1,82 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Contact from '../../components/Contact.astro';
+import Process from '../../components/home/Process.astro';
+import Icon from '../../components/Icon.astro';
+import { categories, type Category } from '../../data/categories';
+import { projectsInCategory } from '../../data/projects';
+import { telHref, site } from '../../data/site';
+
+export function getStaticPaths() {
+  return categories.map((category) => ({ params: { slug: category.slug }, props: { category } }));
+}
+
+interface Props {
+  category: Category;
+}
+const { category } = Astro.props;
+const items = projectsInCategory(category.slug);
+const others = categories.filter((c) => c.slug !== category.slug);
+---
+
+<Base title={category.seoTitle} description={category.seoDescription} ogImage={category.cover} overlayHeader>
+  <PageHeader
+    eyebrow="Čo vyrábame"
+    title={category.title}
+    lead={category.short}
+    image={category.cover}
+    crumbs={[{ href: `/sluzby/${category.slug}`, label: category.title }]}
+  />
+
+  <section class="py-16 lg:py-24">
+    <div class="container-x grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
+      <p class="font-serif text-2xl leading-snug font-light text-ink sm:text-3xl" data-reveal>{category.intro}</p>
+      <div class="flex flex-col gap-3 lg:pt-2" data-reveal style="--d:100ms">
+        <a href="#kontakt" class="btn-primary">Nezáväzná cenová ponuka <Icon name="arrow" size={18} /></a>
+        <a href={telHref} class="btn-outline"><Icon name="phone" size={18} /> {site.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-20 lg:pb-28">
+    <div class="container-x">
+      <h2 class="text-3xl font-medium sm:text-4xl" data-reveal>Realizácie – {category.title.toLowerCase()}</h2>
+      <div class:list={['mt-10 grid gap-x-6 gap-y-14', items.length > 1 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'max-w-xl']}>
+        {
+          items.map((p, i) => (
+            <div data-reveal style={`--d:${(i % 3) * 80}ms`}>
+              <ProjectCard project={p} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Process />
+
+  <section class="py-20 lg:py-28">
+    <div class="container-x">
+      <h2 class="text-3xl font-medium sm:text-4xl" data-reveal>Ďalej vyrábame</h2>
+      <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          others.map((c, i) => (
+            <li data-reveal style={`--d:${(i % 4) * 60}ms`}>
+              <a
+                href={`/sluzby/${c.slug}`}
+                class="group flex h-full items-center justify-between gap-4 rounded-2xl border border-line bg-paper p-5 transition hover:border-copper"
+              >
+                <span class="font-medium group-hover:text-copper">{c.title}</span>
+                <Icon name="arrow" size={18} class="shrink-0 text-copper transition group-hover:translate-x-1" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Contact preselect={category.title} />
+</Base>

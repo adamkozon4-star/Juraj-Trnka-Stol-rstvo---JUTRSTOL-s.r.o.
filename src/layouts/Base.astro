@@ -1,0 +1,111 @@
+---
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site, fullAddress } from '../data/site';
+import { photo } from '../lib/images';
+
+interface Props {
+  title: string;
+  description: string;
+  overlayHeader?: boolean;
+  ogImage?: string; // cesta relatívna k fotky/realizacie/
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  overlayHeader = false,
+  ogImage = 'kuchyne/kuchyna-kasmir-dub-ostrov-lamely-jedalen-00-HERO.webp',
+  noindex = false,
+} = Astro.props;
+
+const fullTitle = title.includes('JUTRSTOL') ? title : `${title} | JUTRSTOL stolárstvo`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const og = await getImage({ src: photo(ogImage), width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const ogUrl = new URL(og.src, Astro.site);
+
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'FurnitureStore',
+  name: `${site.legalName} – Stolárstvo Juraj Trnka`,
+  image: ogUrl.href,
+  url: Astro.site?.href,
+  telephone: site.phone,
+  ...(site.email ? { email: site.email } : {}),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    postalCode: site.address.zip,
+    addressLocality: site.address.city,
+    addressRegion: site.address.region,
+    addressCountry: site.address.country,
+  },
+  ...(site.geo ? { geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng } } : {}),
+  areaServed: site.serviceArea,
+  sameAs: [site.facebook],
+  description: `Stolárstvo v Gbeloch – kuchyne, vstavané skrine, predsiene a interiéry na mieru. ${fullAddress}.`,
+};
+---
+
+<!doctype html>
+<html lang="sk" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      document.documentElement.classList.remove('no-js');
+    </script>
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#2a211b" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="sk_SK" />
+    <meta property="og:site_name" content="JUTRSTOL – stolárstvo" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a
+      href="#obsah"
+      class="sr-only z-[100] rounded-full bg-copper px-5 py-3 text-white focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+      >Preskočiť na obsah</a
+    >
+    <Header overlay={overlayHeader} />
+    <main id="obsah">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Plynulé zobrazovanie sekcií pri scrollovaní
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-visible');
+              io.unobserve(e.target);
+            }
+          }
+        },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+      );
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>

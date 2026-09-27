@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import type { Project } from '../data/projects';
+import { categoryBySlug } from '../data/categories';
+import { photo } from '../lib/images';
+
+interface Props {
+  project: Project;
+  size?: 'large' | 'normal';
+  class?: string;
+}
+const { project, size = 'normal', class: className } = Astro.props;
+const category = categoryBySlug(project.category);
+---
+
+<a href={`/realizacie/${project.slug}`} class:list={['group block', className]}>
+  <div
+    class:list={[
+      'relative overflow-hidden rounded-2xl bg-sand',
+      size === 'large' ? 'aspect-[4/3] lg:aspect-[16/11]' : 'aspect-[4/5]',
+    ]}
+  >
+    <Image
+      src={photo(project.images[0])}
+      alt={project.title}
+      widths={size === 'large' ? [640, 960, 1280] : [400, 640, 800]}
+      sizes={size === 'large' ? '(min-width: 1024px) 58vw, 100vw' : '(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw'}
+      class="h-full w-full object-cover transition duration-[1.2s] ease-out group-hover:scale-[1.04]"
+    />
+    <span
+      class="absolute top-4 left-4 rounded-full bg-paper/90 px-3 py-1.5 text-[11px] font-semibold tracking-[0.14em] text-ink uppercase backdrop-blur"
+    >
+      {category?.title}
+    </span>
+    <span
+      class="absolute right-4 bottom-4 inline-flex items-center gap-1.5 rounded-full bg-walnut/80 px-3 py-1.5 text-xs font-medium text-white backdrop-blur"
+    >
+      <Icon name="expand" size={14} />
+      {project.images.length}
+    </span>
+  </div>
+  <div class="mt-5 flex items-start justify-between gap-4">
+    <div>
+      <h3 class:list={['font-medium text-ink transition group-hover:text-copper', size === 'large' ? 'text-2xl lg:text-3xl' : 'text-xl']}>
+        {project.title}
+      </h3>
+      {size === 'large' && <p class="mt-2 max-w-xl text-[15px] leading-relaxed text-stone">{project.summary}</p>}
+    </div>
+    <span
+      class="mt-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-ink/15 text-ink transition duration-300 group-hover:border-copper group-hover:bg-copper group-hover:text-white"
+    >
+      <Icon name="arrow" size={18} />
+    </span>
+  </div>
+</a>

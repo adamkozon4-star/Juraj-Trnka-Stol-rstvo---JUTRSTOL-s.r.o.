@@ -1,0 +1,75 @@
+---
+import SectionHeading from '../SectionHeading.astro';
+import Icon from '../Icon.astro';
+import { site, telHref } from '../../data/site';
+
+// TODO: overiť odpovede s klientom (ceny, termíny, oblasť)
+const faqs = [
+  {
+    q: 'Koľko stojí kuchyňa alebo skriňa na mieru?',
+    a: 'Cena závisí od rozmerov, materiálov, kovania a spotrebičov. Po zameraní a konzultácii dostanete presnú cenovú ponuku vopred – bez skrytých položiek. Orientačnú cenu vieme povedať aj z fotky a rozmerov.',
+  },
+  {
+    q: 'Ako dlho trvá výroba?',
+    a: 'Závisí od rozsahu zákazky a aktuálnej vyťaženosti dielne. Konkrétny termín výroby a montáže vám povieme už pri cenovej ponuke.',
+  },
+  {
+    q: 'V akej oblasti pôsobíte?',
+    a: `Sídlime v Gbeloch a pracujeme najmä na Záhorí a v okolí. Pri väčších zákazkách prídeme aj ďalej – stačí sa ozvať.`,
+  },
+  {
+    q: 'Z akých materiálov vyrábate?',
+    a: 'Pracujeme s laminovanými doskami v desiatkach dekorov dreva, betónu či jednofarebných odtieňov, s lesklými aj matnými dvierkami a kvalitným kovaním s tlmeným dovieraním. Materiály vám radi ukážeme na vzorkách.',
+  },
+  {
+    q: 'Zabezpečíte aj montáž a spotrebiče?',
+    a: 'Montáž robíme vždy sami, aby všetko sedelo presne podľa návrhu. Spotrebiče zabudujeme podľa vášho výberu a pri návrhu s nimi rovno počítame.',
+  },
+  {
+    q: 'Čo potrebujete, aby ste mi pripravili ponuku?',
+    a: 'Na začiatok stačí krátky popis, približné rozmery a fotka miestnosti. Presné rozmery si potom zameriame sami priamo u vás.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<section id="faq" class="py-24 lg:py-32">
+  <div class="container-x grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
+    <div class="lg:sticky lg:top-32 lg:self-start">
+      <SectionHeading
+        eyebrow="Časté otázky"
+        title="Čo sa nás ľudia <em class='italic text-copper'>najčastejšie</em> pýtajú"
+      />
+      <p class="mt-6 text-stone" data-reveal>
+        Nenašli ste odpoveď? Zavolajte na{' '}
+        <a href={telHref} class="font-semibold text-ink underline decoration-oak underline-offset-4">{site.phoneDisplay}</a>.
+      </p>
+    </div>
+
+    <div class="divide-y divide-line border-y border-line" data-reveal>
+      {
+        faqs.map((f) => (
+          <details class="group py-2">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left font-serif text-xl font-medium [&::-webkit-details-marker]:hidden">
+              {f.q}
+              <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-copper transition duration-300 group-open:rotate-45 group-open:bg-copper group-open:text-white">
+                <Icon name="plus" size={18} />
+              </span>
+            </summary>
+            <p class="pr-14 pb-6 leading-relaxed text-stone">{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</section>

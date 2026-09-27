@@ -1,0 +1,53 @@
+---
+import Icon from '../Icon.astro';
+
+// TODO: overiť s klientom (napr. či je zameranie zadarmo)
+const values = [
+  {
+    icon: 'ruler',
+    title: 'Presne na mieru',
+    text: 'Žiadne typové rozmery. Každý kus navrhujeme do vášho priestoru – aj do šikmín a pod schody.',
+  },
+  {
+    icon: 'saw',
+    title: 'Vlastná dielňa',
+    text: 'Vyrábame sami v Gbeloch, bez sprostredkovateľov. Máte istotu kvality od prvej dosky.',
+  },
+  {
+    icon: 'tools',
+    title: 'Zameranie aj montáž',
+    text: 'Prídeme k vám, všetko zameriame a hotový nábytok sami namontujeme a nastavíme.',
+  },
+  {
+    icon: 'handshake',
+    title: 'Férová cena',
+    text: 'Jasná cenová ponuka vopred. Viete, za čo platíte, a na konci vás nič neprekvapí.',
+  },
+] as const;
+---
+
+<section aria-label="Prečo JUTRSTOL" class="relative z-10 -mt-24 lg:-mt-28">
+  <div class="container-x">
+    <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+      {
+        values.map((v, i) => (
+          <li
+            data-reveal
+            style={`--d:${i * 90}ms`}
+            class:list={[
+              'wood-grain group relative overflow-hidden rounded-2xl p-7 text-white shadow-[0_30px_60px_-30px_rgba(42,33,27,0.7)] transition duration-500 hover:-translate-y-1.5',
+              i % 2 === 0 ? 'bg-copper' : 'bg-[#b27240]',
+            ]}
+          >
+            <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/12 ring-1 ring-white/20">
+              <Icon name={v.icon} size={26} />
+            </span>
+            <h2 class="mt-6 font-serif text-xl font-medium">{v.title}</h2>
+            <p class="mt-2.5 text-[14.5px] leading-relaxed text-white/80">{v.text}</p>
+            <span class="absolute -right-6 -bottom-6 h-24 w-24 rounded-full border border-white/10 transition duration-700 group-hover:scale-150" />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

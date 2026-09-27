@@ -1,0 +1,117 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Contact from '../../components/Contact.astro';
+import { projects } from '../../data/projects';
+import { categories } from '../../data/categories';
+import { plural } from '../../lib/plural';
+
+const photoTotal = projects.reduce((n, p) => n + p.images.length, 0);
+const usedCategories = categories.filter((c) => projects.some((p) => p.category === c.slug));
+---
+
+<Base
+  title="Realizácie – kuchyne, skrine a interiéry na mieru"
+  description={`Galéria realizácií stolárstva JUTRSTOL z Gbiel: ${projects.length} projektov a ${photoTotal} fotiek kuchýň, predsiení, skríň, detských izieb a interiérov na mieru.`}
+  overlayHeader
+>
+  <PageHeader
+    eyebrow="Realizácie"
+    title="Naše práce <em class='italic text-oak'>zblízka</em>"
+    lead={`${plural(projects.length, 'projekt', 'projekty', 'projektov')} a ${plural(photoTotal, 'fotka', 'fotky', 'fotiek')}. Kliknite na projekt a pozrite si všetky detaily.`}
+    image="kuchyne/kuchyna-dub-ostrov-03-okno-sirka.jpg"
+    crumbs={[{ href: '/realizacie', label: 'Realizácie' }]}
+  />
+
+  <section class="py-16 lg:py-24">
+    <div class="container-x">
+      <div
+        class="sticky top-20 z-30 -mx-4 mb-12 overflow-x-auto bg-cream/90 px-4 py-4 backdrop-blur sm:mx-0 sm:rounded-full sm:px-0"
+        role="toolbar"
+        aria-label="Filter realizácií"
+      >
+        <div class="flex w-max gap-2 sm:w-auto sm:flex-wrap">
+          <button type="button" data-filter="all" aria-pressed="true" class="filter-btn">
+            Všetko <span>{projects.length}</span>
+          </button>
+          {
+            usedCategories.map((c) => (
+              <button type="button" data-filter={c.slug} aria-pressed="false" class="filter-btn">
+                {c.title} <span>{projects.filter((p) => p.category === c.slug).length}</span>
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
+      <ul id="projects-grid" class="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          projects.map((p, i) => (
+            <li data-category={p.category} data-reveal style={`--d:${(i % 3) * 80}ms`}>
+              <ProjectCard project={p} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Contact />
+</Base>
+
+<style>
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    border-radius: 9999px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper);
+    padding: 0.6rem 1.1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.25s;
+  }
+  .filter-btn span {
+    font-size: 0.75rem;
+    color: var(--color-stone);
+  }
+  .filter-btn:hover {
+    border-color: var(--color-copper);
+  }
+  .filter-btn[aria-pressed='true'] {
+    background: var(--color-walnut);
+    border-color: var(--color-walnut);
+    color: white;
+  }
+  .filter-btn[aria-pressed='true'] span {
+    color: var(--color-oak);
+  }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const items = document.querySelectorAll<HTMLElement>('#projects-grid > li');
+
+  const apply = (filter: string) => {
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+    items.forEach((li) => {
+      const show = filter === 'all' || li.dataset.category === filter;
+      li.hidden = !show;
+      if (show) li.classList.add('is-visible');
+    });
+  };
+
+  buttons.forEach((b) =>
+    b.addEventListener('click', () => {
+      const f = b.dataset.filter!;
+      apply(f);
+      history.replaceState(null, '', f === 'all' ? location.pathname : `#${f}`);
+    }),
+  );
+
+  const initial = location.hash.slice(1);
+  if (initial && [...buttons].some((b) => b.dataset.filter === initial)) apply(initial);
+</script>

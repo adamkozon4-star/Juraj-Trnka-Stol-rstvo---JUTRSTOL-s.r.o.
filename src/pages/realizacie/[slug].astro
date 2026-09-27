@@ -1,0 +1,147 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Contact from '../../components/Contact.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import Icon from '../../components/Icon.astro';
+import { projects, type Project } from '../../data/projects';
+import { categoryBySlug } from '../../data/categories';
+import { photo } from '../../lib/images';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+interface Props {
+  project: Project;
+}
+const { project } = Astro.props;
+const category = categoryBySlug(project.category)!;
+
+// Veľké verzie fotiek pre lightbox
+const large = await Promise.all(
+  project.images.map((img) => getImage({ src: photo(img), width: 2000, format: 'webp', quality: 82 })),
+);
+
+const idx = projects.indexOf(project);
+const related = [
+  ...projects.filter((p) => p.category === project.category && p !== project),
+  ...projects.filter((p) => p.category !== project.category && p !== project),
+].slice(0, 3);
+const next = projects[(idx + 1) % projects.length];
+
+// Rozloženie galérie: široké fotky cez 2 stĺpce
+const isWide = (path: string) => photo(path).width > photo(path).height * 1.2;
+---
+
+<Base
+  title={`${project.title} – realizácia`}
+  description={`${project.summary} Stolárstvo JUTRSTOL, Gbely.`}
+  ogImage={project.images[0]}
+  overlayHeader
+>
+  <PageHeader
+    eyebrow={category.title}
+    title={project.title}
+    lead={project.summary}
+    image={project.images[0]}
+    crumbs={[
+      { href: '/realizacie', label: 'Realizácie' },
+      { href: `/realizacie/${project.slug}`, label: project.title },
+    ]}
+  />
+
+  <section class="py-16 lg:py-24">
+    <div class="container-x grid gap-12 lg:grid-cols-[1fr_20rem] lg:gap-16">
+      <ul class="grid grid-flow-dense auto-rows-[14rem] gap-3 sm:auto-rows-[18rem] sm:grid-cols-2 lg:auto-rows-[20rem]">
+        {
+          project.images.map((img, i) => (
+            <li
+              data-reveal
+              style={`--d:${(i % 4) * 60}ms`}
+              class:list={[
+                isWide(img) || i === 0 ? 'sm:col-span-2' : 'row-span-2',
+                i === 0 && 'sm:row-span-2',
+              ]}
+            >
+              <a
+                href={large[i].src}
+                data-lightbox="projekt"
+                data-caption={`${project.title} – fotka ${i + 1}`}
+                class="group relative block h-full overflow-hidden rounded-2xl bg-sand"
+              >
+                <Image
+                  src={photo(img)}
+                  alt={`${project.title} – fotka ${i + 1}`}
+                  widths={[480, 800, 1200]}
+                  sizes="(min-width: 1024px) 60vw, 100vw"
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                  class="h-full w-full object-cover transition duration-[1.2s] ease-out group-hover:scale-[1.03]"
+                />
+                <span class="absolute right-4 bottom-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-walnut/70 text-white opacity-0 backdrop-blur transition group-hover:opacity-100">
+                  <Icon name="expand" size={18} />
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <aside class="lg:sticky lg:top-28 lg:self-start">
+        <div class="rounded-2xl border border-line bg-paper p-7">
+          <h2 class="font-sans text-xs font-semibold tracking-[0.2em] text-copper uppercase">Čo sme urobili</h2>
+          <ul class="mt-5 space-y-3">
+            {
+              project.highlights.map((h) => (
+                <li class="flex items-start gap-3 text-[15px]">
+                  <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-copper/15 text-copper">
+                    <Icon name="check" size={12} />
+                  </span>
+                  {h}
+                </li>
+              ))
+            }
+          </ul>
+          <div class="mt-7 border-t border-line pt-7">
+            <p class="font-serif text-xl font-medium">Chcete niečo podobné?</p>
+            <p class="mt-2 text-sm text-stone">Pripravíme vám návrh a cenu presne pre váš priestor.</p>
+            <a href="#kontakt" class="btn-primary mt-5 w-full">Nezáväzný dopyt</a>
+            <a href={`/sluzby/${category.slug}`} class="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-stone hover:text-copper">
+              Viac o službe {category.title.toLowerCase()} <Icon name="arrow" size={16} />
+            </a>
+          </div>
+        </div>
+        <a
+          href={`/realizacie/${next.slug}`}
+          class="group mt-4 flex items-center justify-between gap-4 rounded-2xl border border-line p-5 transition hover:border-copper"
+        >
+          <span>
+            <span class="block text-xs tracking-[0.18em] text-stone uppercase">Ďalší projekt</span>
+            <span class="mt-1 block font-medium group-hover:text-copper">{next.title}</span>
+          </span>
+          <Icon name="arrow" size={20} class="shrink-0 text-copper" />
+        </a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="border-t border-line bg-paper py-20 lg:py-28">
+    <div class="container-x">
+      <h2 class="text-3xl font-medium sm:text-4xl" data-reveal>Ďalšie realizácie</h2>
+      <div class="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          related.map((p, i) => (
+            <div data-reveal style={`--d:${i * 80}ms`}>
+              <ProjectCard project={p} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Contact preselect={category.title} />
+  <Lightbox />
+</Base>

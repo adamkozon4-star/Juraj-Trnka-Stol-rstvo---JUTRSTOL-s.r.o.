@@ -1,0 +1,85 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../Icon.astro';
+import { photo } from '../../lib/images';
+import { projects } from '../../data/projects';
+import { categories } from '../../data/categories';
+import { site } from '../../data/site';
+
+// TODO: doplniť skutočný príbeh a fotku Juraja/dielne
+const stats = [
+  ...(site.yearsExperience ? [{ value: `${site.yearsExperience}+`, label: 'rokov praxe' }] : []),
+  { value: `${projects.length}`, label: 'realizácií v galérii' },
+  { value: `${categories.length}`, label: 'druhov nábytku' },
+  { value: 'Záhorie', label: 'Gbely a okolie' },
+].slice(0, 3);
+---
+
+<section id="o-nas" class="overflow-hidden border-t border-line bg-paper py-24 lg:py-32">
+  <div class="container-x grid items-center gap-16 lg:grid-cols-2 lg:gap-24">
+    <div class="relative" data-reveal>
+      <div class="relative aspect-[4/5] overflow-hidden rounded-[2rem]">
+        <Image
+          src={photo('predsiene/predsien-lamely-zasuvka-okruhle-zrkadlo-01.jpg')}
+          alt="Predsieň s lamelovou stenou a závesnou zásuvkou v dekore dub"
+          widths={[480, 720, 960]}
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div
+        class="absolute -right-3 -bottom-8 hidden w-44 overflow-hidden rounded-2xl border-[6px] border-paper shadow-2xl sm:block lg:-right-10 lg:w-56"
+      >
+        <Image
+          src={photo('detske-izby/poschodova-postel-schody-zasuvky-03.jpg')}
+          alt="Schodíky poschodovej postele so zásuvkami"
+          widths={[320, 480]}
+          sizes="224px"
+          class="aspect-[3/4] h-full w-full object-cover"
+        />
+      </div>
+      {
+        site.yearsExperience && (
+          <div class="absolute -top-6 -left-4 flex h-32 w-32 flex-col items-center justify-center rounded-full bg-copper text-white shadow-xl ring-8 ring-paper lg:-left-8 lg:h-36 lg:w-36">
+            <span class="font-serif text-5xl leading-none">{site.yearsExperience}</span>
+            <span class="mt-1 text-[11px] font-semibold tracking-[0.2em] uppercase">rokov praxe</span>
+          </div>
+        )
+      }
+    </div>
+
+    <div>
+      <div data-reveal>
+        <p class="eyebrow">O nás</p>
+        <h2 class="mt-5 text-4xl leading-[1.08] font-medium sm:text-5xl">
+          Remeslo z <em class="text-copper italic">Gbiel</em>, poctivo a na mieru
+        </h2>
+      </div>
+      <div class="mt-7 space-y-5 text-lg leading-relaxed text-stone" data-reveal style="--d:100ms">
+        <p>
+          Za značkou JUTRSTOL stojí stolár {site.owner}. Každú zákazku vedieme od prvého stretnutia až po poslednú
+          nastavenú dvierku – osobne, bez prostredníkov a bez kompromisov na kvalite.
+        </p>
+        <p>
+          Vyrábame vo vlastnej dielni v Gbeloch a pracujeme najmä na Záhorí. Moderné materiály, presné spracovanie a
+          kvalitné kovanie sú pre nás samozrejmosťou.
+        </p>
+      </div>
+
+      <dl class="mt-12 grid grid-cols-3 gap-4 border-t border-line pt-10" data-reveal style="--d:180ms">
+        {
+          stats.map((s) => (
+            <div class="flex flex-col-reverse">
+              <dt class="mt-2 text-sm text-stone">{s.label}</dt>
+              <dd class="font-serif text-2xl font-medium text-ink sm:text-4xl lg:text-[2.75rem]">{s.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <a href="#kontakt" class="btn-primary mt-12" data-reveal style="--d:240ms">
+        Poďme sa porozprávať o vašom projekte <Icon name="arrow" size={18} />
+      </a>
+    </div>
+  </div>
+</section>
