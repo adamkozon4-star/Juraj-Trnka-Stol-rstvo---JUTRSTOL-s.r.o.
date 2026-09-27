@@ -1,4 +1,5 @@
 ---
+import Bridge from '../../components/Bridge.astro';
 import SheetNotch from '../../components/SheetNotch.astro';
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
@@ -33,6 +34,7 @@ const others = categories.filter((c) => c.slug !== category.slug);
 
   <section class="sheet pt-20 pb-12 lg:pt-24 lg:pb-16" data-nav="O službe">
     <SheetNotch />
+  <Bridge kind="pencil" side="right" inset="4%" rotate={-12} />
     <div class="container-x grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
       <p class="font-display text-2xl leading-snug font-light text-ink sm:text-3xl" data-reveal>{category.intro}</p>
       <div class="flex flex-col gap-3 lg:pt-2" data-reveal style="--d:100ms">

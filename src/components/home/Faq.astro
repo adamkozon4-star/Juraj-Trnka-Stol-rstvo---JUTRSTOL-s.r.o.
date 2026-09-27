@@ -1,4 +1,5 @@
 ---
+import Bridge from '../Bridge.astro';
 import SectionHeading from '../SectionHeading.astro';
 import Icon from '../Icon.astro';
 import { site, telHref } from '../../data/site';
@@ -44,6 +45,7 @@ const faqSchema = {
 
 <section id="faq" data-nav="Otázky" class="sheet !bg-cream pt-24 pb-32 lg:pt-28 lg:pb-40">
   <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
+  <Bridge kind="pencil" side="left" inset="4%" rotate={10} size="sm" />
 
   <div class="container-x grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
     <div class="lg:sticky lg:top-32 lg:self-start">

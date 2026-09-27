@@ -1,15 +1,23 @@
 ---
+import { Image } from 'astro:assets';
 import SectionHeading from '../SectionHeading.astro';
 import ProjectCard from '../ProjectCard.astro';
 import Icon from '../Icon.astro';
+import SheetNotch from '../SheetNotch.astro';
+import Bridge from '../Bridge.astro';
 import { projects } from '../../data/projects';
+import { categoryBySlug } from '../../data/categories';
+import { photo } from '../../lib/images';
+import { plural } from '../../lib/plural';
 
 const featured = projects.filter((p) => p.featured);
-const [first, second, ...rest] = featured;
+const stories = featured.slice(0, 3);
+const rest = featured.slice(3, 6);
 ---
 
 <section id="realizacie" data-nav="Realizácie" class="sheet pt-24 pb-32 lg:pt-28 lg:pb-40">
-  <span class="sheet-notch"><Icon name="arrow" size={16} class="rotate-90" /></span>
+  <SheetNotch />
+  <Bridge kind="pencil" side="right" inset="3%" rotate={-14} />
 
   <div class="container-x">
     <SectionHeading
@@ -18,15 +26,73 @@ const [first, second, ...rest] = featured;
       lead="Pár projektov z posledných rokov. Každý je iný, pretože každý priestor a každý zákazník je iný."
     />
 
-    <div class="mt-14 grid gap-x-6 gap-y-14 lg:grid-cols-12">
-      <div class="lg:col-span-7" data-reveal><ProjectCard project={first} size="large" /></div>
-      <div class="lg:col-span-5 lg:pt-24" data-reveal style="--d:120ms"><ProjectCard project={second} /></div>
+    <!-- Cik-cak: fotka a karta, ktorá ju prekrýva -->
+    <div class="mt-16 space-y-20 lg:space-y-28">
+      {
+        stories.map((p, i) => {
+          const flip = i % 2 === 1;
+          const cat = categoryBySlug(p.category);
+          return (
+            <article class="relative grid items-center lg:grid-cols-12" data-reveal>
+              <a
+                href={`/realizacie/${p.slug}`}
+                class:list={[
+                  'group relative block overflow-hidden rounded-[2.5rem] shadow-[0_40px_80px_-40px_rgba(29,26,23,0.6)] lg:row-start-1',
+                  flip ? 'lg:col-span-7 lg:col-start-6' : 'lg:col-span-7 lg:col-start-1',
+                ]}
+              >
+                <Image
+                  src={photo(p.images[0])}
+                  alt={p.title}
+                  widths={[640, 960, 1280]}
+                  sizes="(min-width: 1024px) 58vw, 100vw"
+                  class="aspect-[4/3] w-full object-cover transition duration-[1.2s] ease-out group-hover:scale-[1.04]"
+                  transition:name={`foto-${p.slug}`}
+                />
+              </a>
+              <div
+                class:list={[
+                  'relative z-10 mx-4 -mt-16 rounded-[2rem] bg-paper p-7 shadow-[0_30px_60px_-30px_rgba(29,26,23,0.5)] ring-1 ring-line sm:mx-10 sm:p-9 lg:row-start-1 lg:mx-0 lg:mt-0',
+                  flip ? 'lg:col-span-6 lg:col-start-1' : 'lg:col-span-6 lg:col-start-7',
+                ]}
+              >
+                <div class="flex items-center justify-between gap-4">
+                  <span class="inline-flex items-center gap-2 text-sm font-medium text-stone">
+                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-walnut text-oak">
+                      {cat && <Icon name={cat.icon} size={16} />}
+                    </span>
+                    {cat?.title}
+                  </span>
+                  <span class="font-display text-5xl leading-none font-semibold text-copper/25 tabular-nums">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <h3 class="mt-5 text-3xl leading-tight font-semibold lg:text-4xl">{p.title}</h3>
+                <p class="mt-4 leading-relaxed text-stone">{p.summary}</p>
+                <ul class="mt-5 flex flex-wrap gap-2">
+                  {p.highlights.map((h) => (
+                    <li class="spec !py-1 !pl-1">
+                      <b class="!px-2.5 !py-1">
+                        <Icon name="check" size={12} />
+                      </b>
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+                <a href={`/realizacie/${p.slug}`} class="btn-primary mt-7">
+                  Pozrieť {plural(p.images.length, 'fotku', 'fotky', 'fotiek')} <Icon name="arrow" size={17} />
+                </a>
+              </div>
+            </article>
+          );
+        })
+      }
     </div>
 
-    <div class="mt-14 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="mt-24 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
       {
-        rest.slice(0, 6).map((p, i) => (
-          <div data-reveal style={`--d:${(i % 3) * 90}ms`} class:list={[i % 3 === 1 && 'lg:translate-y-12']}>
+        rest.map((p, i) => (
+          <div data-reveal style={`--d:${i * 90}ms`} class:list={[i === 1 && 'lg:translate-y-12']}>
             <ProjectCard project={p} />
           </div>
         ))
