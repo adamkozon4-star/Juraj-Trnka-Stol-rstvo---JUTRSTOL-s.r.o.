@@ -30,6 +30,14 @@ Tel.: 0905 403 248 · Adresa: Piesky 1605, 908 45 Gbely · FB: facebook.com/JuTr
 - **Farby:** krémová/papierová `#F4EFE6`, tmavá orechová `#2B211B`, akcent dub/med `#B07A45`, jemná šalviová `#8A9A83`.
 - **Písma:** nadpisy serif s charakterom (*Fraunces* alebo *Cormorant*), text *Inter* / *Manrope*.
 - **Prvky:** veľké full-bleed fotky, editoriálny layout (asymetrická mriežka ako z Pinterestu), jemná drevená textúra/zrno, tenké linky, čísla sekcií (01, 02 …), hover zoom na fotkách.
+- **Podľa Pinterest inšpirácie** (`fotky/inspiracia/pinterest-woodcrafters.jpg`):
+  - tmavý hero cez celú šírku s fotkou dielne/realizácie a teplým hnedým prekrytím
+  - veľký serifový nadpis, kde je jedno slovo v medenej farbe (*Nábytok **na mieru** z Gbiel*)
+  - 4 medené karty s ikonami, ktoré prekrývajú spodok hera (Nábytok na mieru · Zameranie a montáž · Precízne remeslo · Férová cena)
+  - karty služieb s fotkou hore a tlačidlom
+  - okrúhly odznak „XX rokov praxe“
+  - vlnitý/drevený prechod medzi sekciami
+  - Proti predlohe to vylepšíme: reálne fotky namiesto stockových, jemnejšie animácie, lepšia typografia a čitateľnosť na mobile.
 - **Mobil first.** Väčšina ľudí príde z FB na mobile, preto bude vždy viditeľné tlačidlo „Zavolať“.
 
 ## 4. Štruktúra (sitemap)
