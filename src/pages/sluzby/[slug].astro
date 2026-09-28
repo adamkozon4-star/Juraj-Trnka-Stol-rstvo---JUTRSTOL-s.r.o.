@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
@@ -6,8 +7,10 @@ import Contact from '../../components/Contact.astro';
 import Process from '../../components/home/Process.astro';
 import Icon from '../../components/Icon.astro';
 import { categories, type Category } from '../../data/categories';
+import { services, areaTowns } from '../../data/services';
 import { projectsInCategory } from '../../data/projects';
 import { telHref, site } from '../../data/site';
+import { photo } from '../../lib/images';
 
 export function getStaticPaths() {
   return categories.map((category) => ({ params: { slug: category.slug }, props: { category } }));
@@ -17,50 +20,267 @@ interface Props {
   category: Category;
 }
 const { category } = Astro.props;
+const content = services[category.slug];
+if (!content) throw new Error(`Chýba obsah v src/data/services.ts pre „${category.slug}“`);
+
 const items = projectsInCategory(category.slug);
 const others = categories.filter((c) => c.slug !== category.slug);
+const lower = category.title.charAt(0).toLowerCase() + category.title.slice(1);
+const withConfigurator = ['kuchyne', 'skrine-a-satniky', 'predsiene'].includes(category.slug);
+
+const pageUrl = new URL(`/sluzby/${category.slug}`, Astro.site).href;
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: category.title,
+    serviceType: category.title,
+    description: category.seoDescription,
+    url: pageUrl,
+    provider: {
+      '@type': 'FurnitureStore',
+      name: site.legalName,
+      telephone: site.phone,
+      url: Astro.site?.href,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: site.address.street,
+        postalCode: site.address.zip,
+        addressLocality: site.address.city,
+        addressCountry: site.address.country,
+      },
+    },
+    areaServed: areaTowns.map((name) => ({ '@type': 'City', name })),
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: category.title,
+      itemListElement: content.offer.map((o) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: o.title, description: o.text },
+      })),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Úvod', item: Astro.site?.href },
+      { '@type': 'ListItem', position: 2, name: category.title, item: pageUrl },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: content.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
 ---
 
 <Base title={category.seoTitle} description={category.seoDescription} ogImage={category.cover} overlayHeader>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(schema)} />
+
   <PageHeader
     eyebrow="Čo vyrábame"
-    title={category.title}
+    title={content.h1}
     lead={category.short}
     image={category.cover}
     crumbs={[{ href: `/sluzby/${category.slug}`, label: category.title }]}
   />
 
-  <section class="sheet pt-20 pb-12 lg:pt-24 lg:pb-16" data-nav="O službe">
+  <!-- Úvod -->
+  <section class="sheet pt-20 pb-16 lg:pt-24 lg:pb-20" data-nav="O službe">
     <div class="container-x grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
-      <p class="font-display text-2xl leading-snug font-light text-ink sm:text-3xl" data-reveal>{category.intro}</p>
+      <div data-reveal>
+        <p class="font-display text-2xl leading-snug font-light text-ink sm:text-3xl">{category.intro}</p>
+        <p class="mt-6 max-w-2xl leading-relaxed text-stone">
+          Vyrábame vo vlastnej stolárskej dielni v Gbeloch. Všetko u vás zameriame, navrhneme, vyrobíme aj namontujeme,
+          takže od prvého stretnutia po hotový nábytok máte jedného človeka, ktorý za výsledkom stojí.
+        </p>
+      </div>
       <div class="flex flex-col gap-3 lg:pt-2" data-reveal style="--d:100ms">
         <a href="#kontakt" class="btn-primary">Nezáväzná cenová ponuka <Icon name="arrow" size={18} /></a>
         <a href={telHref} class="btn-outline"><Icon name="phone" size={18} /> {site.phoneDisplay}</a>
+        {
+          withConfigurator && (
+            <a href="/konfigurator" class="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-stone hover:text-copper">
+              <Icon name="cube" size={17} class="text-copper" /> Alebo si nábytok navrhnite sami v konfigurátore
+            </a>
+          )
+        }
       </div>
     </div>
   </section>
 
-  <section class="sheet !bg-cream pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="Realizácie">
+  <!-- Čo vyrobíme -->
+  <section class="sheet !bg-cream pt-20 pb-24 lg:pt-24 lg:pb-28" data-nav="Čo vyrobíme">
     <div class="container-x">
-      <h2 class="text-3xl font-medium sm:text-4xl" data-reveal>Realizácie – {category.title.toLowerCase()}</h2>
-      <div class:list={['mt-10 grid gap-x-6 gap-y-14', items.length > 1 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'max-w-xl']}>
+      <div class="max-w-2xl" data-reveal>
+        <p class="eyebrow">Možnosti</p>
+        <h2 class="mt-5 text-4xl leading-[1.02] font-semibold sm:text-5xl">{category.title}: čo pre vás vyrobíme</h2>
+      </div>
+      <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {
-          items.map((p, i) => (
-            <div data-reveal style={`--d:${(i % 3) * 80}ms`}>
-              <ProjectCard project={p} />
-            </div>
+          content.offer.map((o, i) => (
+            <li class="offer rounded-[1.5rem] p-6 sm:p-7" data-reveal style={`--d:${(i % 3) * 70}ms`}>
+              <span class="font-display text-sm font-semibold text-copper tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="mt-3 text-xl font-semibold">{o.title}</h3>
+              <p class="mt-2 leading-relaxed text-stone">{o.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Realizácie -->
+  {
+    items.length > 0 && (
+      <section class="sheet pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="Realizácie">
+        <div class="container-x">
+          <div class="flex flex-wrap items-end justify-between gap-4" data-reveal>
+            <h2 class="text-3xl font-medium sm:text-4xl">Naše realizácie – {lower}</h2>
+            <a href="/realizacie" class="inline-flex items-center gap-2 text-sm font-semibold text-copper">
+              Všetky realizácie <Icon name="arrow" size={16} />
+            </a>
+          </div>
+          <div class:list={['mt-10 grid gap-x-6 gap-y-14', items.length > 1 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'max-w-xl']}>
+            {items.map((p, i) => (
+              <div data-reveal style={`--d:${(i % 3) * 80}ms`}>
+                <ProjectCard project={p} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Materiály a cena -->
+  <section class="sheet !bg-cream pt-20 pb-24 lg:pt-24 lg:pb-28" data-nav="Materiály a cena">
+    <div class="container-x grid gap-6 lg:grid-cols-[1.25fr_1fr]">
+      <div class="offer rounded-[1.75rem] p-7 sm:p-10" data-reveal>
+        <p class="eyebrow">Materiály a vybavenie</p>
+        <h2 class="mt-5 text-3xl leading-tight font-semibold sm:text-4xl">Z čoho a s čím vyrábame</h2>
+        <ul class="mt-8 grid gap-x-8 gap-y-3.5 sm:grid-cols-2">
+          {
+            content.materials.map((m) => (
+              <li class="flex gap-3 leading-snug">
+                <Icon name="check" size={19} class="mt-0.5 shrink-0 text-copper" />
+                <span>{m}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-8 text-sm text-stone">Vzorky materiálov a dekorov vám radi ukážeme pri konzultácii.</p>
+      </div>
+
+      <div class="flex flex-col rounded-[1.75rem] bg-walnut p-7 text-white sm:p-10" data-reveal style="--d:100ms">
+        <p class="eyebrow eyebrow-dark">Cena</p>
+        <h2 class="mt-5 text-3xl leading-tight font-semibold sm:text-4xl">Od čoho závisí cena</h2>
+        <ul class="mt-8 space-y-3.5 text-white/75">
+          {
+            content.priceFactors.map((p) => (
+              <li class="flex gap-3 leading-snug">
+                <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-oak" />
+                <span>{p}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-8 leading-relaxed text-white/60">
+          Presnú cenu dostanete po zameraní, vopred a bez skrytých položiek. Orientačne vieme odhadnúť aj z fotky a
+          približných rozmerov.
+        </p>
+        <a href="#kontakt" class="btn-primary mt-8 self-start">Chcem cenovú ponuku <Icon name="arrow" size={18} /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Poradňa -->
+  <section class="sheet pt-20 pb-36 lg:pt-24 lg:pb-48" data-nav="Poradíme">
+    <div
+      class:list={[
+        'container-x grid gap-12 lg:gap-20',
+        content.guide.image ? 'lg:grid-cols-[0.85fr_1.15fr]' : 'max-w-3xl',
+      ]}
+    >
+      {
+        content.guide.image && (
+          <div class="lg:sticky lg:top-32 lg:self-start" data-reveal>
+            <Image
+              src={photo(content.guide.image)}
+              alt={`${category.title} – realizácia stolárstva JUTRSTOL`}
+              widths={[480, 800, 1100]}
+              sizes="(min-width: 1024px) 38vw, 100vw"
+              class="aspect-[4/5] w-full rounded-[1.75rem] object-cover shadow-[0_40px_80px_-45px_rgba(29,26,23,0.7)]"
+            />
+          </div>
+        )
+      }
+      <article data-reveal style="--d:80ms">
+        <p class="eyebrow">Poradíme</p>
+        <h2 class="mt-5 text-3xl leading-tight font-semibold sm:text-4xl">{content.guide.title}</h2>
+        <div class="mt-8 space-y-5 text-[17px] leading-relaxed text-stone">
+          {content.guide.paragraphs.map((p) => <p>{p}</p>)}
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <Process />
+
+  <!-- Otázky -->
+  <section class="sheet !bg-cream pt-24 pb-28 lg:pt-28 lg:pb-32" data-nav="Otázky">
+    <div class="container-x grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
+      <div class="lg:sticky lg:top-32 lg:self-start" data-reveal>
+        <p class="eyebrow">Časté otázky</p>
+        <h2 class="mt-5 text-4xl leading-[1.02] font-semibold sm:text-5xl">Otázky a&nbsp;odpovede</h2>
+        <p class="mt-6 text-stone">
+          Máte inú otázku? Zavolajte na{' '}
+          <a href={telHref} class="font-semibold text-ink underline decoration-oak underline-offset-4">{site.phoneDisplay}</a>.
+        </p>
+      </div>
+      <div class="divide-y divide-line border-y border-line" data-reveal>
+        {
+          content.faqs.map((f) => (
+            <details class="group py-2">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left font-display text-xl font-medium [&::-webkit-details-marker]:hidden">
+                <h3>{f.q}</h3>
+                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-copper transition duration-300 group-open:rotate-45 group-open:bg-copper group-open:text-white">
+                  <Icon name="plus" size={18} />
+                </span>
+              </summary>
+              <p class="pr-14 pb-6 leading-relaxed text-stone">{f.a}</p>
+            </details>
           ))
         }
       </div>
     </div>
   </section>
 
-  <Process />
-
+  <!-- Lokalita a ďalšie služby -->
   <section class="sheet pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="Ďalej vyrábame">
     <div class="container-x">
-      <h2 class="text-3xl font-medium sm:text-4xl" data-reveal>Ďalej vyrábame</h2>
-      <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24" data-reveal>
+        <h2 class="text-3xl leading-tight font-semibold sm:text-4xl">Stolár pre Gbely a&nbsp;celé Záhorie</h2>
+        <div>
+          <p class="text-lg leading-relaxed text-stone">
+            {category.title} vyrábame v dielni v Gbeloch a montujeme najmä na Záhorí a v okolí. Zamerať aj montovať
+            chodíme do obcí ako {areaTowns.slice(1, -1).join(', ')} či {areaTowns.at(-1)}. Pri väčších zákazkách prídeme
+            aj ďalej, stačí sa ozvať.
+          </p>
+          <ul class="mt-6 flex flex-wrap gap-2">
+            {areaTowns.map((t) => <li class="rounded-full border border-line px-3.5 py-1.5 text-sm text-stone">{t}</li>)}
+          </ul>
+        </div>
+      </div>
+
+      <h2 class="mt-20 text-2xl font-semibold sm:text-3xl" data-reveal>Ďalej vyrábame</h2>
+      <ul class="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {
           others.map((c, i) => (
             <li data-reveal style={`--d:${(i % 4) * 60}ms`}>
@@ -68,7 +288,10 @@ const others = categories.filter((c) => c.slug !== category.slug);
                 href={`/sluzby/${c.slug}`}
                 class="group flex h-full items-center justify-between gap-4 rounded-2xl border border-line bg-paper p-5 transition hover:border-copper"
               >
-                <span class="font-medium group-hover:text-copper">{c.title}</span>
+                <span class="flex items-center gap-3 font-medium group-hover:text-copper">
+                  <Icon name={c.icon} size={20} class="shrink-0 text-copper" />
+                  {c.title}
+                </span>
                 <Icon name="arrow" size={18} class="shrink-0 text-copper transition group-hover:translate-x-1" />
               </a>
             </li>
@@ -80,3 +303,13 @@ const others = categories.filter((c) => c.slug !== category.slug);
 
   <Contact preselect={category.title} />
 </Base>
+
+<style>
+  .offer {
+    background: rgb(255 255 255 / 0.62);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.8),
+      0 0 0 1px rgb(29 26 23 / 0.05),
+      0 24px 50px -32px rgb(29 26 23 / 0.45);
+  }
+</style>
