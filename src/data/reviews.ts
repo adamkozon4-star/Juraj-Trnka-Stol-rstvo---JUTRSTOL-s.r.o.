@@ -14,4 +14,4 @@ export interface Review {
 
 export const reviewsSource = 'https://www.facebook.com/JuTrStol/reviews/';
 
-export const reviews: Review[] = [{name:'Ukážka Meno',text:'Ukážkový text recenzie, ktorý slúži len na kontrolu dizajnu. Je trochu dlhší, aby bolo vidno zalomenie.',project:'Kuchyňa na mieru',date:'2024'},{name:'Test Druhý',text:'Krátky text.'},{name:'Tretí Test',text:'Stredne dlhý ukážkový text na kontrolu rozloženia kariet.',project:'Predsieň'}];
+export const reviews: Review[] = [];
