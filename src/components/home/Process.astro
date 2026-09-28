@@ -5,16 +5,17 @@ import Icon from '../Icon.astro';
 
 const steps = [
   {
-    title: 'Ozvete sa nám',
-    text: 'Zavolajte alebo vyplňte formulár. Stačí pár viet a ak máte, pridajte fotku či náčrt priestoru.',
+    title: 'Ozvete sa alebo si nábytok navrhnete',
+    text: 'Zavolajte, vyplňte formulár, alebo si kuchyňu či skriňu poskladajte v online konfigurátore a návrh nám pošlite. Na začiatok stačí aj pár viet a fotka priestoru.',
+    link: { href: '/konfigurator', label: 'Otvoriť konfigurátor' },
   },
   {
     title: 'Konzultácia a zameranie',
-    text: 'Prídeme k vám, všetko presne zameriame a spolu prejdeme vaše predstavy, materiály a farby.',
+    text: 'Prídeme k vám, všetko presne zameriame a spolu prejdeme vaše predstavy alebo návrh z konfigurátora, materiály a farby.',
   },
   {
-    title: 'Návrh a cenová ponuka',
-    text: 'Pripravíme návrh na mieru a jasnú cenovú ponuku. Upravujeme, kým nie ste spokojní.',
+    title: 'Presný návrh a cenová ponuka',
+    text: 'Návrh doladíme podľa skutočných rozmerov a pripravíme jasnú cenovú ponuku. Upravujeme, kým nie ste spokojní.',
   },
   {
     title: 'Výroba v dielni',
@@ -35,8 +36,8 @@ const steps = [
       <SectionHeading
         tone="light"
         eyebrow="Ako pracujeme"
-        title="Od prvého telefonátu po hotový nábytok"
-        lead="Celý proces máme v rukách my – nemusíte koordinovať návrhára, výrobu ani montážnikov."
+        title="Od prvého nápadu po hotový nábytok"
+        lead="Začať môžete telefonátom, formulárom alebo vlastným návrhom v konfigurátore. Zvyšok máme v rukách my – nemusíte koordinovať návrhára, výrobu ani montážnikov."
       />
     </div>
 
@@ -51,6 +52,11 @@ const steps = [
               <p class="text-xs font-semibold tracking-[0.18em] text-oak uppercase">Krok {i + 1}</p>
               <h3 class="mt-2 text-2xl font-semibold sm:text-[1.7rem]">{s.title}</h3>
               <p class="mt-2 max-w-md leading-relaxed text-white/65">{s.text}</p>
+              {s.link && (
+                <a href={s.link.href} class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-oak hover:text-white">
+                  <Icon name="cube" size={16} /> {s.link.label} <Icon name="arrow" size={14} />
+                </a>
+              )}
             </li>
           ))
         }
