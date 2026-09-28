@@ -130,17 +130,6 @@ const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
   }
   .slice {
     filter: drop-shadow(0 40px 50px rgb(80 45 20 / 0.35));
-    animation: slice-spin 120s linear infinite;
-  }
-  @keyframes slice-spin {
-    to {
-      rotate: 360deg;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .slice {
-      animation: none;
-    }
   }
   .giant {
     writing-mode: vertical-rl;
