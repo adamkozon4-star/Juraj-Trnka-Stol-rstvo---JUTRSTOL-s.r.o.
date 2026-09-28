@@ -4,6 +4,7 @@ import Icon from './Icon.astro';
 import InquiryForm from './InquiryForm.astro';
 import { site, telHref, fullAddress } from '../data/site';
 import woodSlice from '../assets/dekor/drevo-letokruhy.webp';
+import fan from '../assets/dekor/vejar-dekorov.webp';
 
 interface Props {
   preselect?: string; // názov kategórie, ktorá sa predvyberie vo formulári
@@ -101,6 +102,19 @@ const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
       </div>
       {site.openingHours && <p class="mt-4 text-sm text-stone">Otváracie hodiny: {site.openingHours}</p>}
       <p class="sr-only">Adresa: {fullAddress}</p>
+
+      <!-- Vzorky dekorov s ručne písaným popisom -->
+      <figure class="samples relative mt-14 hidden items-center gap-2 lg:flex" data-reveal style="--d:200ms" aria-hidden="true">
+        <Image src={fan} alt="" widths={[300, 520]} sizes="15rem" class="fan w-52 shrink-0 xl:w-60" />
+        <figcaption class="relative -mt-16 ml-4 max-w-[13rem]">
+          <svg class="absolute top-3 -left-14 h-12 w-12 text-copper/70" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M44 6C30 6 16 14 10 34" />
+            <path d="M4 27l6 8 8-5" />
+          </svg>
+          <span class="script block text-[1.9rem] leading-[1.05] text-copper">dekory si vyberiete zo vzoriek</span>
+          <span class="mt-2 block text-sm text-stone">Desiatky odtieňov dreva, betónu aj jednofarebných.</span>
+        </figcaption>
+      </figure>
     </div>
 
     <div class="relative" data-reveal style="--d:120ms">
@@ -141,6 +155,14 @@ const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
     .slice {
       animation: none;
     }
+  }
+  .fan {
+    transform: rotate(-12deg) scaleX(-1);
+    filter: drop-shadow(0 26px 30px rgb(80 45 20 / 0.35));
+    transition: transform 0.8s var(--ease-out-soft);
+  }
+  .samples:hover .fan {
+    transform: rotate(-4deg) scaleX(-1);
   }
   .giant {
     writing-mode: vertical-rl;

@@ -1,7 +1,5 @@
 ---
-import { Image } from 'astro:assets';
 import Logo from './Logo.astro';
-import fan from '../assets/dekor/vejar-dekorov.webp';
 import Icon from './Icon.astro';
 import { site, telHref, fullAddress } from '../data/site';
 import { categories } from '../data/categories';
@@ -10,15 +8,7 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="sheet sheet-dark relative overflow-x-clip !bg-walnut pt-20 pb-28 text-white/75 lg:pt-24 lg:pb-10" data-nav="Kontakt">
-  <!-- Vejár vzoriek dekorov leží cez hranu kontaktu a pätičky -->
-  <Image
-    src={fan}
-    alt=""
-    widths={[400, 700]}
-    sizes="22rem"
-    class="fan pointer-events-none absolute top-0 left-[3%] z-0 hidden w-52 lg:block xl:w-64"
-  />
-  <div class="container-x relative z-10 grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
+  <div class="container-x grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
     <div>
       <Logo tone="light" />
       <p class="mt-6 max-w-xs text-sm leading-relaxed">
@@ -116,10 +106,6 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
-  .fan {
-    transform: translateY(-74%) rotate(-14deg) scaleX(-1);
-    filter: drop-shadow(0 30px 40px rgb(0 0 0 / 0.45));
-  }
   .wordmark {
     font-size: clamp(4rem, 19vw, 19rem);
     line-height: 0.8;
