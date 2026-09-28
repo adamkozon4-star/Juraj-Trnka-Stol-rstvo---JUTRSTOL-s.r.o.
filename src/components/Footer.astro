@@ -99,18 +99,22 @@ const year = new Date().getFullYear();
   <!-- Veľký nápis cez celú šírku -->
   <p class="wordmark container-x mt-16 font-display font-semibold select-none lg:mt-20" aria-hidden="true">JUTRSTOL</p>
 
-  <div
-    class="container-x mt-6 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/50 md:flex-row md:items-center md:justify-between"
-  >
-    <p>
-      © {year} {site.legalName}
-      {site.ico && <span> · IČO: {site.ico}</span>}
-      {site.dic && <span> · DIČ: {site.dic}</span>}
-      {site.icDph && <span> · IČ DPH: {site.icDph}</span>}
-    </p>
-    <p class="flex gap-5">
-      <a href="/ochrana-osobnych-udajov" class="hover:text-white">Ochrana osobných údajov</a>
-      <a href="#obsah" class="hover:text-white">Späť hore ↑</a>
+  <div class="container-x mt-6 border-t border-white/10 pt-6 text-xs leading-relaxed text-white/50">
+    <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+      <p class="max-w-3xl">
+        <span class="text-white/70">© {year} {site.legalName}</span>
+        <span class="mx-1.5 text-white/25">·</span>Sídlo: {site.legalSeat}
+        {site.ico && (<><span class="mx-1.5 text-white/25">·</span>IČO: {site.ico}</>)}
+        {site.dic && (<><span class="mx-1.5 text-white/25">·</span>DIČ: {site.dic}</>)}
+        {site.icDph && (<><span class="mx-1.5 text-white/25">·</span>IČ DPH: {site.icDph}</>)}
+      </p>
+      <p class="flex shrink-0 gap-5">
+        <a href="/ochrana-osobnych-udajov" class="hover:text-white">Ochrana osobných údajov</a>
+        <a href="#obsah" class="hover:text-white">Späť hore ↑</a>
+      </p>
+    </div>
+    <p class="mt-4 text-white/35">
+      Web navrhol a vytvoril <span class="text-white/60">Adam Kozon</span> · <span class="text-oak/80">Peak Studio</span>
     </p>
   </div>
 </footer>

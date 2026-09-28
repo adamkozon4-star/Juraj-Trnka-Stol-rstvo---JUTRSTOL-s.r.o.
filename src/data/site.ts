@@ -17,9 +17,11 @@ export const site = {
   },
   geo: null as { lat: number; lng: number } | null, // TODO: presné súradnice dielne
   facebook: 'https://www.facebook.com/JuTrStol/',
-  ico: null as string | null, // TODO
-  dic: null as string | null, // TODO
-  icDph: null as string | null, // TODO
+  // Fakturačné údaje (zdroj: Obchodný register / FinStat)
+  legalSeat: 'Piesky 1605/2, 908 45 Gbely',
+  ico: '50757741' as string | null,
+  dic: '2120469131' as string | null,
+  icDph: null as string | null, // doplniť, ak je firma platiteľ DPH
   yearsExperience: null as number | null, // TODO: napr. 15 -> zobrazí odznak „15 rokov praxe“
   openingHours: null as string | null, // TODO: napr. 'Po – Pi: 7:00 – 16:00'
   serviceArea: 'Gbely, Záhorie a okolie',

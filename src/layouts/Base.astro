@@ -48,6 +48,9 @@ const localBusiness = {
   ...(site.geo ? { geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng } } : {}),
   areaServed: site.serviceArea,
   sameAs: [site.facebook],
+  legalName: site.legalName,
+  ...(site.ico ? { identifier: { '@type': 'PropertyValue', propertyID: 'IČO', value: site.ico } } : {}),
+  ...(site.dic ? { taxID: site.dic } : {}),
   description: `Stolárstvo v Gbeloch – kuchyne, vstavané skrine, predsiene a interiéry na mieru. ${fullAddress}.`,
 };
 ---

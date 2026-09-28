@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
-import { site, fullAddress, telHref } from '../data/site';
+import { site, telHref } from '../data/site';
 
 // TODO: doplniť IČO a e-mail; text dať skontrolovať podľa skutočného spracúvania.
 ---
@@ -20,7 +20,7 @@ import { site, fullAddress, telHref } from '../data/site';
   <section class="sheet pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="GDPR">
     <div class="container-x max-w-3xl space-y-8 text-[17px] leading-relaxed text-stone [&_h2]:mt-12 [&_h2]:text-2xl [&_h2]:font-medium [&_h2]:text-ink">
       <p>
-        Prevádzkovateľom webu a správcom osobných údajov je <strong class="text-ink">{site.legalName}</strong>, {fullAddress}{
+        Prevádzkovateľom webu a správcom osobných údajov je <strong class="text-ink">{site.legalName}</strong>, so sídlom {site.legalSeat}{
           site.ico && <>, IČO: {site.ico}</>
         }. V prípade otázok nás kontaktujte na telefóne <a href={telHref} class="text-copper underline">{site.phoneDisplay}</a>{
           site.email && (
