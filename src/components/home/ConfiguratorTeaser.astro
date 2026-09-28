@@ -3,115 +3,170 @@ import { Image } from 'astro:assets';
 import Icon from '../Icon.astro';
 import { photo } from '../../lib/images';
 
-// TODO: zosúladiť s typmi nábytku, ktoré konfigurátor naozaj ponúka
+// TODO: zosúladiť typy nábytku a popis s tým, čo konfigurátor naozaj ponúka
 const types = [
-  { label: 'Kuchyňa', icon: 'kitchen', img: 'kuchyne/kuchyna-kasmir-dub-ostrov-lamely-jedalen-00-HERO.webp' },
-  { label: 'Skriňa', icon: 'wardrobe', img: 'skrine-satniky/skrina-detska-izba-dub-siva-nika-02.jpg' },
-  { label: 'Šatník', icon: 'hanger', img: 'skrine-satniky/satnik-walk-in-01.jpg' },
-  { label: 'Ďalší nábytok', icon: 'cube', img: 'predsiene/predsien-vstavana-skrina-led-01.jpg' },
+  { label: 'Kuchyňa', icon: 'kitchen', note: 'do L, U, s ostrovom', img: 'kuchyne/kuchyna-kasmir-dub-ostrov-lamely-jedalen-00-HERO.webp' },
+  { label: 'Skriňa', icon: 'wardrobe', note: 'vstavaná aj voľná', img: 'skrine-satniky/skrina-detska-izba-dub-siva-nika-02.jpg' },
+  { label: 'Šatník', icon: 'hanger', note: 'police, tyče, zásuvky', img: 'skrine-satniky/satnik-walk-in-01.jpg' },
+  { label: 'Ďalší nábytok', icon: 'cube', note: 'predsiene, komody…', img: 'predsiene/predsien-vstavana-skrina-led-01.jpg' },
 ] as const;
 
-const steps = ['Vyberte nábytok', 'Nastavte rozmery a dekor', 'Pošlite nám návrh'];
+const benefits = [
+  { icon: 'clock', title: 'Kedykoľvek, aj večer', text: 'Navrhujete z pohodlia domova, bez termínu a čakania.' },
+  { icon: 'ruler', title: 'Vaše rozmery', text: 'Nábytok prispôsobíte presne priestoru, ktorý máte.' },
+  { icon: 'palette', title: 'Dekory a farby', text: 'Vyskúšate kombinácie skôr, než sa rozhodnete.' },
+  { icon: 'send', title: 'Návrh príde priamo nám', text: 'Juraj ho prejde a ozve sa s ponukou.' },
+] as const;
+
+const steps = [
+  { title: 'Navrhnete', text: 'V konfigurátore zvolíte typ nábytku, rozmery, dekor a usporiadanie.' },
+  { title: 'Odošlete', text: 'Hotový návrh nám pošlete aj s kontaktom. Nič vás to nestojí.' },
+  { title: 'Doladíme spolu', text: 'Ozveme sa, prídeme zamerať a pripravíme presnú cenovú ponuku.' },
+];
 ---
 
 <section id="konfigurator" data-nav="Konfigurátor" class="sheet soft-bg overflow-x-clip pt-24 pb-32 lg:pt-28 lg:pb-40">
-  <div class="container-x grid items-center gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-    <div data-reveal>
-      <p class="eyebrow">Online konfigurátor</p>
-      <h2 class="mt-5 text-4xl leading-[1.02] font-semibold sm:text-5xl">Navrhnite si kuchyňu či skriňu sami</h2>
-      <p class="mt-5 max-w-md text-lg leading-relaxed text-stone">
-        V konfigurátore si poskladáte nábytok podľa svojho priestoru a hotový návrh nám pošlete. My sa ozveme s presnou
-        ponukou.
-      </p>
+  <div class="container-x">
+    <div class="grid items-center gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
+      <div data-reveal>
+        <p class="eyebrow">Online konfigurátor</p>
+        <h2 class="mt-5 text-4xl leading-[1.02] font-semibold sm:text-5xl">
+          Navrhnite si nábytok sami
+          <span class="script mt-1 block text-copper">my ho vyrobíme</span>
+        </h2>
+        <p class="mt-6 max-w-lg text-lg leading-relaxed text-stone">
+          Konfigurátor je jednoduchý nástroj, v ktorom si poskladáte kuchyňu, skriňu či šatník podľa svojho priestoru.
+          Nepotrebujete žiadne znalosti. Hotový návrh nám pošlete a my ho premeníme na skutočný nábytok.
+        </p>
 
-      <ol class="mt-8 space-y-3">
-        {
-          steps.map((s, i) => (
-            <li class="flex items-center gap-4">
-              <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-walnut font-display text-sm font-semibold text-oak">
-                {i + 1}
-              </span>
-              <span class="font-medium">{s}</span>
-            </li>
-          ))
-        }
-      </ol>
-
-      <div class="mt-10 flex flex-col gap-3 sm:flex-row">
-        <a href="/konfigurator" class="btn-primary !px-7 !py-4">
-          <Icon name="cube" size={18} /> Otvoriť konfigurátor
-        </a>
-        <a href="/konfigurator#dopyt" class="btn-outline !px-7 !py-4">Radšej obyčajný dopyt</a>
-      </div>
-    </div>
-
-    <div class="relative" data-reveal style="--d:120ms">
-      <!-- Okno aplikácie s výberom typu nábytku -->
-      <div class="picker rounded-[2rem] p-3 sm:p-4">
-        <div class="flex items-center gap-3 px-2 pt-1 pb-4">
-          <span class="flex gap-1.5" aria-hidden="true">
-            <i class="h-2.5 w-2.5 rounded-full bg-[#e4776a]"></i><i class="h-2.5 w-2.5 rounded-full bg-[#e8c05a]"></i><i
-              class="h-2.5 w-2.5 rounded-full bg-[#7fbf7a]"></i>
-          </span>
-          <p class="text-sm font-semibold">Čo si chcete navrhnúť?</p>
-        </div>
-        <ul class="grid grid-cols-2 gap-3">
+        <ul class="mt-9 grid gap-3 sm:grid-cols-2">
           {
-            types.map((t, i) => (
-              <li>
-                <a href="/konfigurator" class="tile group relative block overflow-hidden rounded-[1.4rem]">
-                  <Image
-                    src={photo(t.img)}
-                    alt=""
-                    widths={[320, 480]}
-                    sizes="(min-width: 1024px) 22vw, 45vw"
-                    class="aspect-[5/4] w-full object-cover transition duration-700 group-hover:scale-105"
-                  />
-                  <span class="absolute inset-0 bg-gradient-to-t from-walnut/85 via-walnut/10 to-transparent" />
-                  <span class="absolute inset-x-3 bottom-3 flex items-center gap-2.5 text-white">
-                    <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-copper shadow-md">
-                      <Icon name={t.icon} size={18} />
-                    </span>
-                    <span class="font-semibold">{t.label}</span>
-                    <Icon
-                      name="arrow"
-                      size={16}
-                      class="ml-auto opacity-0 transition duration-300 group-hover:translate-x-0.5 group-hover:opacity-100"
-                    />
-                  </span>
-                  {i === 0 && (
-                    <span class="absolute top-3 left-3 rounded-full bg-copper px-2.5 py-1 text-[11px] font-semibold text-white">
-                      Najčastejšie
-                    </span>
-                  )}
-                </a>
+            benefits.map((b) => (
+              <li class="benefit flex gap-3.5 rounded-[1.25rem] p-4">
+                <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-walnut text-oak">
+                  <Icon name={b.icon} size={19} />
+                </span>
+                <span>
+                  <b class="block text-[15px] font-semibold">{b.title}</b>
+                  <span class="mt-0.5 block text-sm leading-snug text-stone">{b.text}</span>
+                </span>
               </li>
             ))
           }
         </ul>
+
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <a href="/konfigurator" class="btn-primary !px-7 !py-4">
+            <Icon name="cube" size={18} /> Otvoriť konfigurátor
+          </a>
+          <p class="text-sm text-stone sm:ml-2">
+            Zadarmo a nezáväzne.<br class="hidden sm:block" /> Radšej píšete?{' '}
+            <a href="/konfigurator#dopyt" class="font-semibold text-ink underline decoration-oak underline-offset-4">Obyčajný dopyt</a>
+          </p>
+        </div>
       </div>
 
-      <div class="float-card absolute -bottom-7 -left-3 flex items-center gap-3 p-3 pr-5 sm:-left-10">
-        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-walnut text-oak">
-          <Icon name="ruler" size={19} />
-        </span>
-        <span class="text-sm leading-tight">
-          <b class="block">Presná ponuka</b>
-          <span class="text-stone">po zameraní u vás doma</span>
-        </span>
+      <div class="relative" data-reveal style="--d:120ms">
+        <div class="picker rounded-[2rem] p-3 sm:p-4">
+          <div class="flex items-center gap-3 px-2 pt-1 pb-4">
+            <span class="flex gap-1.5" aria-hidden="true">
+              <i class="h-2.5 w-2.5 rounded-full bg-[#e4776a]"></i><i class="h-2.5 w-2.5 rounded-full bg-[#e8c05a]"></i><i
+                class="h-2.5 w-2.5 rounded-full bg-[#7fbf7a]"></i>
+            </span>
+            <p class="flex-1 text-sm font-semibold">Čo si chcete navrhnúť?</p>
+                      </div>
+          <ul class="grid grid-cols-2 gap-3">
+            {
+              types.map((t, i) => (
+                <li>
+                  <a href="/konfigurator" class="tile group relative block overflow-hidden rounded-[1.4rem]">
+                    <Image
+                      src={photo(t.img)}
+                      alt=""
+                      widths={[320, 480]}
+                      sizes="(min-width: 1024px) 22vw, 45vw"
+                      class="aspect-[5/4] w-full object-cover transition duration-700 group-hover:scale-105"
+                    />
+                    <span class="absolute inset-0 bg-gradient-to-t from-walnut/90 via-walnut/20 to-transparent" />
+                    <span class="absolute inset-x-3 bottom-3 flex items-center gap-2.5 text-white">
+                      <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-copper shadow-md">
+                        <Icon name={t.icon} size={18} />
+                      </span>
+                      <span class="min-w-0 flex-1 leading-tight">
+                        <b class="block font-semibold">{t.label}</b>
+                        <span class="hidden truncate text-xs text-white/70 sm:block">{t.note}</span>
+                      </span>
+                      <span class="start inline-flex items-center gap-1 rounded-full bg-copper px-2.5 py-1 text-[11px] font-semibold">
+                        Začať <Icon name="arrow" size={12} />
+                      </span>
+                    </span>
+                    {i === 0 && (
+                      <span class="absolute top-3 left-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-ink backdrop-blur">
+                        Najčastejšie
+                      </span>
+                    )}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="float-card absolute -top-6 -right-3 hidden items-center gap-3 p-3 pr-5 sm:flex lg:-right-8">
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-copper text-white">
+            <Icon name="ruler" size={19} />
+          </span>
+          <span class="text-sm leading-tight">
+            <b class="block">Presná ponuka</b>
+            <span class="text-stone">po zameraní u vás doma</span>
+          </span>
+        </div>
       </div>
     </div>
+
+    <!-- Ako to prebieha -->
+    <ol class="steps mt-20 grid gap-4 md:grid-cols-3 lg:mt-24" data-reveal>
+      {
+        steps.map((s, i) => (
+          <li class="step relative rounded-[1.5rem] p-6 sm:p-7">
+            <span class="font-display text-5xl leading-none font-semibold text-copper/30 tabular-nums">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="mt-4 text-xl font-semibold">{s.title}</h3>
+            <p class="mt-2 leading-relaxed text-stone">{s.text}</p>
+            {i < steps.length - 1 && (
+              <span class="arrow absolute top-1/2 -right-4 z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-walnut text-oak md:inline-flex">
+                <Icon name="arrow" size={15} />
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ol>
   </div>
 </section>
 
 <style>
-  .picker {
-    background: rgb(255 255 255 / 0.6);
+  .picker,
+  .benefit,
+  .step,
+  .float-card {
+    background: rgb(255 255 255 / 0.62);
     backdrop-filter: blur(18px) saturate(1.3);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.8),
+      0 0 0 1px rgb(29 26 23 / 0.05),
+      0 24px 50px -32px rgb(29 26 23 / 0.45);
+  }
+  .picker {
     box-shadow:
       inset 0 0 0 1px rgb(255 255 255 / 0.8),
       0 0 0 1px rgb(29 26 23 / 0.06),
       0 50px 90px -50px rgb(29 26 23 / 0.6);
+  }
+  .float-card {
+    border-radius: 1.4rem;
+    background: rgb(255 255 255 / 0.85);
   }
   .tile {
     transition:
@@ -122,12 +177,21 @@ const steps = ['Vyberte nábytok', 'Nastavte rozmery a dekor', 'Pošlite nám n�
     transform: translateY(-4px);
     box-shadow: 0 24px 40px -24px rgb(29 26 23 / 0.7);
   }
-  .float-card {
-    border-radius: 1.4rem;
-    background: rgb(255 255 255 / 0.78);
-    backdrop-filter: blur(16px) saturate(1.3);
-    box-shadow:
-      inset 0 0 0 1px rgb(255 255 255 / 0.8),
-      0 24px 50px -24px rgb(29 26 23 / 0.45);
+  .start {
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity 0.3s,
+      transform 0.3s;
+  }
+  .tile:hover .start,
+  .tile:focus-visible .start {
+    opacity: 1;
+    transform: none;
+  }
+  @media (hover: none) {
+    .start {
+      display: none;
+    }
   }
 </style>
