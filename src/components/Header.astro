@@ -2,6 +2,7 @@
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { site, telHref } from '../data/site';
+import { categories } from '../data/categories';
 
 interface Props {
   overlay?: boolean; // hlavička nad tmavou fotkou (biely text)
@@ -16,6 +17,7 @@ const nav = [
   { href: '/#kontakt', label: 'Kontakt' },
 ];
 const path = Astro.url.pathname.replace(/\/$/, '');
+const onService = path.startsWith('/sluzby/');
 ---
 
 <header id="site-header" data-overlay={overlay ? 'true' : 'false'} class="fixed inset-x-0 top-0 z-50 lg:px-3">
@@ -29,16 +31,61 @@ const path = Astro.url.pathname.replace(/\/$/, '');
       <nav aria-label="Hlavné menu" class="hidden lg:block">
         <ul class="flex items-center gap-1 text-[14.5px] font-medium">
           {
-            nav.map((item) => (
-              <li>
-                <a
-                  href={item.href}
-                  class:list={['nav-link rounded-full px-3.5 py-2 transition', path === item.href && 'is-current']}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))
+            nav.map((item, i) =>
+              i === 0 ? (
+                <li class="dropdown relative">
+                  <a
+                    href={item.href}
+                    aria-haspopup="true"
+                    class:list={['nav-link inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 transition', onService && 'is-current']}
+                  >
+                    {item.label}
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="chev opacity-60" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                  </a>
+                  <div class="dropdown-panel absolute top-full left-1/2 pt-4">
+                    <div class="w-[40rem] rounded-[1.6rem] bg-paper p-3 text-ink shadow-[0_40px_80px_-30px_rgba(29,26,23,0.55)] ring-1 ring-ink/5">
+                      <ul class="grid grid-cols-2 gap-1">
+                        {categories.map((c) => (
+                          <li>
+                            <a
+                              href={`/sluzby/${c.slug}`}
+                              class:list={['dd-item group flex gap-3.5 rounded-2xl p-3 transition', path === `/sluzby/${c.slug}` && 'is-current']}
+                            >
+                              <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cream text-copper transition group-hover:bg-walnut group-hover:text-oak">
+                                <Icon name={c.icon} size={20} />
+                              </span>
+                              <span class="min-w-0">
+                                <b class="block text-[14.5px] font-semibold">{c.title}</b>
+                                <span class="mt-0.5 line-clamp-2 block text-[13px] leading-snug font-normal text-stone">{c.short}</span>
+                              </span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                      <a
+                        href="/konfigurator"
+                        class="mt-2 flex items-center justify-between gap-4 rounded-2xl bg-walnut px-5 py-3.5 text-sm text-white/80 transition hover:bg-ink"
+                      >
+                        <span class="flex items-center gap-3">
+                          <Icon name="cube" size={18} class="text-oak" />
+                          <span><b class="font-semibold text-white">Navrhnite si nábytok sami</b> v online konfigurátore</span>
+                        </span>
+                        <Icon name="arrow" size={16} class="text-oak" />
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              ) : (
+                <li>
+                  <a
+                    href={item.href}
+                    class:list={['nav-link rounded-full px-3.5 py-2 transition', path === item.href && 'is-current']}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ),
+            )
           }
         </ul>
       </nav>
@@ -80,18 +127,38 @@ const path = Astro.url.pathname.replace(/\/$/, '');
       <Icon name="close" size={26} />
     </button>
   </div>
-  <nav aria-label="Mobilné menu" class="flex flex-1 flex-col justify-center gap-1 px-7 pb-10">
+  <nav aria-label="Mobilné menu" class="flex flex-1 flex-col gap-1 overflow-y-auto px-7 pt-4 pb-10">
     {
-      nav.map((item, i) => (
-        <a
-          href={item.href}
-          class="mobile-link flex items-baseline gap-4 border-b border-white/10 py-4 font-display text-3xl font-semibold"
-          style={`--d:${i * 50}ms`}
-        >
-          <span class="font-sans text-xs font-medium text-oak tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-          {item.label}
-        </a>
-      ))
+      nav.map((item, i) =>
+        i === 0 ? (
+          <details class="mobile-link group border-b border-white/10" style={`--d:${i * 50}ms`}>
+            <summary class="flex cursor-pointer list-none items-baseline gap-4 py-4 font-display text-3xl font-semibold [&::-webkit-details-marker]:hidden">
+              <span class="font-sans text-xs font-medium text-oak tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+              {item.label}
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-auto self-center text-oak transition group-open:rotate-180" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </summary>
+            <ul class="grid grid-cols-2 gap-2 pb-5">
+              {categories.map((c) => (
+                <li>
+                  <a href={`/sluzby/${c.slug}`} class="flex h-full items-center gap-2.5 rounded-xl bg-white/5 px-3 py-2.5 text-sm leading-tight font-medium text-white/85">
+                    <Icon name={c.icon} size={18} class="shrink-0 text-oak" />
+                    {c.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        ) : (
+          <a
+            href={item.href}
+            class="mobile-link flex items-baseline gap-4 border-b border-white/10 py-4 font-display text-3xl font-semibold"
+            style={`--d:${i * 50}ms`}
+          >
+            <span class="font-sans text-xs font-medium text-oak tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+            {item.label}
+          </a>
+        ),
+      )
     }
     <div class="mt-10 flex flex-col gap-3">
       <a href={telHref} class="btn-primary">
@@ -136,6 +203,32 @@ const path = Astro.url.pathname.replace(/\/$/, '');
   }
   #site-header[data-overlay='true']:not(.is-scrolled) .logo-dark {
     display: none;
+  }
+  .dropdown-panel {
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(-50%, 8px);
+    transition:
+      opacity 0.25s var(--ease-out-soft),
+      transform 0.25s var(--ease-out-soft),
+      visibility 0.25s;
+  }
+  .dropdown:hover .dropdown-panel,
+  .dropdown:focus-within .dropdown-panel {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  .dropdown:hover .chev,
+  .dropdown:focus-within .chev {
+    transform: rotate(180deg);
+  }
+  .chev {
+    transition: transform 0.25s;
+  }
+  .dd-item:hover,
+  .dd-item.is-current {
+    background: var(--color-cream);
   }
   #mobile-menu.is-open {
     opacity: 1;
