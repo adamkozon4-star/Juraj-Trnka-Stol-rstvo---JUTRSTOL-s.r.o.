@@ -1,0 +1,86 @@
+---
+import Icon from '../Icon.astro';
+import { reviews, reviewsSource } from '../../data/reviews';
+
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .map((p) => p[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+---
+
+{
+  reviews.length > 0 && (
+    <section id="recenzie" data-nav="Recenzie" class="sheet !bg-cream relative overflow-x-clip pt-24 pb-32 lg:pt-28 lg:pb-40">
+      <span class="quote-mark pointer-events-none absolute -top-6 right-[4%] hidden font-display select-none lg:block" aria-hidden="true">
+        „
+      </span>
+      <div class="container-x relative">
+        <div class="flex flex-wrap items-end justify-between gap-8" data-reveal>
+          <div class="max-w-2xl">
+            <p class="eyebrow">Recenzie</p>
+            <h2 class="mt-5 text-4xl leading-[1.02] font-semibold sm:text-5xl">
+              Čo hovoria zákazníci
+              <span class="script mt-1 block text-copper">po montáži</span>
+            </h2>
+          </div>
+          <a
+            href={reviewsSource}
+            target="_blank"
+            rel="noopener"
+            class="group inline-flex items-center gap-3 rounded-2xl bg-white/70 py-2.5 pr-4 pl-2.5 ring-1 ring-white/80 backdrop-blur transition hover:bg-white"
+          >
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#1877f2] text-white">
+              <Icon name="facebook" size={20} />
+            </span>
+            <span class="leading-tight">
+              <b class="block text-sm font-semibold">Odporúčania na Facebooku</b>
+              <span class="text-xs text-stone">Pozrieť všetky recenzie</span>
+            </span>
+            <Icon name="arrow" size={16} class="ml-1 text-copper transition group-hover:translate-x-0.5" />
+          </a>
+        </div>
+
+        <ul class="reviews mt-14 gap-4 sm:columns-2 lg:columns-3">
+          {reviews.map((r, i) => (
+            <li class="review mb-4 break-inside-avoid rounded-[1.5rem] p-6 sm:p-7" data-reveal style={`--d:${(i % 3) * 80}ms`}>
+              <div class="flex items-center gap-1 text-copper" aria-label="Odporúča">
+                <Icon name="check" size={16} />
+                <span class="text-xs font-semibold tracking-[0.14em] uppercase">Odporúča</span>
+              </div>
+              <blockquote class="mt-4 text-[17px] leading-relaxed text-ink">„{r.text}“</blockquote>
+              <div class="mt-6 flex items-center gap-3 border-t border-line pt-5">
+                <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-walnut text-sm font-semibold text-oak">
+                  {initials(r.name)}
+                </span>
+                <span class="leading-tight">
+                  <b class="block text-[15px] font-semibold">{r.name}</b>
+                  {(r.project || r.date) && (
+                    <span class="text-sm text-stone">{[r.project, r.date].filter(Boolean).join(' · ')}</span>
+                  )}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .review {
+    background: rgb(255 255 255 / 0.66);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.85),
+      0 0 0 1px rgb(29 26 23 / 0.05),
+      0 24px 50px -34px rgb(29 26 23 / 0.45);
+  }
+  .quote-mark {
+    font-size: 26rem;
+    line-height: 1;
+    color: rgb(196 115 58 / 0.09);
+  }
+</style>
