@@ -1,86 +1,138 @@
 ---
+import { Image } from 'astro:assets';
 import Icon from '../Icon.astro';
-import { reviews, reviewsSource } from '../../data/reviews';
+import { photo } from '../../lib/images';
+import { reviews, reviewsSource, reviewSummary } from '../../data/reviews';
 
+const [featured, ...rest] = reviews;
 const initials = (name: string) =>
   name
+    .replace(/\ba\b/g, '')
     .split(/\s+/)
+    .filter(Boolean)
     .map((p) => p[0])
     .join('')
     .slice(0, 2)
     .toUpperCase();
+const people = [featured?.name, ...reviewSummary.others].filter(Boolean) as string[];
 ---
 
 {
-  reviews.length > 0 && (
+  featured && (
     <section id="recenzie" data-nav="Recenzie" class="sheet !bg-cream relative overflow-x-clip pt-24 pb-32 lg:pt-28 lg:pb-40">
-      <span class="quote-mark pointer-events-none absolute -top-6 right-[4%] hidden font-display select-none lg:block" aria-hidden="true">
-        „
-      </span>
-      <div class="container-x relative">
-        <div class="flex flex-wrap items-end justify-between gap-8" data-reveal>
-          <div class="max-w-2xl">
-            <p class="eyebrow">Recenzie</p>
-            <h2 class="mt-5 text-4xl leading-[1.02] font-semibold sm:text-5xl">
-              Čo hovoria zákazníci
-              <span class="script mt-1 block text-copper">po montáži</span>
-            </h2>
-          </div>
-          <a
-            href={reviewsSource}
-            target="_blank"
-            rel="noopener"
-            class="group inline-flex items-center gap-3 rounded-2xl bg-white/70 py-2.5 pr-4 pl-2.5 ring-1 ring-white/80 backdrop-blur transition hover:bg-white"
-          >
-            <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#1877f2] text-white">
-              <Icon name="facebook" size={20} />
-            </span>
-            <span class="leading-tight">
-              <b class="block text-sm font-semibold">Odporúčania na Facebooku</b>
-              <span class="text-xs text-stone">Pozrieť všetky recenzie</span>
-            </span>
-            <Icon name="arrow" size={16} class="ml-1 text-copper transition group-hover:translate-x-0.5" />
-          </a>
+      <div class="container-x">
+        <div class="max-w-2xl" data-reveal>
+          <p class="eyebrow">Recenzie</p>
+          <h2 class="mt-5 text-4xl leading-[1.02] font-semibold sm:text-5xl">
+            Čo hovoria zákazníci
+            <span class="script mt-1 block text-copper">po montáži</span>
+          </h2>
         </div>
 
-        <ul class="reviews mt-14 gap-4 sm:columns-2 lg:columns-3">
-          {reviews.map((r, i) => (
-            <li class="review mb-4 break-inside-avoid rounded-[1.5rem] p-6 sm:p-7" data-reveal style={`--d:${(i % 3) * 80}ms`}>
-              <div class="flex items-center gap-1 text-copper" aria-label="Odporúča">
-                <Icon name="check" size={16} />
-                <span class="text-xs font-semibold tracking-[0.14em] uppercase">Odporúča</span>
-              </div>
-              <blockquote class="mt-4 text-[17px] leading-relaxed text-ink">„{r.text}“</blockquote>
-              <div class="mt-6 flex items-center gap-3 border-t border-line pt-5">
-                <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-walnut text-sm font-semibold text-oak">
-                  {initials(r.name)}
+        <div class="mt-14 grid gap-4 lg:grid-cols-[1.5fr_1fr]">
+          <!-- Hlavná citácia -->
+          <figure class="relative isolate overflow-hidden rounded-[2rem] bg-walnut p-8 text-white sm:p-12" data-reveal>
+            <Image
+              src={photo('kuchyne/kuchyna-kasmir-dub-ostrov-lamely-jedalen-01-celok-sirka.jpg')}
+              alt=""
+              widths={[640, 1100]}
+              sizes="(min-width: 1024px) 55vw, 100vw"
+              class="absolute inset-0 -z-20 h-full w-full object-cover opacity-50"
+            />
+            <div class="absolute inset-0 -z-10 bg-gradient-to-br from-walnut via-walnut/85 to-walnut/40" />
+            <span class="block font-display text-8xl leading-[0.6] text-oak" aria-hidden="true">„</span>
+            <blockquote class="mt-4 font-display text-3xl leading-[1.15] font-medium sm:text-4xl lg:text-[2.6rem]">
+              {featured.text}
+            </blockquote>
+            <figcaption class="mt-10 flex items-center gap-4">
+              <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-oak/20 font-semibold text-oak">
+                {initials(featured.name)}
+              </span>
+              <span class="leading-tight">
+                <b class="block text-lg font-semibold">{featured.name}</b>
+                <span class="text-sm text-white/60">{[featured.project, featured.date].filter(Boolean).join(' · ')}</span>
+              </span>
+            </figcaption>
+          </figure>
+
+          <!-- Súhrn z Facebooku -->
+          <div class="summary flex flex-col rounded-[2rem] p-8 sm:p-10" data-reveal style="--d:100ms">
+            <p class="flex items-baseline gap-3">
+              <span class="font-display text-7xl leading-none font-semibold text-copper tabular-nums sm:text-8xl">
+                {reviewSummary.recommendPercent}&nbsp;%
+              </span>
+            </p>
+            <p class="mt-3 text-lg font-semibold">zákazníkov odporúča JUTRSTOL</p>
+            <p class="mt-1 text-stone">na základe {reviewSummary.count} hodnotení na Facebooku</p>
+
+            <div class="mt-8 flex items-center">
+              <span class="flex shrink-0">
+              {people.map((p, i) => (
+                <span
+                  class="-ml-2.5 inline-flex h-11 w-11 items-center justify-center rounded-full bg-walnut text-sm font-semibold text-oak ring-4 ring-[#f6f1ea] first:ml-0"
+                  style={`z-index:${10 - i}`}
+                  title={p}
+                >
+                  {initials(p)}
                 </span>
-                <span class="leading-tight">
-                  <b class="block text-[15px] font-semibold">{r.name}</b>
-                  {(r.project || r.date) && (
-                    <span class="text-sm text-stone">{[r.project, r.date].filter(Boolean).join(' · ')}</span>
-                  )}
-                </span>
-              </div>
-            </li>
-          ))}
-        </ul>
+              ))}
+              </span>
+              <span class="ml-3 text-sm leading-snug text-stone">
+                {people.slice(0, 3).join(', ')} a ďalší
+              </span>
+            </div>
+
+            <a
+              href={reviewsSource}
+              target="_blank"
+              rel="noopener"
+              class="group mt-10 inline-flex items-center gap-3 self-start rounded-2xl bg-white py-2.5 pr-4 pl-2.5 ring-1 ring-line transition hover:ring-copper lg:mt-auto"
+            >
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#1877f2] text-white">
+                <Icon name="facebook" size={20} />
+              </span>
+              <span class="leading-tight">
+                <b class="block text-sm font-semibold">Recenzie na Facebooku</b>
+                <span class="text-xs text-stone">Pozrieť všetky</span>
+              </span>
+              <Icon name="arrow" size={16} class="ml-1 text-copper transition group-hover:translate-x-0.5" />
+            </a>
+          </div>
+        </div>
+
+        {
+          rest.length > 0 && (
+            <ul class="mt-4 gap-4 sm:columns-2 lg:columns-3">
+              {rest.map((r, i) => (
+                <li class="summary mb-4 break-inside-avoid rounded-[1.5rem] p-6 sm:p-7" data-reveal style={`--d:${(i % 3) * 80}ms`}>
+                  <blockquote class="text-[17px] leading-relaxed text-ink">„{r.text}“</blockquote>
+                  <div class="mt-6 flex items-center gap-3 border-t border-line pt-5">
+                    <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-walnut text-sm font-semibold text-oak">
+                      {initials(r.name)}
+                    </span>
+                    <span class="leading-tight">
+                      <b class="block text-[15px] font-semibold">{r.name}</b>
+                      {(r.project || r.date) && (
+                        <span class="text-sm text-stone">{[r.project, r.date].filter(Boolean).join(' · ')}</span>
+                      )}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )
+        }
       </div>
     </section>
   )
 }
 
 <style>
-  .review {
+  .summary {
     background: rgb(255 255 255 / 0.66);
     box-shadow:
       inset 0 0 0 1px rgb(255 255 255 / 0.85),
       0 0 0 1px rgb(29 26 23 / 0.05),
       0 24px 50px -34px rgb(29 26 23 / 0.45);
-  }
-  .quote-mark {
-    font-size: 26rem;
-    line-height: 1;
-    color: rgb(196 115 58 / 0.09);
   }
 </style>
