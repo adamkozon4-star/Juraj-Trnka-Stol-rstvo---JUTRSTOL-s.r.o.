@@ -1,5 +1,5 @@
 // Recenzie zákazníkov z Facebooku JUTRSTOL (https://www.facebook.com/JuTrStol/reviews/).
-// Texty prepísané z Facebooku, bez emoji. Kým nie je žiadna recenzia s textom, sekcia sa nezobrazí.
+// Texty doslovne z Facebooku. Kým nie je žiadna recenzia s textom, sekcia sa nezobrazí.
 
 export interface Review {
   /** Meno tak, ako je na Facebooku (priezvisko skrátené) */
@@ -25,7 +25,7 @@ export const reviewSummary = {
 export const reviews: Review[] = [
   {
     name: 'Martina P.',
-    text: 'Ďakujeme za krásnu kuchyňu a ďalšie nábytky do domu. Maximálna spokojnosť.',
+    text: 'Ďakujeme za krásnu kuchyňu a ďalšie nabytky do domu 🙂 Maximálna spokojnosť 👌',
     project: 'Kuchyňa a nábytok do domu',
     date: 'február 2020',
   },
