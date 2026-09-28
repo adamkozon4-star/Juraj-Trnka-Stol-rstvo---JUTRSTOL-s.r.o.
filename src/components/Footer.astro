@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import Logo from './Logo.astro';
+import fan from '../assets/dekor/vejar-dekorov.webp';
 import Icon from './Icon.astro';
 import { site, telHref, fullAddress } from '../data/site';
 import { categories } from '../data/categories';
@@ -7,7 +9,15 @@ import { categories } from '../data/categories';
 const year = new Date().getFullYear();
 ---
 
-<footer class="sheet sheet-dark !bg-walnut pt-20 pb-28 text-white/75 lg:pb-12" data-nav="Kontakt">
+<footer class="sheet sheet-dark relative overflow-x-clip !bg-walnut pt-20 pb-28 text-white/75 lg:pt-24 lg:pb-10" data-nav="Kontakt">
+  <!-- Vejár vzoriek dekorov leží cez hranu kontaktu a pätičky -->
+  <Image
+    src={fan}
+    alt=""
+    widths={[400, 700]}
+    sizes="22rem"
+    class="fan pointer-events-none absolute top-0 left-[3%] z-10 hidden w-52 lg:block xl:w-64"
+  />
   <div class="container-x grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
     <div>
       <Logo tone="light" />
@@ -86,8 +96,11 @@ const year = new Date().getFullYear();
     </div>
   </div>
 
+  <!-- Veľký nápis cez celú šírku -->
+  <p class="wordmark container-x mt-16 font-display font-semibold select-none lg:mt-20" aria-hidden="true">JUTRSTOL</p>
+
   <div
-    class="container-x mt-16 flex flex-col gap-3 border-t border-white/10 pt-8 text-xs text-white/50 md:flex-row md:items-center md:justify-between"
+    class="container-x mt-6 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/50 md:flex-row md:items-center md:justify-between"
   >
     <p>
       © {year} {site.legalName}
@@ -95,9 +108,29 @@ const year = new Date().getFullYear();
       {site.dic && <span> · DIČ: {site.dic}</span>}
       {site.icDph && <span> · IČ DPH: {site.icDph}</span>}
     </p>
-    <a href="/ochrana-osobnych-udajov" class="hover:text-white">Ochrana osobných údajov</a>
+    <p class="flex gap-5">
+      <a href="/ochrana-osobnych-udajov" class="hover:text-white">Ochrana osobných údajov</a>
+      <a href="#obsah" class="hover:text-white">Späť hore ↑</a>
+    </p>
   </div>
 </footer>
+
+<style>
+  .fan {
+    transform: translateY(-62%) rotate(-14deg) scaleX(-1);
+    filter: drop-shadow(0 30px 40px rgb(0 0 0 / 0.45));
+  }
+  .wordmark {
+    font-size: clamp(4rem, 19vw, 19rem);
+    line-height: 0.8;
+    letter-spacing: -0.035em;
+    background: linear-gradient(180deg, rgb(219 166 118 / 0.55), rgb(219 166 118 / 0.08) 85%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    white-space: nowrap;
+  }
+</style>
 
 <!-- Mobilná lišta s rýchlym kontaktom -->
 <div
