@@ -29,7 +29,7 @@ const onService = path.startsWith('/sluzby/');
       </a>
 
       <nav aria-label="Hlavné menu" class="hidden lg:block">
-        <ul class="flex items-center gap-1 text-[14.5px] font-medium">
+        <ul class="flex items-center gap-0.5 text-[14.5px] font-medium whitespace-nowrap xl:gap-1">
           {
             nav.map((item, i) =>
               i === 0 ? (
@@ -37,7 +37,7 @@ const onService = path.startsWith('/sluzby/');
                   <a
                     href={item.href}
                     aria-haspopup="true"
-                    class:list={['nav-link inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 transition', onService && 'is-current']}
+                    class:list={['nav-link inline-flex items-center gap-1.5 rounded-full px-2.5 py-2 transition xl:px-3.5', onService && 'is-current']}
                   >
                     {item.label}
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="chev opacity-60" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
@@ -79,7 +79,7 @@ const onService = path.startsWith('/sluzby/');
                 <li>
                   <a
                     href={item.href}
-                    class:list={['nav-link rounded-full px-3.5 py-2 transition', path === item.href && 'is-current']}
+                    class:list={['nav-link rounded-full px-2.5 py-2 transition xl:px-3.5', path === item.href && 'is-current']}
                   >
                     {item.label}
                   </a>
@@ -95,7 +95,7 @@ const onService = path.startsWith('/sluzby/');
           <Icon name="phone" size={17} class="text-copper" />
           {site.phoneDisplay}
         </a>
-        <a href="/#kontakt" class="btn-primary hidden !rounded-[1rem] !px-5 !py-2.5 sm:inline-flex">Cenová ponuka</a>
+        <a href="/#kontakt" class="btn-primary hidden !rounded-[1rem] !px-5 !py-2.5 whitespace-nowrap sm:inline-flex">Cenová ponuka</a>
         <button
           type="button"
           id="menu-open"
