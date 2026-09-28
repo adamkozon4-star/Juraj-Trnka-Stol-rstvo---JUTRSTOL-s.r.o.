@@ -283,12 +283,12 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: 'prevadzka-s-lamelovou-stenou-a-skrytymi-dverami',
-    title: 'Prevádzka s lamelovou stenou a skrytými dverami',
-    category: 'komercne-interiery',
+    slug: 'lamelova-tv-stena-so-skrytymi-dverami',
+    title: 'Lamelová stena za TV so skrytými dverami',
+    category: 'obyvacky',
     summary:
-      'Vodorovná lamelová stena s dverami ukrytými v obklade a skrinkou pod TV, kuchynka so skrinovou stenou a stôl.',
-    highlights: ['Skryté dvere v lamelách', 'Kuchynka', 'Skrinová stena'],
+      'Vodorovná lamelová stena za televízorom s dverami ukrytými v obklade a závesnou skrinkou pod TV. K tomu kuchyňa so skrinkami až po strop a stôl.',
+    highlights: ['Lamely za TV', 'Skryté dvere v lamelách', 'Kuchyňa až po strop'],
     images: [
       'komercne-interiery/prevadzka-b-lamelova-stena-skryte-dvere-sirka.jpg',
       'komercne-interiery/prevadzka-b-kuchynka-skrinova-stena.jpg',

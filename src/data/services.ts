@@ -209,6 +209,7 @@ export const services: Record<string, ServiceContent> = {
       { title: 'Závesné TV komody', text: 'Komoda, ktorá sa nedotýka podlahy, pôsobí ľahko a pod ňou sa pohodlne upratuje.' },
       { title: 'Knižnice a policové steny', text: 'Police na knihy a dekorácie od podlahy po strop, otvorené alebo kombinované so skrinkami.' },
       { title: 'Vitríny a skrinky', text: 'Uzavreté skrinky na všetko, čo nemá byť na očiach, a vitríny na to, čo chcete ukázať.' },
+      { title: 'Skryté dvere v lamelách', text: 'Dvere do inej miestnosti ukryjeme priamo do lamelovej steny. Keď sú zatvorené, takmer ich nevidno.' },
       { title: 'Obklady stien', text: 'Lamelové a doskové obklady, ktoré zjednotia obývačku s kuchyňou či schodiskom.' },
     ],
     materials: [
@@ -227,6 +228,7 @@ export const services: Record<string, ServiceContent> = {
     ],
     guide: {
       title: 'TV stena ako srdce obývačky',
+      image: 'komercne-interiery/prevadzka-b-lamelova-stena-skryte-dvere-sirka.jpg',
       paragraphs: [
         'TV stena je často prvá vec, na ktorú v obývačke pozriete. Namiesto samotného televízora na holej stene navrhneme celok, v ktorom má miesto televízor, technika, knihy aj dekorácie a všetko spolu ladí s podlahou, dverami a kuchyňou.',
         'Najviac rozruchu v obývačke robia káble. Pri návrhu preto naplánujeme, kde bude televízor, reproduktory a prijímač, a káble vedieme za obkladom alebo v skrinkách. Na stene tak nevidno nič, čo tam nepatrí.',
@@ -322,21 +324,20 @@ export const services: Record<string, ServiceContent> = {
     offer: [
       { title: 'Kuchynky pre zamestnancov', text: 'Praktické kuchynky so spotrebičmi a úložným priestorom, ktoré znesú každodenné používanie.' },
       { title: 'Kancelársky nábytok', text: 'Stoly, komody, skrine na dokumenty a úložné steny na mieru vašim priestorom.' },
-      { title: 'Lamelové steny so skrytými dverami', text: 'Reprezentatívne lamelové obklady, v ktorých sa nenápadne skrývajú dvere do zázemia.' },
+      { title: 'Lamelové priečky a obklady', text: 'Reprezentatívne lamelové priečky a obklady, ktoré oddelia priestor a dodajú mu charakter.' },
       { title: 'Recepcie a pulty', text: 'Recepčné pulty a predajné pulty, ktoré urobia dobrý prvý dojem na vašich klientov.' },
       { title: 'Obklady a zrkadlové steny', text: 'Obklady stien a zrkadlá, ktoré zjednotia vzhľad celej prevádzky.' },
     ],
     materials: [
       'Odolné laminované dosky',
       'Dekoratívne lamely',
-      'Skryté dvere v obklade',
       'Zrkadlá a obklady',
       'Kovanie na každodenné používanie',
       'Farby a dekory podľa firemnej identity',
     ],
     priceFactors: [
       'Rozsah zákazky a počet miestností',
-      'Obklady, lamely a skryté dvere',
+      'Obklady, lamely a priečky',
       'Spotrebiče a vybavenie kuchynky',
       'Termín a postup realizácie',
     ],
@@ -350,7 +351,7 @@ export const services: Record<string, ServiceContent> = {
       ],
     },
     faqs: [
-      { q: 'Robíte aj pre firmy?', a: 'Áno. Zariaďujeme kancelárie, kuchynky pre zamestnancov aj prevádzky, vrátane lamelových stien so skrytými dverami.' },
+      { q: 'Robíte aj pre firmy?', a: 'Áno. Zariaďujeme kancelárie, kuchynky pre zamestnancov aj prevádzky, vrátane lamelových priečok a obkladov.' },
       { q: 'Viete prispôsobiť interiér firemným farbám?', a: 'Áno. Dekory a farby vyberieme tak, aby ladili s vašou identitou a zvyškom priestoru.' },
       { q: 'Dá sa montáž urobiť mimo pracovného času?', a: 'Po dohode áno. Termíny montáže plánujeme tak, aby čo najmenej obmedzili chod vašej firmy.' },
     ],

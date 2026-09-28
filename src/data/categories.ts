@@ -98,13 +98,13 @@ export const categories: Category[] = [
     slug: 'komercne-interiery',
     icon: 'office',
     title: 'Kancelárie a prevádzky',
-    short: 'Kuchynky, lamelové steny so skrytými dverami a kancelársky nábytok.',
+    short: 'Kuchynky, lamelové priečky, obklady a kancelársky nábytok.',
     intro:
-      'Zariaďujeme aj kancelárie a prevádzky – kuchynky pre zamestnancov, skrinkové steny, lamelové obklady so skrytými dverami či recepcie. Reprezentatívne, odolné a na mieru vašej firme.',
+      'Zariaďujeme aj kancelárie a prevádzky – kuchynky pre zamestnancov, skrinkové steny, lamelové priečky a obklady či recepcie. Reprezentatívne, odolné a na mieru vašej firme.',
     seoTitle: 'Interiéry kancelárií a prevádzok na mieru',
     seoDescription:
-      'Nábytok na mieru pre kancelárie a prevádzky: kuchynky, recepcie, skrinkové steny a lamelové obklady so skrytými dverami. Stolárstvo JUTRSTOL, Gbely.',
-    cover: 'komercne-interiery/prevadzka-b-lamelova-stena-skryte-dvere-sirka.jpg',
+      'Nábytok na mieru pre kancelárie a prevádzky: kuchynky, recepcie, skrinkové steny a lamelové priečky a obklady. Stolárstvo JUTRSTOL, Gbely.',
+    cover: 'komercne-interiery/kancelaria-a-lamelova-priecka.jpg',
   },
 ];
 
