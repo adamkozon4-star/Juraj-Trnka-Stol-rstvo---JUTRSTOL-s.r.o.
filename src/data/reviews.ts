@@ -1,32 +1,27 @@
 // Recenzie zákazníkov z Facebooku JUTRSTOL (https://www.facebook.com/JuTrStol/reviews/).
-// Texty doslovne z Facebooku. Kým nie je žiadna recenzia s textom, sekcia sa nezobrazí.
+// Mená, dátumy a texty doslovne z Facebooku. Kým je zoznam prázdny, sekcia sa nezobrazí.
 
 export interface Review {
-  /** Meno tak, ako je na Facebooku (priezvisko skrátené) */
+  /** Meno presne ako na Facebooku */
   name: string;
-  /** Text recenzie */
-  text: string;
-  /** Čo sa robilo, napr. „Kuchyňa na mieru“ (nepovinné) */
-  project?: string;
-  /** Mesiac a rok, napr. „február 2020“ (nepovinné) */
-  date?: string;
+  /** Dátum ako na Facebooku, napr. „14. februára 2020“ */
+  date: string;
+  /** Text recenzie – ak zákazník len odporučil bez textu, vynechať */
+  text?: string;
 }
 
 export const reviewsSource = 'https://www.facebook.com/JuTrStol/reviews/';
 
 /** Súhrn z Facebooku – aktualizovať podľa stránky */
-export const reviewSummary = {
-  recommendPercent: 100,
-  count: 5,
-  /** Ďalší zákazníci, ktorí odporučili bez textu (krátke mená) */
-  others: ['Silvia M. H.', 'Barbara S.', 'Kamil a Janka'],
-};
+export const reviewSummary = { recommendPercent: 100, count: 5 };
 
 export const reviews: Review[] = [
   {
-    name: 'Martina P.',
+    name: 'MarTina Pavelková',
+    date: '14. februára 2020',
     text: 'Ďakujeme za krásnu kuchyňu a ďalšie nabytky do domu 🙂 Maximálna spokojnosť 👌',
-    project: 'Kuchyňa a nábytok do domu',
-    date: 'február 2020',
   },
+  { name: 'Silvia Masaryková Holčíková', date: '2. apríla 2017' },
+  { name: 'Barbara Sosnová', date: '2. apríla 2017' },
+  { name: 'Kamil A Janka', date: '2. apríla 2017' },
 ];
