@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 import Icon from '../Icon.astro';
 import { photo } from '../../lib/images';
-import handWood from '../../assets/dekor/ruka-drevo.jpg';
 
 // TODO: zosúladiť typy nábytku a popis s tým, čo konfigurátor naozaj ponúka
 const types = [
@@ -145,11 +144,11 @@ const steps = [
     <div class="mt-20 grid gap-4 lg:mt-24 lg:grid-cols-[0.9fr_2.6fr]" data-reveal>
       <figure class="mood relative min-h-56 overflow-hidden rounded-[1.5rem]">
         <Image
-          src={handWood}
-          alt="Ruka na doske masívneho stola"
+          src={photo('kuchyne/kuchyna-kasmir-dub-ostrov-lamely-jedalen-03-ostrov-lamely.jpg')}
+          alt="Kuchynský ostrov z dubu s lamelovým obkladom"
           widths={[400, 700]}
           sizes="(min-width: 1024px) 24vw, 100vw"
-          class="absolute inset-0 h-full w-full object-cover object-[50%_62%]"
+          class="absolute inset-0 h-full w-full object-cover object-[50%_60%]"
         />
         <span class="absolute inset-0 bg-gradient-to-t from-walnut/80 via-walnut/10 to-transparent"></span>
         <figcaption class="absolute inset-x-5 bottom-4 text-white">
