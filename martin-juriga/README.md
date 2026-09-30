@@ -19,3 +19,10 @@ Statický web (HTML + CSS + JS), bez buildu. Stačí otvoriť `index.html` alebo
 ## Kde sa čo mení
 - Farby a písmo: `style.css`, sekcia `:root`
 - Fotky: `img/` (`martin-1200.webp`, `martin-720.webp` = hero, `martin-portrait.webp` = O mne, `og.jpg` = náhľad pri zdieľaní)
+
+## Referencie
+Sekcia „Čo hovoria klienti“ je skrytá, kým nie sú doplnené skutočné recenzie. Doplň ich do poľa `REVIEWS` v `main.js`
+(`{ text: '…', name: 'Jana K.', place: 'Žilina' }`) a sekcia sa zobrazí sama.
+
+## Kalkulačka
+Stratégie Opatrná / Vyvážená / Dynamická (3 / 5 / 7 % ročne, 30 / 60 / 90 % akcií) sú ilustračné. Hodnoty sú v `index.html` v atribútoch `data-rate` a `data-stocks`, pred spustením ich treba prebrať s Martinom.

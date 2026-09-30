@@ -58,10 +58,33 @@ const updateSteps = () => {
 window.addEventListener('scroll', updateSteps, { passive: true });
 updateSteps();
 
+/* ---------- životné situácie (záložky) ---------- */
+const tabs = $$('.life__tab');
+const selectTab = (tab) => {
+  tabs.forEach((t) => {
+    const on = t === tab;
+    t.classList.toggle('is-active', on);
+    t.setAttribute('aria-selected', on);
+    t.tabIndex = on ? 0 : -1;
+    $(`#${t.getAttribute('aria-controls')}`).hidden = !on;
+  });
+};
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => selectTab(t));
+  t.addEventListener('keydown', (e) => {
+    const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (!d) return;
+    const next = tabs[(i + d + tabs.length) % tabs.length];
+    selectTab(next);
+    next.focus();
+  });
+});
+
 /* ---------- kalkulačka ---------- */
 const eur = (n) => `${Math.round(n).toLocaleString('sk-SK')} €`;
-const years = (n) => `${n} ${n === 1 ? 'rok' : n < 5 ? 'roky' : 'rokov'}`;
+const yearsLabel = (n) => `${n} ${n === 1 ? 'rok' : n < 5 ? 'roky' : 'rokov'}`;
 const inputs = { amount: $('#amount'), years: $('#years'), rate: $('#rate') };
+const profiles = $$('.profile');
 let shown = 0;
 let raf;
 
@@ -78,26 +101,89 @@ const animateTo = (target) => {
   raf = requestAnimationFrame(step);
 };
 
+const futureValue = (P, months, r) => (r ? P * ((Math.pow(1 + r, months) - 1) / r) : P * months);
+
+// graf: plná čiara = hodnota investície, prerušovaná = vklady bez úrokov
+const drawChart = (P, years, r) => {
+  const W = 400, H = 170, top = 10;
+  const max = futureValue(P, years * 12, r);
+  const pts = [];
+  for (let i = 0; i <= 40; i++) {
+    const m = (years * 12 * i) / 40;
+    const x = (W * i) / 40;
+    pts.push([x, H - (futureValue(P, m, r) / max) * (H - top), H - ((P * m) / max) * (H - top)]);
+  }
+  const line = pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
+  $('#g-line').setAttribute('d', line);
+  $('#g-area').setAttribute('d', `${line} L${W} ${H} L0 ${H} Z`);
+  $('#g-dep').setAttribute('d', pts.map(([x, , y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' '));
+  $('#g-mid').textContent = `o ${yearsLabel(Math.round(years / 2))}`;
+  $('#g-end').textContent = `o ${yearsLabel(years)}`;
+};
+
+const setAlloc = (stocks) => {
+  $('#alloc-stocks').style.width = `${stocks}%`;
+  $('#alloc-s').textContent = `${stocks} %`;
+  $('#alloc-b').textContent = `${100 - stocks} %`;
+};
+
 const calc = () => {
   const P = +inputs.amount.value;
-  const n = +inputs.years.value * 12;
+  const years = +inputs.years.value;
   const r = +inputs.rate.value / 100 / 12;
-  const total = r ? P * ((Math.pow(1 + r, n) - 1) / r) : P * n;
-  const deposits = P * n;
+  const total = futureValue(P, years * 12, r);
+  const deposits = P * years * 12;
 
   Object.values(inputs).forEach((el) => {
     el.style.setProperty('--fill', `${((el.value - el.min) / (el.max - el.min)) * 100}%`);
   });
   $('#o-amount').textContent = eur(P);
-  $('#o-years').textContent = years(+inputs.years.value);
+  $('#o-years').textContent = yearsLabel(years);
+  $('#r-years').textContent = yearsLabel(years);
   $('#o-rate').textContent = `${String(inputs.rate.value).replace('.', ',')} %`;
   $('#r-dep').textContent = eur(deposits);
   $('#r-gain').textContent = eur(total - deposits);
-  $('#r-bar').style.width = `${((total - deposits) / total) * 100}%`;
+  drawChart(P, years, r);
   animateTo(total);
 };
+
+profiles.forEach((btn) => btn.addEventListener('click', () => {
+  profiles.forEach((b) => {
+    b.classList.toggle('is-active', b === btn);
+    b.setAttribute('aria-checked', b === btn);
+  });
+  inputs.rate.value = btn.dataset.rate;
+  setAlloc(+btn.dataset.stocks);
+  calc();
+}));
+
+// ručná zmena výnosu zruší výber stratégie
+inputs.rate.addEventListener('input', () => {
+  const match = profiles.find((b) => +b.dataset.rate === +inputs.rate.value);
+  profiles.forEach((b) => {
+    b.classList.toggle('is-active', b === match);
+    b.setAttribute('aria-checked', b === match);
+  });
+  if (match) setAlloc(+match.dataset.stocks);
+});
 Object.values(inputs).forEach((el) => el.addEventListener('input', calc));
 calc();
+
+/* ---------- referencie ---------- */
+// Sem doplň skutočné recenzie od klientov, sekcia sa potom zobrazí sama.
+// { text: '…', name: 'Jana K.', place: 'Žilina' }
+const REVIEWS = [];
+
+if (REVIEWS.length) {
+  const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  $('#reviews-list').innerHTML = REVIEWS.map((r) => `
+    <article class="review reveal is-in">
+      <span class="review__stars" aria-label="5 z 5 hviezdičiek">★★★★★</span>
+      <p>„${esc(r.text)}“</p>
+      <footer><span>${esc(r.name.charAt(0))}</span><div><strong>${esc(r.name)}</strong><small>${esc(r.place || '')}</small></div></footer>
+    </article>`).join('');
+  $('#referencie').hidden = false;
+}
 
 /* ---------- formulár ---------- */
 const form = $('#contact-form');
