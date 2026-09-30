@@ -12,6 +12,8 @@ Statický web (HTML + CSS + JS), bez buildu. Stačí otvoriť `index.html` alebo
 | E-mail `info@martinjuriga.sk` | `index.html` |
 | Číslo registrácie v NBS (`000000`) a názov samostatného finančného agenta | pätička v `index.html` |
 | Kľúč formulára z [web3forms.com](https://web3forms.com) | `main.js` (`WEB3FORMS_KEY`) |
+| Otváracie hodiny (Po – Pi, 9:00 – 18:00), odkazy na Instagram / Facebook / LinkedIn | pätička v `index.html` |
+| Adresa, IČO a názov samostatného finančného agenta | `ochrana-osobnych-udajov.html`, pätička v `index.html` |
 | Sľuby „do 24 hodín“, „konzultácia zdarma“, „online aj osobne“ | overiť s Martinom |
 
 ## Kde sa čo mení
