@@ -185,6 +185,12 @@ if (REVIEWS.length) {
   $('#referencie').hidden = false;
 }
 
+/* tlačidlá služieb predvyplnia tému vo formulári */
+$$('[data-tema]').forEach((a) => a.addEventListener('click', () => {
+  const radio = $(`input[name="tema"][value="${a.dataset.tema}"]`);
+  if (radio) radio.checked = true;
+}));
+
 /* ---------- formulár ---------- */
 const form = $('#contact-form');
 const status = $('.form__status', form);
