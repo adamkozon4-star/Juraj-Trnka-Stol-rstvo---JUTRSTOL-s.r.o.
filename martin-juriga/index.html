@@ -133,7 +133,9 @@
     </section>
 
     <!-- ============ SĽUB ============ -->
-    <section class="promise" aria-label="Čo vám môžem sľúbiť">
+    <section class="promise section--panel" aria-label="Čo vám môžem sľúbiť">
+      <div class="bridge bridge--coin" style="right:3%;--r:-14deg" aria-hidden="true"><div class="bridge__in"><div class="coin"><span>€</span></div></div></div>
+      <div class="promise__deco" aria-hidden="true">
       <svg class="promise__lines" viewBox="0 0 1440 560" preserveAspectRatio="none" aria-hidden="true">
         <path d="M1010 -20C1090 150 1260 270 1460 300" />
         <path d="M1240 -20C1290 120 1370 210 1460 250" />
@@ -142,6 +144,7 @@
         <path d="M280 580L520 390" />
         <path d="M1180 580L1460 330" />
       </svg>
+      </div>
       <div class="container promise__inner">
         <span class="eyebrow eyebrow--center reveal">Čo vám môžem úprimne sľúbiť</span>
         <p class="promise__text reveal">Nesľúbim vám zázračné výnosy. Sľúbim vám <mark>jasný plán</mark>, férové porovnanie a&nbsp;to, že tu budem aj o&nbsp;10&nbsp;rokov.</p>
@@ -151,6 +154,16 @@
 
     <!-- ============ SLUŽBY ============ -->
     <section class="section" id="sluzby">
+      <div class="bridge bridge--doc" style="left:5%;--r:-7deg" aria-hidden="true"><div class="bridge__in">
+        <div class="plan-sheet">
+          <span class="plan-sheet__title">Finančný plán</span>
+          <svg class="plan-sheet__chart" viewBox="0 0 160 60"><rect x="6" y="38" width="16" height="18" rx="3"/><rect x="32" y="30" width="16" height="26" rx="3"/><rect x="58" y="24" width="16" height="32" rx="3"/><rect x="84" y="16" width="16" height="40" rx="3"/><rect x="110" y="8" width="16" height="48" rx="3" class="hi"/><path d="M4 44L40 32 66 26 92 17 136 4"/></svg>
+          <span class="plan-sheet__row"><i></i><b style="width:70%"></b></span>
+          <span class="plan-sheet__row"><i></i><b style="width:54%"></b></span>
+          <span class="plan-sheet__row"><i></i><b style="width:62%"></b></span>
+          <svg class="plan-sheet__sign" viewBox="0 0 120 30"><path d="M4 22c10-14 18-16 16-6s6 10 14-4 10-8 10 0 8 8 18-6c6-8 10-4 12 2s10 6 18-2 12-6 22-4"/></svg>
+        </div>
+      </div></div>
       <div class="container">
         <div class="section-head reveal">
           <span class="eyebrow">Služby</span>
@@ -204,11 +217,12 @@
     </section>
 
     <!-- ============ ŽIVOTNÉ SITUÁCIE ============ -->
-    <section class="section section--soft" id="situacie">
+    <section class="section section--soft section--panel" id="situacie">
       <div class="container">
         <div class="section-head reveal">
           <span class="eyebrow">Riešenia podľa situácie</span>
           <h2>V akej životnej etape ste?</h2>
+          <span class="script-accent">každá má svoje riešenie</span>
         </div>
 
         <div class="life reveal">
@@ -292,10 +306,15 @@
 
     <!-- ============ POSTUP ============ -->
     <section class="section" id="postup">
+      <div class="bridge bridge--face" style="right:8%;--r:5deg" aria-hidden="true"><div class="bridge__in">
+        <div class="face"><img src="img/martin-portrait.webp" alt="" width="800" height="978" loading="lazy" /></div>
+        <span class="face__label">rád pomôžem</span>
+      </div></div>
       <div class="container">
         <div class="section-head section-head--center reveal">
           <span class="eyebrow">Ako spolupracujeme</span>
           <h2>Štyri kroky k pokoju<br />vo financiách.</h2>
+          <span class="script-accent">bez stresu a bez papierovania</span>
         </div>
 
         <ol class="steps">
@@ -355,7 +374,8 @@
     </section>
 
     <!-- ============ KALKULAČKA ============ -->
-    <section class="section section--dark grain" id="kalkulacka">
+    <section class="section section--dark section--panel grain" id="kalkulacka">
+      <span class="side-word" aria-hidden="true">Jasný plán</span>
       <div class="hero__glow hero__glow--3" aria-hidden="true"></div>
       <div class="container calc">
         <div class="calc__intro reveal">
@@ -437,10 +457,26 @@
 
     <!-- ============ FAQ ============ -->
     <section class="section" id="faq">
+      <div class="bridge bridge--pen" style="right:6%;--r:-16deg" aria-hidden="true"><div class="bridge__in">
+        <svg class="pen" viewBox="0 0 420 40">
+          <defs>
+            <linearGradient id="penBody" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#3a4a78"/><stop offset=".45" stop-color="#141c33"/><stop offset="1" stop-color="#05070c"/></linearGradient>
+            <linearGradient id="penGold" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fbe7b0"/><stop offset=".5" stop-color="#c9a24c"/><stop offset="1" stop-color="#7d5d1f"/></linearGradient>
+          </defs>
+          <path d="M18 20L64 11h8v18h-8z" fill="url(#penGold)" stroke="none"/>
+          <path d="M18 20l30-3" stroke="#5b4413" stroke-width="1"/>
+          <rect x="72" y="8" width="150" height="24" rx="4" fill="url(#penBody)" stroke="none"/>
+          <rect x="222" y="7" width="12" height="26" rx="2" fill="url(#penGold)" stroke="none"/>
+          <rect x="234" y="7" width="168" height="26" rx="12" fill="url(#penBody)" stroke="none"/>
+          <rect x="262" y="3" width="120" height="7" rx="3.5" fill="url(#penGold)" stroke="none"/>
+          <rect x="396" y="10" width="10" height="20" rx="5" fill="url(#penGold)" stroke="none"/>
+        </svg>
+      </div></div>
       <div class="container faq">
         <div class="section-head reveal">
           <span class="eyebrow">Časté otázky</span>
           <h2>Máte otázku?</h2>
+          <span class="script-accent">rád odpoviem</span>
           <p class="text-muted">Nenašli ste odpoveď? <a href="#kontakt" class="link">Napíšte mi.</a></p>
         </div>
 
