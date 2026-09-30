@@ -162,13 +162,6 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 .scroll-hint span { position: absolute; left: 50%; top: 8px; width: 4px; height: 8px; margin-left: -2px; background: #fff; border-radius: 4px; animation: scroll 1.8s infinite; }
 @keyframes scroll { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(14px); } }
 
-/* ---------- marquee ---------- */
-.marquee { background: var(--blue); color: #fff; overflow: hidden; padding: 1.15rem 0; position: relative; z-index: 3; }
-.marquee__track { display: flex; align-items: center; gap: 2.4rem; width: max-content; animation: marquee 32s linear infinite; }
-.marquee span { font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 700; letter-spacing: -.02em; }
-.marquee i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, .5); }
-@keyframes marquee { to { transform: translateX(-50%); } }
-
 /* ---------- sections ---------- */
 .section { padding: clamp(5rem, 10vw, 8.5rem) 0; position: relative; }
 .section--tight { padding-top: 0; }
