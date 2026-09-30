@@ -15,7 +15,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@500;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="img/martin-1200.webp" imagesrcset="img/martin-720.webp 720w, img/martin-1200.webp 1200w" imagesizes="(max-width: 900px) 90vw, 46vw" />
   <link rel="stylesheet" href="style.css" />
 
@@ -55,7 +55,7 @@
 
   <main>
     <!-- ============ HERO ============ -->
-    <section class="hero">
+    <section class="hero grain">
       <div class="hero__glow hero__glow--1" aria-hidden="true"></div>
       <div class="hero__glow hero__glow--2" aria-hidden="true"></div>
       <div class="hero__grid" aria-hidden="true"></div>
@@ -63,7 +63,7 @@
       <div class="container hero__inner">
         <div class="hero__copy">
           <span class="pill reveal"><span class="pill__dot"></span>Finančné plánovanie na mieru</span>
-          <h1 class="hero__title reveal">Vaše peniaze.<br /><span class="text-blue">Jasný plán.</span></h1>
+          <h1 class="hero__title reveal">Vaše peniaze.<br /><span class="scribble">Jasný plán.<svg class="scribble__line" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 17C58 7 132 5 196 11c38 4 70 7 100-3"/><path d="M40 21c60-6 130-8 210-4"/></svg></span></h1>
           <p class="hero__lead reveal">Investície, hypotéky, poistenie aj dôchodok. Všetko v jednom pláne, ktorý dáva zmysel dnes aj o 20 rokov.</p>
           <div class="hero__actions reveal">
             <a href="#kontakt" class="btn btn--primary">Nezáväzná konzultácia <span aria-hidden="true">→</span></a>
@@ -129,6 +129,23 @@
           <span class="trust__ic"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 11-2.3-5.7"/><path d="M20 4v4h-4"/></svg></span>
           <span><strong>Servis aj po podpise</strong><small>pravidelná kontrola plánu</small></span>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ SĽUB ============ -->
+    <section class="promise" aria-label="Čo vám môžem sľúbiť">
+      <svg class="promise__lines" viewBox="0 0 1440 560" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M1010 -20C1090 150 1260 270 1460 300" />
+        <path d="M1240 -20C1290 120 1370 210 1460 250" />
+        <path d="M-20 360C120 450 300 470 470 400" />
+        <path d="M-20 470C40 450 80 440 120 452" />
+        <path d="M280 580L520 390" />
+        <path d="M1180 580L1460 330" />
+      </svg>
+      <div class="container promise__inner">
+        <span class="eyebrow eyebrow--center reveal">Čo vám môžem úprimne sľúbiť</span>
+        <p class="promise__text reveal">Nesľúbim vám zázračné výnosy. Sľúbim vám <mark>jasný plán</mark>, férové porovnanie a&nbsp;to, že tu budem aj o&nbsp;10&nbsp;rokov.</p>
+        <p class="promise__note reveal">Každé odporúčanie vychádza z analýzy vašich zmlúv, príjmov a cieľov. Rozhodnutie je vždy na vás.</p>
       </div>
     </section>
 
@@ -328,14 +345,17 @@
               <li>Jeden plán pre všetky vaše financie</li>
               <li>Som tu aj po podpise, nie len pri ňom</li>
             </ul>
-            <a href="#kontakt" class="btn btn--dark reveal">Dohodnúť stretnutie <span aria-hidden="true">→</span></a>
+            <div class="about__sign reveal">
+              <span class="signature" aria-hidden="true">Martin Juriga</span>
+              <a href="#kontakt" class="btn btn--dark">Dohodnúť stretnutie <span aria-hidden="true">→</span></a>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ============ KALKULAČKA ============ -->
-    <section class="section section--dark" id="kalkulacka">
+    <section class="section section--dark grain" id="kalkulacka">
       <div class="hero__glow hero__glow--3" aria-hidden="true"></div>
       <div class="container calc">
         <div class="calc__intro reveal">
@@ -452,11 +472,15 @@
     <!-- ============ KONTAKT ============ -->
     <section class="section section--tight" id="kontakt">
       <div class="container">
-        <div class="contact">
+        <div class="contact grain">
           <div class="contact__copy">
             <span class="eyebrow eyebrow--light">Kontakt</span>
             <h2>Poďme sa<br />porozprávať.</h2>
             <p>Napíšte mi a do 24 hodín sa vám ozvem.</p>
+            <div class="hand-note" aria-hidden="true">
+              <span>stačí pár riadkov</span>
+              <svg viewBox="0 0 120 70"><path d="M6 10c30-4 62 6 80 26 8 9 13 18 16 26"/><path d="M92 54l10 10 6-14"/></svg>
+            </div>
             <div class="contact__direct">
               <a href="tel:+421900000000" class="contact__line">
                 <span class="contact__ic"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"/></svg></span>
@@ -500,7 +524,7 @@
   </main>
 
   <!-- ============ FOOTER ============ -->
-  <footer class="footer">
+  <footer class="footer grain">
     <div class="container">
       <div class="footer__top">
         <div class="footer__brand">
