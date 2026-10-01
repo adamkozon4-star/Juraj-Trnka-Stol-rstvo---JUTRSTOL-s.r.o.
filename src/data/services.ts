@@ -158,7 +158,7 @@ export const services: Record<string, ServiceContent> = {
       { q: 'Koľko stojí vstavaná skriňa na mieru?', a: 'Cena závisí od rozmerov, typu dverí (posuvné, otváracie, so zrkadlom) a vnútorného vybavenia. Po zameraní vám pripravíme presnú ponuku, orientačne vieme cenu odhadnúť aj z rozmerov.' },
       { q: 'Sú lepšie posuvné alebo otváracie dvere?', a: 'Posuvné dvere šetria miesto pred skriňou, otváracie ukážu celý obsah naraz. Poradíme vám podľa toho, koľko máte pred skriňou miesta a ako ju budete používať.' },
       { q: 'Dá sa skriňa urobiť do podkrovia so šikminou?', a: 'Áno. Šikminu presne zameriame a skriňu vyrobíme do uhla strechy, takže priestor využijete až po posledný centimeter.' },
-      { q: 'Môžem si skriňu navrhnúť online?', a: 'Áno, v našom konfigurátore si zvolíte rozmery, dekor aj vnútorné usporiadanie a návrh nám pošlete. My ho doladíme a pripravíme ponuku.' },
+      { q: 'Môžem si šatník navrhnúť online?', a: 'Áno, v našom konfigurátore si navrhnete šatník podľa svojho priestoru a návrh nám pošlete. My ho doladíme a pripravíme ponuku.' },
     ],
   },
 

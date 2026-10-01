@@ -3,12 +3,10 @@ import { Image } from 'astro:assets';
 import Icon from '../Icon.astro';
 import { photo } from '../../lib/images';
 
-// TODO: zosúladiť typy nábytku a popis s tým, čo konfigurátor naozaj ponúka
+// Konfigurátor zatiaľ ponúka kuchyne a šatníky – ďalšie typy pridať, keď budú hotové
 const types = [
   { key: 'kuchyna', label: 'Kuchyňa', icon: 'kitchen', w: 360, h: 250 },
-  { key: 'skrina', label: 'Skriňa', icon: 'wardrobe', w: 240, h: 260 },
   { key: 'satnik', label: 'Šatník', icon: 'hanger', w: 200, h: 250 },
-  { key: 'dalsi', label: 'Predsieň', icon: 'cube', w: 220, h: 240 },
 ] as const;
 
 // Ukážkové dekory pre náhľad (len ilustrácia)
@@ -60,7 +58,7 @@ const steps = [
           <span class="script mt-1 block text-copper">navrhnite si ho sami</span>
         </h2>
         <p class="mt-6 max-w-lg text-lg leading-relaxed text-stone">
-          Konfigurátor je jednoduchý nástroj, v ktorom si poskladáte kuchyňu, skriňu či šatník podľa svojho priestoru.
+          Konfigurátor je jednoduchý nástroj, v ktorom si poskladáte kuchyňu alebo šatník podľa svojho priestoru.
           Nepotrebujete žiadne znalosti. Hotový návrh nám pošlete a my ho premeníme na skutočný nábytok.
         </p>
 
@@ -140,15 +138,6 @@ const steps = [
                 <rect x="250" y="131" width="48" height="5" rx="1" class="hob" />
                 <rect x="98" y="203" width="282" height="7" class="plinth" />
               </g>
-              <!-- Skriňa -->
-              <g data-draw="skrina" class="draw">
-                <rect x="70" y="12" width="260" height="198" rx="2" class="fr" />
-                <line x1="135" y1="12" x2="135" y2="210" class="ln" /><line x1="200" y1="12" x2="200" y2="210" class="ln" /><line x1="265" y1="12" x2="265" y2="210" class="ln" />
-                <line x1="70" y1="50" x2="330" y2="50" class="ln" />
-                <line x1="129" y1="110" x2="129" y2="140" class="hd" /><line x1="141" y1="110" x2="141" y2="140" class="hd" />
-                <line x1="259" y1="110" x2="259" y2="140" class="hd" /><line x1="271" y1="110" x2="271" y2="140" class="hd" />
-                <rect x="70" y="210" width="260" height="6" class="plinth" />
-              </g>
               <!-- Šatník -->
               <g data-draw="satnik" class="draw">
                 <rect x="80" y="12" width="240" height="204" rx="2" class="carcass" />
@@ -157,17 +146,6 @@ const steps = [
                 <line x1="160" y1="60" x2="240" y2="60" class="ln" /><line x1="160" y1="100" x2="240" y2="100" class="ln" /><line x1="160" y1="140" x2="240" y2="140" class="ln" />
                 <rect x="160" y="150" width="80" height="22" class="fr" /><rect x="160" y="172" width="80" height="22" class="fr" /><rect x="160" y="194" width="80" height="22" class="fr" />
                 <line x1="84" y1="110" x2="156" y2="110" class="ln" /><line x1="244" y1="170" x2="316" y2="170" class="ln" />
-              </g>
-              <!-- Predsieň -->
-              <g data-draw="dalsi" class="draw">
-                <rect x="40" y="12" width="110" height="204" rx="2" class="fr" />
-                <line x1="95" y1="12" x2="95" y2="216" class="ln" /><line x1="40" y1="50" x2="150" y2="50" class="ln" />
-                <rect x="160" y="12" width="200" height="120" class="wall" />
-                {[190, 225, 260, 295, 330].map((x) => <circle cx={x} cy="40" r="4" class="hook" />)}
-                <rect x="160" y="150" width="200" height="10" rx="2" class="top" />
-                <rect x="160" y="160" width="200" height="50" class="fr" />
-                <line x1="226" y1="160" x2="226" y2="210" class="ln" /><line x1="293" y1="160" x2="293" y2="210" class="ln" />
-                <rect x="160" y="210" width="200" height="6" class="plinth" />
               </g>
             </svg>
             <div class="dim-w mx-auto mt-1 flex items-center gap-2 text-[11px] font-semibold text-copper tabular-nums" aria-hidden="true">
@@ -345,7 +323,8 @@ const steps = [
     fill: #1f1b18;
   }
   .carcass {
-    fill: rgb(255 255 255 / 0.7);
+    fill: color-mix(in srgb, var(--front) 45%, white);
+    transition: fill 0.35s;
     stroke: #3b2f25;
     stroke-width: 1.2;
   }

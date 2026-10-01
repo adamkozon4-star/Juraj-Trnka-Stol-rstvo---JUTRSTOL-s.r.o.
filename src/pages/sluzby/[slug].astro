@@ -26,7 +26,7 @@ if (!content) throw new Error(`Chýba obsah v src/data/services.ts pre „${cate
 const items = projectsInCategory(category.slug);
 const others = categories.filter((c) => c.slug !== category.slug);
 const lower = category.title.charAt(0).toLowerCase() + category.title.slice(1);
-const withConfigurator = ['kuchyne', 'skrine-a-satniky', 'predsiene'].includes(category.slug);
+const withConfigurator = ['kuchyne', 'skrine-a-satniky'].includes(category.slug);
 
 const pageUrl = new URL(`/sluzby/${category.slug}`, Astro.site).href;
 const schema = [

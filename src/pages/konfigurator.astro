@@ -6,7 +6,7 @@ import Icon from '../components/Icon.astro';
 import { site, telHref, configuratorHref } from '../data/site';
 
 const steps = [
-  { icon: 'cube', title: 'Vyberte nábytok', text: 'Kuchyňa, skriňa, šatník a ďalšie.' },
+  { icon: 'cube', title: 'Vyberte nábytok', text: 'Kuchyňa alebo šatník, ďalšie typy pribudnú.' },
   { icon: 'ruler', title: 'Nastavte rozmery a dekor', text: 'Presne podľa vášho priestoru.' },
   { icon: 'handshake', title: 'Pošlite nám návrh', text: 'Ozveme sa s presnou ponukou.' },
 ] as const;
@@ -14,13 +14,13 @@ const steps = [
 
 <Base
   title="Online konfigurátor nábytku"
-  description="Navrhnite si kuchyňu, skriňu či šatník online a pošlite nám návrh na cenovú ponuku. Stolárstvo JUTRSTOL, Gbely."
+  description="Navrhnite si kuchyňu alebo šatník online a pošlite nám návrh na cenovú ponuku. Stolárstvo JUTRSTOL, Gbely."
   overlayHeader
 >
   <PageHeader
     eyebrow="Online konfigurátor"
     title="Navrhnite si nábytok online"
-    lead="Kuchyne, skrine, šatníky a ďalší nábytok. Poskladajte si ho podľa seba a hotový návrh nám pošlite. Presnú ponuku pripravíme po zameraní."
+    lead="Kuchyne a šatníky. Poskladajte si ich podľa seba a hotový návrh nám pošlite. Presnú ponuku pripravíme po zameraní."
     image="kuchyne/kuchyna-dub-ostrov-04-ostrov-sirka.jpg"
     crumbs={[{ href: '/konfigurator', label: 'Konfigurátor' }]}
   />
