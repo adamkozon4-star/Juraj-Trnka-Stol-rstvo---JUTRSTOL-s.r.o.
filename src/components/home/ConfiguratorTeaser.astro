@@ -5,11 +5,20 @@ import { photo } from '../../lib/images';
 
 // TODO: zosúladiť typy nábytku a popis s tým, čo konfigurátor naozaj ponúka
 const types = [
-  { label: 'Kuchyňa', icon: 'kitchen', note: 'do L, U, s ostrovom', img: 'kuchyne/kuchyna-kasmir-dub-ostrov-lamely-jedalen-00-HERO.webp' },
-  { label: 'Skriňa', icon: 'wardrobe', note: 'vstavaná aj voľná', img: 'skrine-satniky/skrina-detska-izba-dub-siva-nika-02.jpg' },
-  { label: 'Šatník', icon: 'hanger', note: 'police, tyče, zásuvky', img: 'skrine-satniky/satnik-walk-in-01.jpg' },
-  { label: 'Ďalší nábytok', icon: 'cube', note: 'predsiene, komody…', img: 'predsiene/predsien-vstavana-skrina-led-01.jpg' },
+  { key: 'kuchyna', label: 'Kuchyňa', icon: 'kitchen', w: 360, h: 250 },
+  { key: 'skrina', label: 'Skriňa', icon: 'wardrobe', w: 240, h: 260 },
+  { key: 'satnik', label: 'Šatník', icon: 'hanger', w: 200, h: 250 },
+  { key: 'dalsi', label: 'Predsieň', icon: 'cube', w: 220, h: 240 },
 ] as const;
+
+// Ukážkové dekory pre náhľad (len ilustrácia)
+const decors = [
+  { name: 'Dub prírodný', color: '#d9b48a' },
+  { name: 'Orech', color: '#7a5236' },
+  { name: 'Kašmír', color: '#d8cfc2' },
+  { name: 'Biela matná', color: '#f4f2ee' },
+  { name: 'Antracit', color: '#4a4b4d' },
+];
 
 const benefits = [
   { icon: 'clock', title: 'Kedykoľvek, aj večer', text: 'Navrhujete z pohodlia domova, bez termínu a čakania.' },
@@ -45,10 +54,10 @@ const steps = [
   <div class="container-x relative">
     <div class="grid items-center gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
       <div data-reveal>
-        <p class="eyebrow">Online konfigurátor</p>
+        <p class="eyebrow">Nástroj zadarmo</p>
         <h2 class="mt-5 text-4xl leading-[1.02] font-semibold sm:text-5xl">
-          Navrhnite si nábytok sami
-          <span class="script mt-1 block text-copper">my ho vyrobíme</span>
+          Online konfigurátor nábytku
+          <span class="script mt-1 block text-copper">navrhnite si ho sami</span>
         </h2>
         <p class="mt-6 max-w-lg text-lg leading-relaxed text-stone">
           Konfigurátor je jednoduchý nástroj, v ktorom si poskladáte kuchyňu, skriňu či šatník podľa svojho priestoru.
@@ -82,61 +91,117 @@ const steps = [
         </div>
       </div>
 
-      <div class="relative" data-reveal style="--d:120ms">
-        <div class="picker rounded-[2rem] p-3 sm:p-4">
-          <div class="flex items-center gap-3 px-2 pt-1 pb-4">
+      <div class="relative min-w-0" data-reveal style="--d:120ms">
+        <div class="cfg-app overflow-hidden rounded-[1.75rem]">
+          <!-- Horná lišta aplikácie -->
+          <div class="flex items-center gap-3 border-b border-line bg-white/80 px-4 py-3">
             <span class="flex gap-1.5" aria-hidden="true">
               <i class="h-2.5 w-2.5 rounded-full bg-[#e4776a]"></i><i class="h-2.5 w-2.5 rounded-full bg-[#e8c05a]"></i><i
                 class="h-2.5 w-2.5 rounded-full bg-[#7fbf7a]"></i>
             </span>
-            <p class="flex-1 text-sm font-semibold">Čo si chcete navrhnúť?</p>
-                      </div>
-          <ul class="grid grid-cols-2 gap-3">
-            {
-              types.map((t, i) => (
-                <li>
-                  <a href="/konfigurator" class="tile group relative block overflow-hidden rounded-[1.4rem]">
-                    <Image
-                      src={photo(t.img)}
-                      alt=""
-                      widths={[320, 480]}
-                      sizes="(min-width: 1024px) 22vw, 45vw"
-                      class="aspect-[5/4] w-full object-cover transition duration-700 group-hover:scale-105"
-                    />
-                    <span class="absolute inset-0 bg-gradient-to-t from-walnut/90 via-walnut/20 to-transparent" />
-                    <span class="absolute inset-x-3 bottom-3 flex items-center gap-2.5 text-white">
-                      <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-copper shadow-md">
-                        <Icon name={t.icon} size={18} />
-                      </span>
-                      <span class="min-w-0 flex-1 leading-tight">
-                        <b class="block font-semibold">{t.label}</b>
-                        <span class="hidden truncate text-xs text-white/70 sm:block">{t.note}</span>
-                      </span>
-                      <span class="start inline-flex items-center gap-1 rounded-full bg-copper px-2.5 py-1 text-[11px] font-semibold">
-                        Začať <Icon name="arrow" size={12} />
-                      </span>
-                    </span>
-                    {i === 0 && (
-                      <span class="absolute top-3 left-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-ink backdrop-blur">
-                        Najčastejšie
-                      </span>
-                    )}
-                  </a>
+            <span class="flex items-center gap-1.5 text-[13px] font-semibold">
+              <Icon name="cube" size={15} class="text-copper" /> Konfigurátor nábytku
+            </span>
+            <ol class="ml-auto hidden items-center gap-1 text-[11px] font-semibold sm:flex" aria-label="Kroky konfigurátora">
+              {['Typ', 'Rozmery', 'Dekor', 'Odoslať'].map((s, i) => (
+                <li class:list={['cfg-step rounded-full px-2.5 py-1', i < 2 && 'is-done', i === 2 && 'is-active']}>
+                  {i + 1}. {s}
                 </li>
-              ))
-            }
-          </ul>
+              ))}
+            </ol>
+          </div>
+
+          <!-- Výber typu nábytku -->
+          <div class="flex gap-1.5 overflow-x-auto bg-white/60 px-3 py-2.5" role="tablist" aria-label="Typ nábytku">
+            {types.map((t, i) => (
+              <button type="button" role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-type={t.key} data-w={t.w} data-h={t.h} class="cfg-tab">
+                <Icon name={t.icon} size={16} /> {t.label}
+              </button>
+            ))}
+          </div>
+
+          <!-- Plátno s nákresom -->
+          <div class="cfg-canvas relative px-5 pt-6 pb-4 sm:px-8" style="--front:#d9b48a">
+            <span class="dim-h absolute top-6 bottom-12 left-2 flex items-center sm:left-3" aria-hidden="true">
+              <span class="dim-val -rotate-90 text-[11px] font-semibold text-copper tabular-nums"><b data-h-val>250</b>&nbsp;cm</span>
+            </span>
+            <svg class="w-full" viewBox="0 0 400 230" aria-label="Náhľad nábytku v konfigurátore" role="img">
+              <!-- Kuchyňa -->
+              <g data-draw="kuchyna" class="draw is-shown">
+                <rect x="20" y="20" width="70" height="190" rx="2" class="fr" />
+                <line x1="20" y1="80" x2="90" y2="80" class="ln" /><line x1="20" y1="140" x2="90" y2="140" class="ln" />
+                <rect x="98" y="20" width="282" height="56" rx="2" class="fr" />
+                <line x1="168" y1="20" x2="168" y2="76" class="ln" /><line x1="239" y1="20" x2="239" y2="76" class="ln" /><line x1="310" y1="20" x2="310" y2="76" class="ln" />
+                <rect x="98" y="76" width="282" height="56" class="wall" />
+                <rect x="96" y="136" width="286" height="7" rx="1.5" class="top" />
+                <rect x="98" y="143" width="282" height="60" class="fr" />
+                <line x1="168" y1="143" x2="168" y2="203" class="ln" /><line x1="239" y1="143" x2="239" y2="203" class="ln" /><line x1="310" y1="143" x2="310" y2="203" class="ln" />
+                <line x1="239" y1="163" x2="310" y2="163" class="ln" /><line x1="239" y1="183" x2="310" y2="183" class="ln" />
+                <rect x="250" y="131" width="48" height="5" rx="1" class="hob" />
+                <rect x="98" y="203" width="282" height="7" class="plinth" />
+              </g>
+              <!-- Skriňa -->
+              <g data-draw="skrina" class="draw">
+                <rect x="70" y="12" width="260" height="198" rx="2" class="fr" />
+                <line x1="135" y1="12" x2="135" y2="210" class="ln" /><line x1="200" y1="12" x2="200" y2="210" class="ln" /><line x1="265" y1="12" x2="265" y2="210" class="ln" />
+                <line x1="70" y1="50" x2="330" y2="50" class="ln" />
+                <line x1="129" y1="110" x2="129" y2="140" class="hd" /><line x1="141" y1="110" x2="141" y2="140" class="hd" />
+                <line x1="259" y1="110" x2="259" y2="140" class="hd" /><line x1="271" y1="110" x2="271" y2="140" class="hd" />
+                <rect x="70" y="210" width="260" height="6" class="plinth" />
+              </g>
+              <!-- Šatník -->
+              <g data-draw="satnik" class="draw">
+                <rect x="80" y="12" width="240" height="204" rx="2" class="carcass" />
+                <line x1="160" y1="12" x2="160" y2="216" class="ln" /><line x1="240" y1="12" x2="240" y2="216" class="ln" />
+                <line x1="84" y1="40" x2="156" y2="40" class="rod" /><line x1="244" y1="40" x2="316" y2="40" class="rod" /><line x1="84" y1="128" x2="156" y2="128" class="rod" />
+                <line x1="160" y1="60" x2="240" y2="60" class="ln" /><line x1="160" y1="100" x2="240" y2="100" class="ln" /><line x1="160" y1="140" x2="240" y2="140" class="ln" />
+                <rect x="160" y="150" width="80" height="22" class="fr" /><rect x="160" y="172" width="80" height="22" class="fr" /><rect x="160" y="194" width="80" height="22" class="fr" />
+                <line x1="84" y1="110" x2="156" y2="110" class="ln" /><line x1="244" y1="170" x2="316" y2="170" class="ln" />
+              </g>
+              <!-- Predsieň -->
+              <g data-draw="dalsi" class="draw">
+                <rect x="40" y="12" width="110" height="204" rx="2" class="fr" />
+                <line x1="95" y1="12" x2="95" y2="216" class="ln" /><line x1="40" y1="50" x2="150" y2="50" class="ln" />
+                <rect x="160" y="12" width="200" height="120" class="wall" />
+                {[190, 225, 260, 295, 330].map((x) => <circle cx={x} cy="40" r="4" class="hook" />)}
+                <rect x="160" y="150" width="200" height="10" rx="2" class="top" />
+                <rect x="160" y="160" width="200" height="50" class="fr" />
+                <line x1="226" y1="160" x2="226" y2="210" class="ln" /><line x1="293" y1="160" x2="293" y2="210" class="ln" />
+                <rect x="160" y="210" width="200" height="6" class="plinth" />
+              </g>
+            </svg>
+            <div class="dim-w mx-auto mt-1 flex items-center gap-2 text-[11px] font-semibold text-copper tabular-nums" aria-hidden="true">
+              <span class="h-px flex-1 bg-copper/50"></span><span><b data-w-val>360</b>&nbsp;cm</span><span class="h-px flex-1 bg-copper/50"></span>
+            </div>
+          </div>
+
+          <!-- Ovládanie: rozmery a dekor -->
+          <div class="grid gap-4 border-t border-line bg-white/80 p-4 sm:grid-cols-[auto_1fr] sm:items-end">
+            <div class="flex gap-2">
+              <label class="cfg-field">Šírka<span><b data-w-val>360</b> cm</span></label>
+              <label class="cfg-field">Výška<span><b data-h-val>250</b> cm</span></label>
+            </div>
+            <div>
+              <p class="text-[11px] font-semibold tracking-[0.12em] text-stone uppercase">Dekor: <span class="text-ink normal-case tracking-normal" data-decor-name>Dub prírodný</span></p>
+              <div class="mt-2 flex gap-2">
+                {decors.map((d, i) => (
+                  <button type="button" class="swatch" style={`--c:${d.color}`} data-color={d.color} data-name={d.name} aria-label={d.name} aria-pressed={i === 0 ? 'true' : 'false'} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <a href="/konfigurator" class="group flex items-center justify-between gap-4 bg-walnut px-5 py-4 text-white transition hover:bg-ink">
+            <span class="leading-tight">
+              <b class="block font-semibold">Pokračovať v konfigurátore</b>
+              <span class="text-[13px] text-white/60">Toto je len ukážka – celý návrh si spravíte tu</span>
+            </span>
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-copper transition group-hover:translate-x-1">
+              <Icon name="arrow" size={18} />
+            </span>
+          </a>
         </div>
 
-        <div class="float-card absolute -top-6 -right-3 hidden items-center gap-3 p-3 pr-5 sm:flex lg:-right-8">
-          <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-copper text-white">
-            <Icon name="ruler" size={19} />
-          </span>
-          <span class="text-sm leading-tight">
-            <b class="block">Presná ponuka</b>
-            <span class="text-stone">po zameraní u vás doma</span>
-          </span>
-        </div>
       </div>
     </div>
 
@@ -182,10 +247,9 @@ const steps = [
   .rings {
     color: rgb(196 115 58 / 0.1);
   }
-  .picker,
+  .cfg-app,
   .benefit,
-  .step,
-  .float-card {
+  .step {
     background: rgb(255 255 255 / 0.62);
     backdrop-filter: blur(18px) saturate(1.3);
     box-shadow:
@@ -193,40 +257,168 @@ const steps = [
       0 0 0 1px rgb(29 26 23 / 0.05),
       0 24px 50px -32px rgb(29 26 23 / 0.45);
   }
-  .picker {
+  .cfg-app {
+    background: rgb(255 255 255 / 0.55);
     box-shadow:
       inset 0 0 0 1px rgb(255 255 255 / 0.8),
-      0 0 0 1px rgb(29 26 23 / 0.06),
+      0 0 0 1px rgb(29 26 23 / 0.08),
       0 50px 90px -50px rgb(29 26 23 / 0.6);
   }
-  .float-card {
-    border-radius: 1.4rem;
-    background: rgb(255 255 255 / 0.85);
+  .cfg-step {
+    color: var(--color-stone);
+    background: rgb(29 26 23 / 0.05);
   }
-  .tile {
-    transition:
-      transform 0.4s var(--ease-out-soft),
-      box-shadow 0.4s;
+  .cfg-step.is-done {
+    color: var(--color-copper);
   }
-  .tile:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 24px 40px -24px rgb(29 26 23 / 0.7);
+  .cfg-step.is-active {
+    color: white;
+    background: var(--color-copper);
   }
-  .start {
-    opacity: 0;
-    transform: translateX(-4px);
-    transition:
-      opacity 0.3s,
-      transform 0.3s;
+  .cfg-tab {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 0.75rem;
+    padding: 0.45rem 0.8rem;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-stone);
+    transition: background 0.2s, color 0.2s;
   }
-  .tile:hover .start,
-  .tile:focus-visible .start {
-    opacity: 1;
-    transform: none;
+  .cfg-tab:hover {
+    background: rgb(29 26 23 / 0.05);
+    color: var(--color-ink);
   }
-  @media (hover: none) {
-    .start {
-      display: none;
+  .cfg-tab[aria-selected='true'] {
+    background: var(--color-walnut);
+    color: var(--color-oak);
+  }
+  .cfg-canvas {
+    background-color: #fbfaf7;
+    background-image:
+      linear-gradient(rgb(196 115 58 / 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(196 115 58 / 0.07) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+  .draw {
+    display: none;
+  }
+  .draw.is-shown {
+    display: inline;
+    animation: draw-in 0.45s var(--ease-out-soft);
+  }
+  @keyframes draw-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
     }
   }
+  .fr {
+    fill: var(--front);
+    stroke: #3b2f25;
+    stroke-width: 1.2;
+    transition: fill 0.35s;
+  }
+  .ln {
+    stroke: #3b2f25;
+    stroke-width: 1.1;
+  }
+  .hd {
+    stroke: #3b2f25;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+  }
+  .wall {
+    fill: rgb(196 115 58 / 0.06);
+    stroke: rgb(59 47 37 / 0.25);
+    stroke-dasharray: 4 4;
+  }
+  .top {
+    fill: #3b2f25;
+  }
+  .plinth {
+    fill: #2a221a;
+  }
+  .hob {
+    fill: #1f1b18;
+  }
+  .carcass {
+    fill: rgb(255 255 255 / 0.7);
+    stroke: #3b2f25;
+    stroke-width: 1.2;
+  }
+  .rod {
+    stroke: var(--color-copper);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+  }
+  .hook {
+    fill: var(--color-copper);
+  }
+  .cfg-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-stone);
+  }
+  .cfg-field span {
+    min-width: 5.5rem;
+    border-radius: 0.65rem;
+    background: white;
+    padding: 0.5rem 0.75rem;
+    font-size: 14px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-ink);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+  }
+  .swatch {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 9999px;
+    background: var(--c);
+    box-shadow:
+      inset 0 0 0 1px rgb(29 26 23 / 0.15),
+      0 0 0 2px white;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .swatch:hover {
+    transform: scale(1.08);
+  }
+  .swatch[aria-pressed='true'] {
+    box-shadow:
+      inset 0 0 0 1px rgb(29 26 23 / 0.15),
+      0 0 0 2px white,
+      0 0 0 4px var(--color-copper);
+  }
 </style>
+
+<script>
+  // Interaktívna ukážka konfigurátora: prepínanie typu a dekoru
+  document.addEventListener('astro:page-load', () => {
+    const app = document.querySelector<HTMLElement>('.cfg-app');
+    if (!app) return;
+    const canvas = app.querySelector<HTMLElement>('.cfg-canvas')!;
+    app.querySelectorAll<HTMLButtonElement>('.cfg-tab').forEach((tab) =>
+      tab.addEventListener('click', () => {
+        app.querySelectorAll('.cfg-tab').forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+        app.querySelectorAll('.draw').forEach((d) => d.classList.toggle('is-shown', (d as HTMLElement).dataset.draw === tab.dataset.type));
+        app.querySelectorAll('[data-w-val]').forEach((el) => (el.textContent = tab.dataset.w!));
+        app.querySelectorAll('[data-h-val]').forEach((el) => (el.textContent = tab.dataset.h!));
+      }),
+    );
+    app.querySelectorAll<HTMLButtonElement>('.swatch').forEach((sw) =>
+      sw.addEventListener('click', () => {
+        app.querySelectorAll('.swatch').forEach((s) => s.setAttribute('aria-pressed', String(s === sw)));
+        canvas.style.setProperty('--front', sw.dataset.color!);
+        app.querySelector('[data-decor-name]')!.textContent = sw.dataset.name!;
+      }),
+    );
+  });
+</script>
