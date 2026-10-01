@@ -32,6 +32,10 @@ export const site = {
   configurator: {
     url: 'https://stolar-konfigurator.vercel.app/',
     client: 'demo',
+    // Parameter, ktorým konfigurátor otvorí rovno konkrétny typ (napr. &typ=satnik).
+    // Musí sedieť s tým, čo číta aplikácia konfigurátora.
+    typeParam: 'typ',
+    types: ['kuchyna', 'satnik'],
   },
 };
 

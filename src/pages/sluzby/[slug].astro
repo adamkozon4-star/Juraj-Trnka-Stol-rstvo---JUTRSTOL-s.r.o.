@@ -26,7 +26,9 @@ if (!content) throw new Error(`Chýba obsah v src/data/services.ts pre „${cate
 const items = projectsInCategory(category.slug);
 const others = categories.filter((c) => c.slug !== category.slug);
 const lower = category.title.charAt(0).toLowerCase() + category.title.slice(1);
-const withConfigurator = ['kuchyne', 'skrine-a-satniky'].includes(category.slug);
+// Typ, na ktorom sa konfigurátor otvorí (len pre služby, ktoré konfigurátor podporuje)
+const configuratorType = ({ kuchyne: 'kuchyna', 'skrine-a-satniky': 'satnik' } as Record<string, string>)[category.slug];
+const withConfigurator = Boolean(configuratorType);
 
 const pageUrl = new URL(`/sluzby/${category.slug}`, Astro.site).href;
 const schema = [
@@ -106,7 +108,7 @@ const schema = [
         <a href={telHref} class="btn-outline"><Icon name="phone" size={18} /> {site.phoneDisplay}</a>
         {
           withConfigurator && (
-            <a href="/konfigurator" class="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-stone hover:text-copper">
+            <a href={`/konfigurator?typ=${configuratorType}`} class="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-stone hover:text-copper">
               <Icon name="cube" size={17} class="text-copper" /> Alebo si nábytok navrhnite sami v konfigurátore
             </a>
           )

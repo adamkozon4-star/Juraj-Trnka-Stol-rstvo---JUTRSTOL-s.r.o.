@@ -169,7 +169,7 @@ const steps = [
             </div>
           </div>
 
-          <a href="/konfigurator" class="group flex items-center justify-between gap-4 bg-walnut px-5 py-4 text-white transition hover:bg-ink">
+          <a href={`/konfigurator?typ=${types[0].key}`} class="cfg-continue group flex items-center justify-between gap-4 bg-walnut px-5 py-4 text-white transition hover:bg-ink">
             <span class="leading-tight">
               <b class="block font-semibold">Pokračovať v konfigurátore</b>
               <span class="text-[13px] text-white/60">Toto je len ukážka – celý návrh si spravíte tu</span>
@@ -390,6 +390,7 @@ const steps = [
         app.querySelectorAll('.draw').forEach((d) => d.classList.toggle('is-shown', (d as HTMLElement).dataset.draw === tab.dataset.type));
         app.querySelectorAll('[data-w-val]').forEach((el) => (el.textContent = tab.dataset.w!));
         app.querySelectorAll('[data-h-val]').forEach((el) => (el.textContent = tab.dataset.h!));
+        app.querySelector<HTMLAnchorElement>('.cfg-continue')!.href = `/konfigurator?typ=${tab.dataset.type}`;
       }),
     );
     app.querySelectorAll<HTMLButtonElement>('.swatch').forEach((sw) =>

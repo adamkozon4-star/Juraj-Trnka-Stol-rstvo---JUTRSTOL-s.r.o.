@@ -65,6 +65,7 @@ const steps = [
             <p class="flex-1 truncate text-sm font-semibold">Konfigurátor nábytku JUTRSTOL</p>
             <a
               href={configuratorHref}
+              data-cfg-link
               target="_blank"
               rel="noopener"
               class="inline-flex items-center gap-2 rounded-xl bg-walnut px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-copper"
@@ -80,6 +81,9 @@ const steps = [
             <iframe
               id="cfg-frame"
               src={configuratorHref}
+              data-base={configuratorHref}
+              data-param={site.configurator.typeParam}
+              data-types={site.configurator.types.join(',')}
               title="Konfigurátor nábytku JUTRSTOL"
               class="relative block h-[82svh] min-h-[640px] w-full"
               allow="fullscreen; clipboard-write"
@@ -88,7 +92,7 @@ const steps = [
         </div>
         <p class="mt-4 text-center text-sm text-stone">
           Na mobile je pohodlnejšie{' '}
-          <a href={configuratorHref} target="_blank" rel="noopener" class="font-semibold text-ink underline decoration-oak underline-offset-4"
+          <a href={configuratorHref} data-cfg-link target="_blank" rel="noopener" class="font-semibold text-ink underline decoration-oak underline-offset-4"
             >otvoriť konfigurátor na celú obrazovku</a
           >. Radšej voláte? <a href={telHref} class="font-semibold text-ink">{site.phoneDisplay}</a>
         </p>
@@ -169,7 +173,16 @@ const steps = [
     tabs.forEach((t) => t.addEventListener('click', () => select(t)));
     if (location.hash === '#dopyt') select(tabs[1]);
 
-    const frame = document.getElementById('cfg-frame');
+    const frame = document.getElementById('cfg-frame') as HTMLIFrameElement | null;
+
+    // ?typ=satnik z úvodnej stránky → konfigurátor sa otvorí rovno na danom type
+    const typ = new URLSearchParams(location.search).get('typ');
+    if (frame && typ && frame.dataset.types!.split(',').includes(typ)) {
+      const url = new URL(frame.dataset.base!);
+      url.searchParams.set(frame.dataset.param!, typ);
+      frame.src = url.href;
+      document.querySelectorAll<HTMLAnchorElement>('[data-cfg-link]').forEach((a) => (a.href = url.href));
+    }
     frame?.addEventListener('load', () => document.querySelector<HTMLElement>('.cfg-loading')?.remove());
   });
 </script>
