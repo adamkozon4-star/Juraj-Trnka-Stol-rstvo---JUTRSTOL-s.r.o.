@@ -53,9 +53,9 @@ const audience = [
           vášho priestoru.
         </p>
         <div class="mt-9 flex flex-col gap-3 sm:flex-row lg:justify-end" data-reveal style="--d:240ms">
-          <a href="#kontakt" class="btn-primary flex-col !items-start !gap-0 !px-6 !py-3 text-left">
-            <span class="flex items-center gap-2 text-[15px]">Nezáväzná cenová ponuka <Icon name="arrow" size={17} /></span>
-            <span class="text-xs font-normal text-white/75">návrh a cena pre váš priestor</span>
+          <a href="/konfigurator" class="btn-primary flex-col !items-start !gap-0 !px-6 !py-3 text-left">
+            <span class="flex items-center gap-2 text-[15px]"><Icon name="cube" size={17} /> Nakonfigurujte si nábytok <Icon name="arrow" size={17} /></span>
+            <span class="text-xs font-normal text-white/75">kuchyňa alebo šatník v 3D, zadarmo</span>
           </a>
           <a href={telHref} class="btn-ghost !px-6">
             <Icon name="phone" size={18} class="text-oak" />
@@ -63,17 +63,17 @@ const audience = [
           </a>
         </div>
         <a
-          href="/konfigurator"
+          href="#kontakt"
           class="cfg-link group mt-4 flex w-full items-center sm:inline-flex sm:w-auto gap-3 rounded-[1.1rem] bg-white/10 py-2 pr-4 pl-2 text-left ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/15"
           data-reveal
           style="--d:300ms"
         >
           <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-oak/20 text-oak">
-            <Icon name="cube" size={20} />
+            <Icon name="mail" size={20} />
           </span>
           <span class="leading-tight">
-            <b class="block text-[15px] font-semibold">Navrhnite si nábytok sami</b>
-            <span class="text-[13px] text-white/70">online konfigurátor kuchýň a šatníkov</span>
+            <b class="block text-[15px] font-semibold">Nezáväzná cenová ponuka</b>
+            <span class="text-[13px] text-white/70">napíšte nám, ozveme sa a prídeme zamerať</span>
           </span>
           <Icon name="arrow" size={17} class="ml-auto text-oak transition group-hover:translate-x-1 sm:ml-1" />
         </a>
