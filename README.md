@@ -29,10 +29,15 @@ Formulár posiela dopyty cez [Web3Forms](https://web3forms.com) (bezplatný plá
 
 ## Konfigurátor
 
-Stránka `/konfigurator` vkladá samostatnú aplikáciu konfigurátora (kuchyne, skrine a ďalší nábytok) a má prepínač na obyčajný dopyt bez konfigurátora. Úvodná stránka na ňu odkazuje zo sekcie „Online konfigurátor“.
+Stránka `/konfigurator` vkladá 3D konfigurátor (samostatná aplikácia na stolar-konfigurator.vercel.app, profil `klient=jutrstol`). Pod ním je obyčajný dopyt (`/konfigurator#dopyt`).
 
-- Adresa konfigurátora a identifikátor klienta sú v `src/data/site.ts` (`configurator.url`, `configurator.client`). Teraz je nastavené `klient=demo`, po vytvorení profilu pre JUTRSTOL ho treba zmeniť.
-- Aplikácia konfigurátora musí povoliť vloženie do iného webu (nesmie posielať hlavičku `X-Frame-Options: DENY` ani `frame-ancestors` bez domény webu). Pre istotu je pri nej aj tlačidlo „Na celú obrazovku“.
+- Nastavenia sú v `src/data/site.ts` → `configurator` (adresa, klient, parameter `typ` a povolené typy `kuchyna`, `satnik`).
+- `/konfigurator?typ=satnik` otvorí rovno šatník (parameter ide ďalej do iframu). Bez typu sa otvorí kuchyňa.
+- Web počúva správy z konfigurátora (overuje pôvod `https://stolar-konfigurator.vercel.app`):
+  - `konfigurator:vyska` – iframe sa zväčší, nikdy nie pod výšku okna,
+  - `konfigurator:odoslane` – zapíše konverziu (`generate_lead` pre Google Analytics, `Lead` pre Meta Pixel), ak sú na webe nasadené.
+- Dopyt posiela e-mailom priamo konfigurátor, web ho nespracúva.
+- Na skúšanie pridaj do adresy iframu `&demo=1`, dopyt sa vtedy naozaj neodošle.
 
 ## Nasadenie
 

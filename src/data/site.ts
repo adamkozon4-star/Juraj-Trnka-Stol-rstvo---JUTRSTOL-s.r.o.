@@ -32,10 +32,9 @@ export const site = {
   // Kľúč z https://web3forms.com (zadarmo). Bez neho formulár ponúkne telefonát.
   web3formsKey: '',
   // Online konfigurátor (samostatná aplikácia). `klient` určuje nastavenia pre konkrétne stolárstvo.
-  // TODO: po nastavení vlastného profilu zmeniť 'demo' na identifikátor JUTRSTOL.
   configurator: {
     url: 'https://stolar-konfigurator.vercel.app/',
-    client: 'demo',
+    client: 'jutrstol',
     // Parameter, ktorým konfigurátor otvorí rovno konkrétny typ (napr. &typ=satnik).
     // Musí sedieť s tým, čo číta aplikácia konfigurátora.
     typeParam: 'typ',

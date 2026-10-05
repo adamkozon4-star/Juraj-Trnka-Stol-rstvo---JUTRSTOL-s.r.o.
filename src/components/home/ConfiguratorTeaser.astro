@@ -79,7 +79,7 @@ const steps = [
         </ul>
 
         <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <a href="/konfigurator" class="btn-primary !px-7 !py-4">
+          <a href={`/konfigurator?typ=${types[0].key}`} class="cfg-continue btn-primary !px-7 !py-4">
             <Icon name="cube" size={18} /> Otvoriť konfigurátor
           </a>
           <p class="text-sm text-stone sm:ml-2">
@@ -390,7 +390,7 @@ const steps = [
         app.querySelectorAll('.draw').forEach((d) => d.classList.toggle('is-shown', (d as HTMLElement).dataset.draw === tab.dataset.type));
         app.querySelectorAll('[data-w-val]').forEach((el) => (el.textContent = tab.dataset.w!));
         app.querySelectorAll('[data-h-val]').forEach((el) => (el.textContent = tab.dataset.h!));
-        app.querySelector<HTMLAnchorElement>('.cfg-continue')!.href = `/konfigurator?typ=${tab.dataset.type}`;
+        document.querySelectorAll<HTMLAnchorElement>('.cfg-continue').forEach((a) => (a.href = `/konfigurator?typ=${tab.dataset.type}`));
       }),
     );
     app.querySelectorAll<HTMLButtonElement>('.swatch').forEach((sw) =>
