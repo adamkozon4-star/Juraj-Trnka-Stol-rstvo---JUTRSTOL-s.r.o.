@@ -26,13 +26,17 @@ const photoCount = (slug: string) => projectsInCategory(slug).reduce((n, p) => n
       {
         categories.map((c, i) => (
           <li class="svc-item" data-active={i === 0 ? 'true' : 'false'}>
-            <Image
-              src={photo(c.cover)}
-              alt=""
-              widths={[480, 800, 1100]}
-              sizes="(min-width: 1024px) 55vw, 100vw"
-              class="svc-img"
-            />
+            {c.cover ? (
+              <Image
+                src={photo(c.cover)}
+                alt=""
+                widths={[480, 800, 1100]}
+                sizes="(min-width: 1024px) 55vw, 100vw"
+                class="svc-img"
+              />
+            ) : (
+              <span class="svc-img svc-wood" />
+            )}
             <span class="svc-shade" />
             <button type="button" class="svc-toggle" aria-expanded={i === 0 ? 'true' : 'false'} aria-label={c.title} />
             <div class="svc-body">
@@ -41,8 +45,14 @@ const photoCount = (slug: string) => projectsInCategory(slug).reduce((n, p) => n
               </span>
               <div class="svc-text">
                 <p class="text-[11px] font-semibold tracking-[0.16em] text-oak uppercase">
-                  {plural(projectsInCategory(c.slug).length, 'projekt', 'projekty', 'projektov')} ·{' '}
-                  {plural(photoCount(c.slug), 'fotka', 'fotky', 'fotiek')}
+                  {projectsInCategory(c.slug).length > 0 ? (
+                    <>
+                      {plural(projectsInCategory(c.slug).length, 'projekt', 'projekty', 'projektov')} ·{' '}
+                      {plural(photoCount(c.slug), 'fotka', 'fotky', 'fotiek')}
+                    </>
+                  ) : (
+                    'Na mieru'
+                  )}
                 </p>
                 <h3 class="mt-1 text-2xl leading-tight font-semibold text-white sm:text-3xl">{c.title}</h3>
                 <p class="mt-2 max-w-md text-sm leading-relaxed text-white/75">{c.short}</p>
@@ -51,7 +61,7 @@ const photoCount = (slug: string) => projectsInCategory(slug).reduce((n, p) => n
                   class="mt-4 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-apricot"
                   tabindex={i === 0 ? 0 : -1}
                 >
-                  Pozrieť realizácie <Icon name="arrow" size={16} />
+                  {projectsInCategory(c.slug).length > 0 ? 'Pozrieť realizácie' : 'Viac o službe'} <Icon name="arrow" size={16} />
                 </a>
               </div>
             </div>
@@ -63,6 +73,13 @@ const photoCount = (slug: string) => projectsInCategory(slug).reduce((n, p) => n
 </section>
 
 <style>
+  .svc-wood {
+    display: block;
+    background:
+      repeating-linear-gradient(100deg, rgb(219 166 118 / 0.08) 0 2px, transparent 2px 22px),
+      radial-gradient(60rem 20rem at 80% 30%, rgb(196 115 58 / 0.35), transparent 70%),
+      linear-gradient(135deg, #3a2a1e, #1f1b18);
+  }
   .svc {
     display: flex;
     flex-direction: column;

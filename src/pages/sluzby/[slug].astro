@@ -7,7 +7,7 @@ import Contact from '../../components/Contact.astro';
 import Process from '../../components/home/Process.astro';
 import Icon from '../../components/Icon.astro';
 import { categories, type Category } from '../../data/categories';
-import { services, areaTowns } from '../../data/services';
+import { services } from '../../data/services';
 import { projectsInCategory } from '../../data/projects';
 import { telHref, site } from '../../data/site';
 import { photo } from '../../lib/images';
@@ -52,7 +52,7 @@ const schema = [
         addressCountry: site.address.country,
       },
     },
-    areaServed: areaTowns.map((name) => ({ '@type': 'City', name })),
+    areaServed: site.serviceRegions.map((name) => ({ '@type': 'Place', name })),
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: category.title,
@@ -82,7 +82,7 @@ const schema = [
 ];
 ---
 
-<Base title={category.seoTitle} description={category.seoDescription} ogImage={category.cover} overlayHeader>
+<Base title={category.seoTitle} description={category.seoDescription} ogImage={category.cover ?? undefined} overlayHeader>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(schema)} />
 
   <PageHeader
@@ -194,8 +194,8 @@ const schema = [
           }
         </ul>
         <p class="mt-8 leading-relaxed text-white/60">
-          Presnú cenu dostanete po zameraní, vopred a bez skrytých položiek. Orientačne vieme odhadnúť aj z fotky a
-          približných rozmerov.
+          Cenu stanovujeme až po zameraní u vás, vopred a bez skrytých položiek. Zameranie a návrh sú pri realizácii
+          zadarmo, dodacia lehota je {site.deliveryWeeks}.
         </p>
         <a href="#kontakt" class="btn-primary mt-8 self-start">Chcem cenovú ponuku <Icon name="arrow" size={18} /></a>
       </div>
@@ -268,15 +268,15 @@ const schema = [
   <section class="sheet pt-20 pb-28 lg:pt-24 lg:pb-32" data-nav="Ďalej vyrábame">
     <div class="container-x">
       <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24" data-reveal>
-        <h2 class="text-3xl leading-tight font-semibold sm:text-4xl">Stolár pre Gbely a&nbsp;celé Záhorie</h2>
+        <h2 class="text-3xl leading-tight font-semibold sm:text-4xl">Z Gbiel na Záhorie, do Bratislavy aj Česka</h2>
         <div>
           <p class="text-lg leading-relaxed text-stone">
-            {category.title} vyrábame v dielni v Gbeloch a montujeme najmä na Záhorí a v okolí. Zamerať aj montovať
-            chodíme do obcí ako {areaTowns.slice(1, -1).join(', ')} či {areaTowns.at(-1)}. Pri väčších zákazkách prídeme
-            aj ďalej, stačí sa ozvať.
+            {category.title} vyrábame v dielni v Gbeloch. Montujeme v okresoch Skalica, Senica, Myjava a Malacky, v
+            Trenčíne a Bratislave, na Morave v okolí Hodonína a v Brne, a aj v Prahe. Dopravu účtujeme podľa vzdialenosti
+            miesta montáže.
           </p>
           <ul class="mt-6 flex flex-wrap gap-2">
-            {areaTowns.map((t) => <li class="rounded-full border border-line px-3.5 py-1.5 text-sm text-stone">{t}</li>)}
+            {site.serviceRegions.map((t) => <li class="rounded-full border border-line px-3.5 py-1.5 text-sm text-stone">{t}</li>)}
           </ul>
         </div>
       </div>

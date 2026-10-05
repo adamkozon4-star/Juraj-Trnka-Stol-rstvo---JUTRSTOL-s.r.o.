@@ -1,5 +1,5 @@
 // Podrobný obsah podstránok „Čo vyrábame“ (/sluzby/<slug>) – kvôli SEO aj ľuďom.
-// TODO: prejsť s klientom (materiály, oblasť pôsobenia, odpovede na otázky).
+// Materiály, kovanie a podmienky podľa odovzdávacieho dotazníka od klienta.
 
 export interface ServiceContent {
   /** Hlavný nadpis H1 – obsahuje kľúčové slovo */
@@ -16,19 +16,7 @@ export interface ServiceContent {
   faqs: { q: string; a: string }[];
 }
 
-// Obce, kam sa najčastejšie chodí – použité v texte o lokalite.
-// TODO: overiť s klientom, kam reálne chodí.
-export const areaTowns = [
-  'Gbely',
-  'Kopčany',
-  'Holíč',
-  'Skalica',
-  'Brodské',
-  'Kúty',
-  'Šaštín-Stráže',
-  'Senica',
-  'Borský Mikuláš',
-];
+// Oblasti pôsobenia sú v src/data/site.ts (serviceRegions).
 
 export const services: Record<string, ServiceContent> = {
   kuchyne: {
@@ -42,10 +30,11 @@ export const services: Record<string, ServiceContent> = {
       { title: 'Bezúchytkové kuchyne', text: 'Čisté fronty bez úchytiek s otváraním na dotyk alebo so skrytým profilom. Moderný vzhľad, ktorý sa ľahko udržiava.' },
     ],
     materials: [
-      'Laminované dosky v dekoroch dreva, betónu aj jednofarebné',
-      'Lesklé aj matné dvierka',
+      'Lamino aj lakovaná MDF v dekoroch Egger, Kaindl a Kronospan',
+      'Lesklé aj matné dvierka, aj lakovaná MDF',
+      'Akékoľvek úchytky, aj bezúchytkové riešenie',
       'Pracovné dosky v dekore dreva, kameňa či betónu',
-      'Kovanie s tlmeným dovieraním',
+      'Kovanie Blum s tlmeným dovieraním',
       'Plnovýsuvné zásuvky a výsuvné koše',
       'LED podsvietenie pracovnej dosky a políc',
       'Zabudované spotrebiče podľa vášho výberu',
@@ -69,7 +58,7 @@ export const services: Record<string, ServiceContent> = {
       ],
     },
     faqs: [
-      { q: 'Koľko stojí kuchyňa na mieru?', a: 'Cena závisí hlavne od dĺžky linky, počtu vysokých skríň a zásuviek, druhu dvierok, pracovnej dosky a kovania. Presnú sumu dostanete po zameraní a návrhu, vopred a bez skrytých položiek. Orientačne vieme odhadnúť cenu aj z fotky a približných rozmerov.' },
+      { q: 'Koľko stojí kuchyňa na mieru?', a: 'Cena závisí hlavne od dĺžky linky, počtu vysokých skríň a zásuviek, druhu dvierok, pracovnej dosky a kovania. Presnú sumu dostanete po zameraní a návrhu, vopred a bez skrytých položiek. Zameranie a návrh sú pri realizácii zadarmo.' },
       { q: 'Zabudujete aj spotrebiče?', a: 'Áno. S rúrou, umývačkou, chladničkou či digestorom počítame už pri návrhu a pri montáži ich zabudujeme. Spotrebiče si môžete kúpiť sami, len nám vopred pošlite ich typy a rozmery.' },
       { q: 'Dá sa kuchyňa navrhnúť aj do šikmín alebo nerovných stien?', a: 'Áno, práve na to je výroba na mieru. Všetko si zameriame priamo u vás, takže skrinky sedia aj pri šikmine, nike, trámoch či nerovnej stene.' },
       { q: 'Môžem si kuchyňu najprv navrhnúť sám?', a: 'Môžete. V našom online konfigurátore si poskladáte kuchyňu podľa svojho priestoru a návrh nám pošlete. My ho prejdeme, doladíme a pripravíme cenovú ponuku.' },
@@ -87,11 +76,11 @@ export const services: Record<string, ServiceContent> = {
       { title: 'Úložný priestor pod schodmi', text: 'Priestor pod schodiskom premeníme na skrinky, zásuvky alebo šatník. Presne do šikmín.' },
     ],
     materials: [
-      'Laminované dosky v dekoroch dreva aj jednofarebné',
+      'Lamino v dekoroch Egger, Kaindl a Kronospan',
       'Dekoratívne lamely',
       'Zrkadlá, aj s LED podsvietením',
       'Otváracie aj posuvné dvere',
-      'Kovanie s tlmeným dovieraním',
+      'Kovanie Blum s tlmeným dovieraním',
       'Háčiky, tyče a výsuvné botníky',
       'Otvorenie na dotyk bez úchytiek',
     ],
@@ -112,7 +101,7 @@ export const services: Record<string, ServiceContent> = {
       ],
     },
     faqs: [
-      { q: 'Koľko stojí predsieň na mieru?', a: 'Závisí od šírky, výšky a vybavenia, teda od počtu dverí, zásuviek, botníkov, lamiel či zrkadiel. Presnú cenu vám pripravíme po zameraní, orientačne aj z fotky a rozmerov.' },
+      { q: 'Koľko stojí predsieň na mieru?', a: 'Závisí od šírky, výšky a vybavenia, teda od počtu dverí, zásuviek, botníkov, lamiel či zrkadiel. Presnú cenu vám pripravíme po zameraní, ktoré je pri realizácii zadarmo.' },
       { q: 'Viete využiť priestor pod schodmi?', a: 'Áno, patrí to k tomu, čo robíme najradšej. Každú šikminu zameriame a navrhneme skrinky, výsuvy alebo šatník presne do tvaru schodiska.' },
       { q: 'Dá sa v predsieni schovať rozvádzač alebo dvere?', a: 'Áno. Rozvádzač či dvere do technickej miestnosti vieme skryť za dvierka skrine alebo do lamelovej steny tak, aby ostali prístupné.' },
     ],
@@ -129,8 +118,9 @@ export const services: Record<string, ServiceContent> = {
       { title: 'Skrine do niky', text: 'Nika vo vstupe, v spálni alebo pri komíne sa zmení na plnohodnotnú skriňu, ktorá vyzerá ako súčasť steny.' },
     ],
     materials: [
-      'Laminované dosky v dekoroch dreva aj jednofarebné',
-      'Posuvné dvere, aj so zrkadlom',
+      'Lamino v dekoroch Egger, Kaindl a Kronospan',
+      'Posuvné dvere, aj so zrkadlom alebo sklom',
+      'Otvorenie na dotyk (push-to-open)',
       'Otváracie dvere s tlmeným dovieraním',
       'Tyče, výsuvné vešiaky a sklopné tyče',
       'Zásuvky, aj s delením na drobnosti',
@@ -155,7 +145,7 @@ export const services: Record<string, ServiceContent> = {
       ],
     },
     faqs: [
-      { q: 'Koľko stojí vstavaná skriňa na mieru?', a: 'Cena závisí od rozmerov, typu dverí (posuvné, otváracie, so zrkadlom) a vnútorného vybavenia. Po zameraní vám pripravíme presnú ponuku, orientačne vieme cenu odhadnúť aj z rozmerov.' },
+      { q: 'Koľko stojí vstavaná skriňa na mieru?', a: 'Cena závisí od rozmerov, typu dverí (posuvné, otváracie, so zrkadlom) a vnútorného vybavenia. Presnú ponuku vám pripravíme po zameraní, ktoré je pri realizácii zadarmo.' },
       { q: 'Sú lepšie posuvné alebo otváracie dvere?', a: 'Posuvné dvere šetria miesto pred skriňou, otváracie ukážu celý obsah naraz. Poradíme vám podľa toho, koľko máte pred skriňou miesta a ako ju budete používať.' },
       { q: 'Dá sa skriňa urobiť do podkrovia so šikminou?', a: 'Áno. Šikminu presne zameriame a skriňu vyrobíme do uhla strechy, takže priestor využijete až po posledný centimeter.' },
       { q: 'Môžem si šatník navrhnúť online?', a: 'Áno, v našom konfigurátore si navrhnete šatník podľa svojho priestoru a návrh nám pošlete. My ho doladíme a pripravíme ponuku.' },
@@ -176,7 +166,7 @@ export const services: Record<string, ServiceContent> = {
       'Odolné laminované dosky v dekoroch dreva aj farebné',
       'Zaoblené a opracované hrany',
       'Pevné zábradlie a schodíky',
-      'Kovanie s tlmeným dovieraním',
+      'Kovanie Blum s tlmeným dovieraním',
       'Zásuvky v schodoch a pod posteľou',
       'Kombinácie farieb podľa témy izby',
     ],
@@ -202,6 +192,44 @@ export const services: Record<string, ServiceContent> = {
     ],
   },
 
+  'kupelny-nabytok': {
+    h1: 'Kúpeľňový nábytok na&nbsp;mieru',
+    offer: [
+      { title: 'Skrinky pod umývadlo', text: 'Skrinka presne na šírku kúpeľne, so zásuvkami alebo dvierkami a s miestom pre sifón.' },
+      { title: 'Vysoké skrine', text: 'Úzka vysoká skriňa na uteráky, drogériu a kozmetiku, ktorá využije aj miesto pri stene či v rohu.' },
+      { title: 'Zrkadlá a zrkadlové skrinky', text: 'Zrkadlo cez celú šírku alebo skrinka so zrkadlovými dvierkami, aj s LED osvetlením.' },
+      { title: 'Police a niky', text: 'Otvorené police a využitie ník, aby mali veci, ktoré používate každý deň, svoje miesto.' },
+      { title: 'Skrinky nad WC a okolo práčky', text: 'Úložný priestor nad toaletou alebo práčkou, ktorý by inak ostal nevyužitý.' },
+    ],
+    materials: [
+      'Lamino v dekoroch Egger, Kaindl a Kronospan',
+      'Lakovaná MDF',
+      'Sklo a zrkadlá',
+      'Kovanie Blum s tlmeným dovieraním',
+      'Otvorenie na dotyk (push-to-open)',
+      'LED osvetlenie',
+    ],
+    priceFactors: [
+      'Rozmery a počet skriniek',
+      'Materiál a dekor dvierok',
+      'Zrkadlá, sklo a osvetlenie',
+      'Zásuvky a vnútorné vybavenie',
+    ],
+    guide: {
+      title: 'Kúpeľňa, v ktorej má všetko svoje miesto',
+      paragraphs: [
+        'Kúpeľňa býva malá, no používa sa veľmi často. Nábytok na mieru preto navrhujeme tak, aby využil každý centimeter: skrinku pod umývadlo presne na šírku priestoru, vysokú skriňu do rohu a police do ník.',
+        'Do spodnej skrinky sa oplatia zásuvky namiesto políc. Vidíte do nich zhora a nemusíte sa zohýbať. Pri návrhu myslíme na sifón a rozvody, aby zásuvky ostali čo najväčšie.',
+        'Zrkadlo cez celú šírku umývadla opticky zväčší kúpeľňu a s LED osvetlením je ideálne aj na ranné líčenie či holenie. Materiály a dekor vyberáme tak, aby ladili s obkladom a dlažbou.',
+      ],
+    },
+    faqs: [
+      { q: 'Vydrží nábytok vlhkosť v kúpeľni?', a: 'Materiály vyberáme do vlhkého prostredia a pri návrhu myslíme aj na vetranie. Pri bežnom používaní kúpeľne nábytok vydrží roky.' },
+      { q: 'Viete urobiť skrinku pod umývadlo na mieru?', a: 'Áno. Skrinku vyrobíme presne na šírku priestoru a pri návrhu počítame so sifónom a rozvodmi.' },
+      { q: 'Koľko stojí kúpeľňový nábytok?', a: 'Závisí od rozmerov, počtu skriniek, materiálu a doplnkov ako zrkadlá či osvetlenie. Presnú cenu pripravíme po zameraní, ktoré je pri realizácii zadarmo.' },
+    ],
+  },
+
   obyvacky: {
     h1: 'TV steny a&nbsp;obývačky na&nbsp;mieru',
     offer: [
@@ -214,11 +242,12 @@ export const services: Record<string, ServiceContent> = {
     ],
     materials: [
       'Dekoratívne lamely',
-      'Laminované dosky v dekoroch dreva aj jednofarebné',
+      'Lamino v dekoroch Egger, Kaindl a Kronospan',
       'Otvorenie na dotyk bez úchytiek',
+      'Sklenené dvierka a otvorené police',
       'LED podsvietenie políc a lamiel',
       'Skryté vedenie káblov',
-      'Kovanie s tlmeným dovieraním',
+      'Kovanie Blum s tlmeným dovieraním',
     ],
     priceFactors: [
       'Šírka a výška steny',
@@ -237,7 +266,7 @@ export const services: Record<string, ServiceContent> = {
     },
     faqs: [
       { q: 'Dajú sa schovať káble od televízora?', a: 'Áno. Pri návrhu naplánujeme vedenie káblov za lamelami alebo v skrinkách, takže na stene nevidno nič okrem samotného televízora.' },
-      { q: 'Koľko stojí TV stena na mieru?', a: 'Závisí od šírky steny, lamiel, podsvietenia a počtu skriniek či políc. Presnú cenu pripravíme po zameraní, orientačne aj z fotky.' },
+      { q: 'Koľko stojí TV stena na mieru?', a: 'Závisí od šírky steny, lamiel, podsvietenia a počtu skriniek či políc. Presnú cenu pripravíme po zameraní, ktoré je pri realizácii zadarmo.' },
       { q: 'Unesie závesná komoda aj ťažšiu techniku?', a: 'Áno, komodu ukotvíme do steny podľa jej typu a zaťaženia. Pri návrhu sa pýtame, čo na nej bude stáť.' },
     ],
   },
@@ -252,7 +281,7 @@ export const services: Record<string, ServiceContent> = {
     ],
     materials: [
       'Spoľahlivý sklápací mechanizmus',
-      'Laminované dosky v dekoroch dreva aj jednofarebné',
+      'Lamino v dekoroch Egger, Kaindl a Kronospan',
       'Rošt pod matrac',
       'Fixačné popruhy na perinu',
       'Bočné police a skrinky',
@@ -294,7 +323,7 @@ export const services: Record<string, ServiceContent> = {
       'Pracovné dosky odolné voči vode',
       'Posuvné aj otváracie dvere',
       'Vetranie skriniek pri kotle a spotrebičoch',
-      'Kovanie s tlmeným dovieraním',
+      'Kovanie Blum s tlmeným dovieraním',
       'Otvorené aj zatvorené police',
     ],
     priceFactors: [
@@ -332,7 +361,7 @@ export const services: Record<string, ServiceContent> = {
       'Odolné laminované dosky',
       'Dekoratívne lamely',
       'Zrkadlá a obklady',
-      'Kovanie na každodenné používanie',
+      'Kovanie Blum na každodenné používanie',
       'Farby a dekory podľa firemnej identity',
     ],
     priceFactors: [

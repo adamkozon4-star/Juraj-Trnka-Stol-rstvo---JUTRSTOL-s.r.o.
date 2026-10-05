@@ -5,8 +5,9 @@ export interface Category {
   intro: string;
   seoTitle: string;
   seoDescription: string;
-  cover: string;
-  icon: 'kitchen' | 'hanger' | 'wardrobe' | 'bunk' | 'sofa' | 'bed' | 'washer' | 'office';
+  /** Úvodná fotka (cesta v fotky/realizacie/). Bez nej sa zobrazí drevený podklad. */
+  cover?: string;
+  icon: 'kitchen' | 'hanger' | 'wardrobe' | 'bunk' | 'sofa' | 'bed' | 'washer' | 'office' | 'bath';
 }
 
 export const categories: Category[] = [
@@ -69,6 +70,17 @@ export const categories: Category[] = [
     seoDescription:
       'TV steny s lamelami, závesné komody, knižnice a obklady stien na mieru. Skryté káble aj LED podsvietenie. Stolárstvo JUTRSTOL, Gbely a okolie.',
     cover: 'obyvacky/tv-stena-lamely-policova-skrina-01-sirka-web.jpg',
+  },
+  {
+    slug: 'kupelny-nabytok',
+    icon: 'bath',
+    title: 'Kúpeľňový nábytok',
+    short: 'Skrinky pod umývadlo, vysoké skrine, zrkadlá a police do kúpeľne.',
+    intro:
+      'Aj v malej kúpeľni sa zmestí veľa, keď je nábytok vyrobený presne na mieru. Skrinka pod umývadlo na celú šírku, vysoká skriňa do rohu, zrkadlo so svetlom a police do niky – všetko v dekore, ktorý ladí s obkladom.',
+    seoTitle: 'Kúpeľňový nábytok na mieru – Gbely, Záhorie',
+    seoDescription:
+      'Kúpeľňový nábytok na mieru: skrinky pod umývadlo, vysoké skrine, zrkadlá s osvetlením a police. Kovanie Blum, dekory Egger. Stolárstvo JUTRSTOL, Gbely.',
   },
   {
     slug: 'sklapacie-postele',

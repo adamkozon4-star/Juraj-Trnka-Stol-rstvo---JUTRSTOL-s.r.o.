@@ -3,27 +3,31 @@ import SectionHeading from '../SectionHeading.astro';
 import Icon from '../Icon.astro';
 import { site, telHref } from '../../data/site';
 
-// TODO: overiť odpovede s klientom (ceny, termíny, oblasť)
+// Odpovede podľa odovzdávacieho dotazníka od klienta
 const faqs = [
   {
     q: 'Koľko stojí kuchyňa alebo skriňa na mieru?',
-    a: 'Cena závisí od rozmerov, materiálov, kovania a spotrebičov. Po zameraní a konzultácii dostanete presnú cenovú ponuku vopred – bez skrytých položiek. Orientačnú cenu vieme povedať aj z fotky a rozmerov.',
+    a: 'Cena závisí od rozmerov, materiálov, kovania a spotrebičov. Cenu stanovujeme až po zameraní u vás, aby bola presná – vopred a bez skrytých položiek.',
   },
   {
     q: 'Ako dlho trvá výroba?',
-    a: 'Závisí od rozsahu zákazky a aktuálnej vyťaženosti dielne. Konkrétny termín výroby a montáže vám povieme už pri cenovej ponuke.',
+    a: `Dodacia lehota je ${site.deliveryWeeks} v závislosti od náročnosti výroby a zvolených materiálov. Presný termín montáže vám povieme pri cenovej ponuke.`,
   },
   {
     q: 'V akej oblasti pôsobíte?',
-    a: `Sídlime v Gbeloch a pracujeme najmä na Záhorí a v okolí. Pri väčších zákazkách prídeme aj ďalej – stačí sa ozvať.`,
+    a: 'Dielňu máme v Gbeloch. Pracujeme v okresoch Skalica, Senica, Myjava a Malacky, v Trenčíne a Bratislave, na Morave v okolí Hodonína a v Brne, a aj v Prahe.',
   },
   {
     q: 'Z akých materiálov vyrábate?',
-    a: 'Pracujeme s laminovanými doskami v desiatkach dekorov dreva, betónu či jednofarebných odtieňov, s lesklými aj matnými dvierkami a kvalitným kovaním s tlmeným dovieraním. Materiály vám radi ukážeme na vzorkách.',
+    a: 'Vyrábame z lamina a lakovanej MDF, používame aj sklo a zrkadlá. Dekory si vyberiete zo vzorkovníka Egger, prípadne Kaindl a Kronospan. Používame kovanie Blum s tlmeným dovieraním a úchytky podľa vášho výberu.',
   },
   {
     q: 'Zabezpečíte aj montáž a spotrebiče?',
-    a: 'Montáž robíme vždy sami, aby všetko sedelo presne podľa návrhu. Spotrebiče zabudujeme podľa vášho výberu a pri návrhu s nimi rovno počítame.',
+    a: 'Montáž robíme vždy sami, aby všetko sedelo presne podľa návrhu. Spotrebiče zabudujeme podľa vášho výberu a pri návrhu s nimi rovno počítame. Dopravu účtujeme podľa vzdialenosti miesta montáže.',
+  },
+  {
+    q: 'Je zameranie a návrh zadarmo?',
+    a: 'Áno, ak sa rozhodnete pre realizáciu u nás, zameranie aj návrh sú zadarmo.',
   },
   {
     q: 'Čo potrebujete, aby ste mi pripravili ponuku?',

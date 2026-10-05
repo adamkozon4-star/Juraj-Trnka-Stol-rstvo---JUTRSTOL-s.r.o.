@@ -46,7 +46,7 @@ const localBusiness = {
     addressCountry: site.address.country,
   },
   ...(site.geo ? { geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng } } : {}),
-  areaServed: site.serviceArea,
+  areaServed: site.serviceRegions.map((name) => ({ '@type': 'Place', name })),
   sameAs: [site.facebook],
   legalName: site.legalName,
   ...(site.ico ? { identifier: { '@type': 'PropertyValue', propertyID: 'IČO', value: site.ico } } : {}),

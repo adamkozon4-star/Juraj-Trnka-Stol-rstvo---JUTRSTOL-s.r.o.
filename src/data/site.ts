@@ -7,7 +7,7 @@ export const site = {
   tagline: 'Stolárstvo – nábytok na mieru',
   phone: '+421 905 403 248',
   phoneDisplay: '0905 403 248',
-  email: null as string | null, // TODO: e-mail na dopyty
+  email: 'jutrstol@gmail.com' as string | null,
   address: {
     street: 'Piesky 1605',
     zip: '908 45',
@@ -22,9 +22,13 @@ export const site = {
   ico: '50757741' as string | null,
   dic: '2120469131' as string | null,
   icDph: null as string | null, // doplniť, ak je firma platiteľ DPH
-  yearsExperience: null as number | null, // TODO: napr. 15 -> zobrazí odznak „15 rokov praxe“
+  yearsExperience: 25 as number | null,
   openingHours: null as string | null, // TODO: napr. 'Po – Pi: 7:00 – 16:00'
-  serviceArea: 'Gbely, Záhorie a okolie',
+  serviceArea: 'Záhorie, západné Slovensko a Česko',
+  // Oblasti pôsobenia podľa odovzdávacieho dotazníka
+  serviceRegions: ['Okres Skalica', 'Okres Senica', 'Myjava', 'Malacky', 'Trenčín', 'Bratislava', 'Hodonín a okolie', 'Brno', 'Praha'],
+  // Obchodné podmienky z dotazníka
+  deliveryWeeks: '4 až 8 týždňov',
   // Kľúč z https://web3forms.com (zadarmo). Bez neho formulár ponúkne telefonát.
   web3formsKey: '',
   // Online konfigurátor (samostatná aplikácia). `klient` určuje nastavenia pre konkrétne stolárstvo.
