@@ -29,8 +29,9 @@ export const site = {
   serviceRegions: ['Okres Skalica', 'Okres Senica', 'Myjava', 'Malacky', 'Trenčín', 'Bratislava', 'Hodonín a okolie', 'Brno', 'Praha'],
   // Obchodné podmienky z dotazníka
   deliveryWeeks: '4 až 8 týždňov',
-  // Kľúč z https://web3forms.com (zadarmo). Bez neho formulár ponúkne telefonát.
-  web3formsKey: '',
+  // Dopyty z formulára odosiela /api/dopyt cez Resend (kľúč RESEND_API_KEY je len vo Verceli).
+  // Odosielateľ musí byť na doméne overenej v Resend.
+  mailFrom: 'JUTRSTOL web <dopyt@jutrstol.sk>',
   // Online konfigurátor (samostatná aplikácia). `klient` určuje nastavenia pre konkrétne stolárstvo.
   configurator: {
     url: 'https://stolar-konfigurator.vercel.app/',

@@ -25,7 +25,18 @@ npm run preview  # náhľad buildu
 
 ## Kontaktný formulár
 
-Formulár posiela dopyty cez [Web3Forms](https://web3forms.com) (bezplatný plán). Na stránke Web3Forms zadaj e-mail klienta, získaj *Access Key* a vlož ho do `web3formsKey` v `src/data/site.ts`. Kým kľúč chýba, formulár návštevníka vyzve, aby zavolal.
+Formulár posiela dopyty na `/api/dopyt` (jediná serverová časť webu, Vercel funkcia cez `@astrojs/vercel`). Tá cez [Resend](https://resend.com) pošle:
+
+- e-mail Jurajovi na `site.email` (odpoveď ide priamo zákazníkovi),
+- potvrdenie zákazníkovi, ak vyplnil e-mail.
+
+Nastavenie:
+
+1. V Resend overiť doménu `jutrstol.sk` (DNS záznamy vo Websupporte, existujúci SPF záznam pre e-mail nemazať).
+2. V Resend vytvoriť API kľúč a vo Verceli ho uložiť ako premennú `RESEND_API_KEY` (Settings → Environment Variables), potom nasadiť znova.
+3. Odosielateľ je `site.mailFrom` v `src/data/site.ts` (musí byť na overenej doméne).
+
+Kým kľúč chýba, formulár návštevníka vyzve, aby zavolal. Ochrana proti spamu: skryté pole a minimálny čas vyplnenia.
 
 ## Konfigurátor
 

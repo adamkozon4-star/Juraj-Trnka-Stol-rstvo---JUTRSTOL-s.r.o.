@@ -1,9 +1,11 @@
-// Odosielanie formulárov cez Web3Forms. Každý <form data-web3 data-key="…"> s <p data-status>.
+// Odosielanie formulárov na /api/dopyt (Resend). Každý <form data-inquiry> s <p data-status>.
 export function bindForms() {
-  document.querySelectorAll<HTMLFormElement>('form[data-web3]').forEach((form) => {
+  document.querySelectorAll<HTMLFormElement>('form[data-inquiry]').forEach((form) => {
     if (form.dataset.bound) return;
     form.dataset.bound = '1';
     const status = form.querySelector<HTMLElement>('[data-status]');
+    const started = form.querySelector<HTMLInputElement>('input[name=started]');
+    if (started) started.value = String(Date.now());
 
     const show = (msg: string, ok: boolean) => {
       if (!status) return;
@@ -17,29 +19,23 @@ export function bindForms() {
         form.reportValidity();
         return;
       }
-      const key = form.dataset.key;
-      if (!key) {
-        show('Formulár ešte nie je aktívny. Prosím, zavolajte nám – radi vám poradíme.', false);
-        return;
-      }
-      const data = new FormData(form);
-      const types = data.getAll('type').join(', ');
-      data.delete('type');
-      if (types) data.set('type', types);
-      data.delete('gdpr');
-      [...data.keys()].filter((k) => k.startsWith('cfg-')).forEach((k) => data.delete(k));
-      data.set('access_key', key);
-
       const btn = form.querySelector<HTMLButtonElement>('button[type=submit]');
       if (btn) btn.disabled = true;
       try {
-        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
-        const json = await res.json();
-        if (!json.success) throw new Error(json.message);
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        const json = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+        if (!res.ok || !json.ok) throw new Error(json.error ?? String(res.status));
         form.reset();
+        if (started) started.value = String(Date.now());
         show('Ďakujeme! Dopyt sme prijali a čoskoro sa vám ozveme.', true);
-      } catch {
-        show('Odoslanie sa nepodarilo. Skúste to znova alebo nám zavolajte.', false);
+      } catch (err) {
+        const notReady = err instanceof Error && err.message === 'not-configured';
+        show(
+          notReady
+            ? 'Formulár ešte nie je aktívny. Prosím, zavolajte nám – radi vám poradíme.'
+            : 'Odoslanie sa nepodarilo. Skúste to znova alebo nám zavolajte.',
+          false,
+        );
       } finally {
         if (btn) btn.disabled = false;
       }

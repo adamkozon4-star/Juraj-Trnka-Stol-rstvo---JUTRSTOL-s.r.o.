@@ -12,17 +12,18 @@ const { preselect, title = 'Nezáväzný dopyt', flat = false } = Astro.props;
 ---
 
 <form
-  data-web3
-  data-key={site.web3formsKey}
+  data-inquiry
+  action="/api/dopyt"
+  method="post"
   class:list={['relative rounded-[1.75rem] bg-paper p-6 text-ink sm:p-10', flat ? 'ring-1 ring-line' : 'shadow-2xl']}
   novalidate
 >
   <h3 class="text-3xl font-semibold">{title}</h3>
   <p class="mt-2 text-stone">Ozveme sa vám čo najskôr.</p>
 
-  <input type="hidden" name="subject" value="Nový dopyt z webu JUTRSTOL" />
-  <input type="hidden" name="from_name" value="Web JUTRSTOL" />
-  <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
+  <!-- Ochrana proti spamu: skryté pole a čas vyplnenia -->
+  <input type="hidden" name="started" value="" />
+  <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
   <div class="mt-8 grid gap-5 sm:grid-cols-2">
     <label class="block">
