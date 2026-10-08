@@ -30,8 +30,8 @@ export const site = {
   // Obchodné podmienky z dotazníka
   deliveryWeeks: '4 až 8 týždňov',
   // Dopyty z formulára odosiela /api/dopyt cez Resend (kľúč RESEND_API_KEY je len vo Verceli).
-  // Odosielateľ musí byť na doméne overenej v Resend.
-  mailFrom: 'JUTRSTOL web <dopyt@jutrstol.sk>',
+  // Odosiela sa z agentúrnej domény Peak Studio overenej v Resend; odpovede idú zákazníkovi / Jurajovi cez reply-to.
+  mailFrom: 'JUTRSTOL <jutrstol@send.peakstudio.sk>',
   // Online konfigurátor (samostatná aplikácia). `klient` určuje nastavenia pre konkrétne stolárstvo.
   configurator: {
     url: 'https://stolar-konfigurator.vercel.app/',

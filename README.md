@@ -32,7 +32,7 @@ Formulár posiela dopyty na `/api/dopyt` (jediná serverová časť webu, Vercel
 
 Nastavenie:
 
-1. V Resend overiť doménu `jutrstol.sk` (DNS záznamy vo Websupporte, existujúci SPF záznam pre e-mail nemazať).
+1. Odosiela sa z agentúrnej domény `send.peakstudio.sk` (overená v Resend účte Peak Studio). DNS domény jutrstol.sk sa nemení.
 2. V Resend vytvoriť API kľúč a vo Verceli ho uložiť ako premennú `RESEND_API_KEY` (Settings → Environment Variables), potom nasadiť znova.
 3. Odosielateľ je `site.mailFrom` v `src/data/site.ts` (musí byť na overenej doméne).
 
