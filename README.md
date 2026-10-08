@@ -25,7 +25,7 @@ npm run preview  # náhľad buildu
 
 ## Kontaktný formulár
 
-Formulár posiela dopyty na `/api/dopyt` (jediná serverová časť webu, Vercel funkcia cez `@astrojs/vercel`). Tá cez [Resend](https://resend.com) pošle:
+Formulár posiela dopyty na `/api/dopyt`. Je to samostatná Vercel funkcia `api/dopyt.js` v koreni projektu (web je inak čisto statický). Tá cez [Resend](https://resend.com) pošle:
 
 - e-mail Jurajovi na `site.email` (odpoveď ide priamo zákazníkovi),
 - potvrdenie zákazníkovi, ak vyplnil e-mail.
@@ -34,7 +34,7 @@ Nastavenie:
 
 1. Odosiela sa z agentúrnej domény `send.peakstudio.sk` (overená v Resend účte Peak Studio). DNS domény jutrstol.sk sa nemení.
 2. V Resend vytvoriť API kľúč a vo Verceli ho uložiť ako premennú `RESEND_API_KEY` (Settings → Environment Variables), potom nasadiť znova.
-3. Odosielateľ je `site.mailFrom` v `src/data/site.ts` (musí byť na overenej doméne).
+3. Odosielateľ, e-mail a údaje firmy sú priamo v `api/dopyt.js` (pri zmene e-mailu upraviť aj `src/data/site.ts`).
 
 Kým kľúč chýba, formulár návštevníka vyzve, aby zavolal. Ochrana proti spamu: skryté pole a minimálny čas vyplnenia.
 

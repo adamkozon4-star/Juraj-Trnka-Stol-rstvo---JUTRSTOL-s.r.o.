@@ -7,7 +7,7 @@ export const site = {
   tagline: 'Stolárstvo – nábytok na mieru',
   phone: '+421 905 403 248',
   phoneDisplay: '0905 403 248',
-  email: 'jutrstol@gmail.com' as string | null,
+  email: 'jutrstol@gmail.com' as string | null, // pri zmene upraviť aj api/dopyt.js
   address: {
     street: 'Piesky 1605',
     zip: '908 45',
@@ -29,9 +29,6 @@ export const site = {
   serviceRegions: ['Okres Skalica', 'Okres Senica', 'Myjava', 'Malacky', 'Trenčín', 'Bratislava', 'Hodonín a okolie', 'Brno', 'Praha'],
   // Obchodné podmienky z dotazníka
   deliveryWeeks: '4 až 8 týždňov',
-  // Dopyty z formulára odosiela /api/dopyt cez Resend (kľúč RESEND_API_KEY je len vo Verceli).
-  // Odosiela sa z agentúrnej domény Peak Studio overenej v Resend; odpovede idú zákazníkovi / Jurajovi cez reply-to.
-  mailFrom: 'JUTRSTOL <jutrstol@send.peakstudio.sk>',
   // Online konfigurátor (samostatná aplikácia). `klient` určuje nastavenia pre konkrétne stolárstvo.
   configurator: {
     url: 'https://stolar-konfigurator.vercel.app/',

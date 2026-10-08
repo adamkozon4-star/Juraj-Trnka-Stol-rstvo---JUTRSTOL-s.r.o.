@@ -2,13 +2,11 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  site: 'https://www.jutrstol.sk',
+  site: 'https://jutrstol.sk', // hlavná doména vo Verceli (www presmeruje sem)
   trailingSlash: 'ignore',
-  // Web je statický, len /api/dopyt beží na serveri (Vercel funkcia na odosielanie e-mailov cez Resend)
-  adapter: vercel(),
+  // Web je čisto statický. Odosielanie formulára rieši samostatná Vercel funkcia api/dopyt.js.
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

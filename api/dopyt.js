@@ -1,22 +1,31 @@
 // Odoslanie dopytu z formulára e-mailom cez Resend (https://resend.com).
-// Beží ako Vercel funkcia. Tajný kľúč RESEND_API_KEY je len v nastaveniach Vercelu.
-import type { APIRoute } from 'astro';
-import { site, telHref } from '../../data/site';
+// Samostatná Vercel funkcia (priečinok api/ v koreni projektu), web samotný je statický Astro.
+// Tajný kľúč RESEND_API_KEY je len v nastaveniach Vercelu (Environment Variables).
 
-export const prerender = false;
+// Údaje firmy – musia sedieť so src/data/site.ts
+const site = {
+  legalName: 'JUTRSTOL s.r.o.',
+  legalSeat: 'Piesky 1605/2, 908 45 Gbely',
+  phoneDisplay: '0905 403 248',
+  email: 'jutrstol@gmail.com',
+  // Odosiela sa z agentúrnej domény Peak Studio overenej v Resend
+  mailFrom: 'JUTRSTOL <jutrstol@send.peakstudio.sk>',
+};
+const telHref = 'tel:+421905403248';
+// Formulár sa smie odoslať len z týchto webov
+const ALLOWED_HOSTS = ['jutrstol.sk', 'www.jutrstol.sk', 'localhost:4321'];
 
 const MIN_FILL_MS = 3000; // rýchlejšie odoslanie = takmer určite robot
 const LIMITS = { name: 120, phone: 40, email: 160, city: 120, type: 600, message: 5000 };
 
-type Fields = Record<keyof typeof LIMITS, string>;
 
-const esc = (s: string) =>
-  s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+const esc = (s) =>
+  s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
-const json = (body: object, status = 200) =>
+const json = (body, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 
-async function sendMail(apiKey: string, mail: Record<string, unknown>) {
+async function sendMail(apiKey, mail) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -26,7 +35,7 @@ async function sendMail(apiKey: string, mail: Record<string, unknown>) {
 }
 
 // Spoločný rám e-mailu v štýle webu
-const layout = (title: string, body: string) => `<!doctype html><html lang="sk"><body style="margin:0;background:#e9e4dd;font-family:Arial,Helvetica,sans-serif;color:#1f1b18">
+const layout = (title, body) => `<!doctype html><html lang="sk"><body style="margin:0;background:#e9e4dd;font-family:Arial,Helvetica,sans-serif;color:#1f1b18">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#e9e4dd;padding:24px 12px"><tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#fbfaf7;border-radius:16px;overflow:hidden">
 <tr><td style="background:#1f1b18;padding:22px 28px;color:#fbfaf7;font-size:20px;font-weight:bold;letter-spacing:1px">JUTRSTOL <span style="color:#dba676;font-size:12px;font-weight:normal;letter-spacing:3px">&nbsp;STOLÁRSTVO · GBELY</span></td></tr>
@@ -34,16 +43,29 @@ const layout = (title: string, body: string) => `<!doctype html><html lang="sk">
 <h1 style="margin:0 0 18px;font-size:22px;color:#1f1b18">${title}</h1>
 ${body}
 </td></tr>
-<tr><td style="padding:18px 28px;border-top:1px solid #e3ddd4;font-size:12px;color:#7a7067">${site.legalName} · ${site.legalSeat} · ${site.phoneDisplay} · <a href="https://www.jutrstol.sk" style="color:#c4733a">jutrstol.sk</a></td></tr>
+<tr><td style="padding:18px 28px;border-top:1px solid #e3ddd4;font-size:12px;color:#7a7067">${site.legalName} · ${site.legalSeat} · ${site.phoneDisplay} · <a href="https://jutrstol.sk" style="color:#c4733a">jutrstol.sk</a></td></tr>
 </table></td></tr></table></body></html>`;
 
-const row = (label: string, value: string) =>
+const row = (label, value) =>
   value
     ? `<tr><td style="padding:8px 12px 8px 0;color:#7a7067;font-size:13px;vertical-align:top;white-space:nowrap">${label}</td><td style="padding:8px 0;font-size:15px">${value}</td></tr>`
     : '';
 
-export const POST: APIRoute = async ({ request }) => {
-  let form: FormData;
+const allowedOrigin = (request) => {
+  const origin = request.headers.get('origin');
+  if (!origin) return true;
+  try {
+    const host = new URL(origin).host;
+    return ALLOWED_HOSTS.includes(host) || host.endsWith('-peakteam1.vercel.app') || host === 'jutrstol.vercel.app';
+  } catch {
+    return false;
+  }
+};
+
+export async function POST(request) {
+  if (!allowedOrigin(request)) return json({ ok: false, error: 'forbidden' }, 403);
+
+  let form;
   try {
     form = await request.formData();
   } catch {
@@ -56,11 +78,11 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: true }); // robotovi tvrdíme, že prešiel
   }
 
-  const get = (k: keyof typeof LIMITS) =>
+  const get = (k) =>
     (k === 'type' ? form.getAll('type').map(String).join(', ') : String(form.get(k) ?? ''))
       .trim()
       .slice(0, LIMITS[k]);
-  const f = Object.fromEntries((Object.keys(LIMITS) as (keyof typeof LIMITS)[]).map((k) => [k, get(k)])) as Fields;
+  const f = Object.fromEntries(Object.keys(LIMITS).map((k) => [k, get(k)]));
 
   if (!f.name || !f.phone || !f.message || !form.get('gdpr')) {
     return json({ ok: false, error: 'missing-fields' }, 422);
@@ -68,8 +90,8 @@ export const POST: APIRoute = async ({ request }) => {
   const customerEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email) ? f.email : '';
 
   const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey || !site.email) {
-    console.error('Dopyt: chýba RESEND_API_KEY alebo site.email');
+  if (!apiKey) {
+    console.error('Dopyt: chýba RESEND_API_KEY');
     return json({ ok: false, error: 'not-configured' }, 503);
   }
 
@@ -140,7 +162,7 @@ ${row('Čo potrebuje', esc(f.type))}
   }
 
   return json({ ok: true });
-};
+}
 
 // Iné metódy nepovoľujeme
-export const ALL: APIRoute = () => json({ ok: false, error: 'method-not-allowed' }, 405);
+export const GET = () => json({ ok: false, error: 'method-not-allowed' }, 405);
