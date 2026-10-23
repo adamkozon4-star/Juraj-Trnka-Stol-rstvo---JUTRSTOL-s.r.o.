@@ -11,11 +11,34 @@ const site = {
   // Odosiela sa z agentúrnej domény Peak Studio overenej v Resend
   mailFrom: 'JUTRSTOL <jutrstol@send.peakstudio.sk>',
 };
-const telHref = 'tel:+421905403248';
 // Formulár sa smie odoslať len z týchto webov
 const ALLOWED_HOSTS = ['jutrstol.sk', 'www.jutrstol.sk', 'localhost:4321'];
 
 const MIN_FILL_MS = 3000; // rýchlejšie odoslanie = takmer určite robot
+const MAX_FILL_MS = 6 * 60 * 60 * 1000; // starší „started" = zopakovaný/podvrhnutý request
+
+// BEZPEČNOSŤ: e-mail ide VŽDY len na pevnú adresu firmy (site.email).
+// Na adresu zadanú návštevníkom sa nič neposiela – inak by sa formulár dal zneužiť
+// na rozosielanie spamu z našej domény (presne to sa stalo v 10/2026).
+// Adresa návštevníka ide len do reply_to.
+
+// Brzda: max. 3 odoslania za minútu z jednej IP (počítadlo v pamäti inštancie,
+// nie je to tvrdý limit, ale naivné zaplavenie z jednej adresy zastaví).
+const RATE_LIMIT = 3;
+const RATE_WINDOW_MS = 60_000;
+const hits = new Map();
+function rateLimited(ip) {
+  const now = Date.now();
+  const list = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  list.push(now);
+  hits.set(ip, list);
+  if (hits.size > 5000) hits.clear();
+  return list.length > RATE_LIMIT;
+}
+
+// Typické znaky spamu: odkazy a azbuka (zákazníci píšu po slovensky/česky)
+const LINK_RE = /(https?:\/\/|www\.|\b[a-z0-9-]+\.(buzz|xyz|top|click|link|ru|io|site|online|shop)\b)/i;
+const CYRILLIC_RE = /[\u0400-\u04FF]/;
 const LIMITS = { name: 120, phone: 40, email: 160, city: 120, type: 600, message: 5000 };
 
 
@@ -52,8 +75,9 @@ const row = (label, value) =>
     : '';
 
 const allowedOrigin = (request) => {
+  // Prehliadač pri odoslaní formulára hlavičku Origin posiela vždy; bez nej je to skript
   const origin = request.headers.get('origin');
-  if (!origin) return true;
+  if (!origin) return false;
   try {
     const host = new URL(origin).host;
     return ALLOWED_HOSTS.includes(host) || host.endsWith('-peakteam1.vercel.app') || host === 'jutrstol.vercel.app';
@@ -63,6 +87,8 @@ const allowedOrigin = (request) => {
 };
 
 export async function POST(request) {
+  const ip = (request.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || 'unknown';
+  if (rateLimited(ip)) return json({ ok: false, error: 'too-many-requests' }, 429);
   if (!allowedOrigin(request)) return json({ ok: false, error: 'forbidden' }, 403);
 
   let form;
@@ -72,9 +98,10 @@ export async function POST(request) {
     return json({ ok: false, error: 'bad-request' }, 400);
   }
 
-  // Ochrana proti spamu: skryté pole musí ostať prázdne a formulár sa nedá vyplniť za pár sekúnd
-  const started = Number(form.get('started'));
-  if (form.get('botcheck') || (started && Date.now() - started < MIN_FILL_MS)) {
+  // Ochrana proti spamu: skryté pole musí ostať prázdne a čas vyplnenia musí byť rozumný
+  const age = Date.now() - Number(form.get('started'));
+  if (form.get('botcheck') || !Number.isFinite(age) || age < MIN_FILL_MS || age > MAX_FILL_MS) {
+    console.warn('Dopyt: zachytený robot', { ip });
     return json({ ok: true }); // robotovi tvrdíme, že prešiel
   }
 
@@ -88,6 +115,13 @@ export async function POST(request) {
     return json({ ok: false, error: 'missing-fields' }, 422);
   }
   const customerEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email) ? f.email : '';
+
+  // Odkazy alebo azbuka v mene / správe = spam, ticho zahodíme
+  const suspicious = [f.name, f.city, f.message].some((v) => LINK_RE.test(v) || CYRILLIC_RE.test(v));
+  if (suspicious) {
+    console.warn('Dopyt: zahodený spam (odkaz/azbuka)', { ip, name: f.name.slice(0, 40) });
+    return json({ ok: true });
+  }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
@@ -134,31 +168,6 @@ ${row('Čo potrebuje', esc(f.type))}
   } catch (err) {
     console.error('Dopyt: odoslanie Jurajovi zlyhalo', err);
     return json({ ok: false, error: 'send-failed' }, 502);
-  }
-
-  // Potvrdenie zákazníkovi (ak zlyhá, dopyt už odišiel – chybu len zapíšeme)
-  if (customerEmail) {
-    const confirm = layout(
-      'Ďakujeme, dopyt sme prijali',
-      `<p style="font-size:15px;line-height:1.6;margin:0 0 14px">Dobrý deň${f.name ? ` ${esc(f.name.split(' ')[0])}` : ''},</p>
-<p style="font-size:15px;line-height:1.6;margin:0 0 14px">ďakujeme za váš dopyt. Juraj si ho prejde a čoskoro sa vám ozve, aby sme dohodli zameranie. Zameranie a návrh sú pri realizácii zadarmo.</p>
-<p style="font-size:15px;line-height:1.6;margin:0 0 22px">Ak sa chcete ozvať skôr, zavolajte na <a href="${telHref}" style="color:#c4733a;font-weight:bold">${site.phoneDisplay}</a>.</p>
-<p style="margin:0 0 6px;color:#7a7067;font-size:13px">Váš dopyt</p>
-<div style="background:#fff;border:1px solid #e3ddd4;border-radius:12px;padding:16px;font-size:14px;line-height:1.55;white-space:pre-wrap;color:#4a423b">${esc(f.message)}</div>
-<p style="font-size:15px;line-height:1.6;margin:22px 0 0">S pozdravom<br><b>Juraj Trnka</b><br>JUTRSTOL – stolárstvo Gbely</p>`,
-    );
-    try {
-      await sendMail(apiKey, {
-        from: site.mailFrom,
-        to: [customerEmail],
-        reply_to: site.email,
-        subject: 'Ďakujeme za dopyt – JUTRSTOL',
-        html: confirm,
-        text: `Dobrý deň,\n\nďakujeme za váš dopyt. Juraj si ho prejde a čoskoro sa vám ozve. Zameranie a návrh sú pri realizácii zadarmo.\n\nTelefón: ${site.phoneDisplay}\n\nS pozdravom\nJuraj Trnka, JUTRSTOL`,
-      });
-    } catch (err) {
-      console.error('Dopyt: potvrdenie zákazníkovi zlyhalo', err);
-    }
   }
 
   return json({ ok: true });
