@@ -5,9 +5,10 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://jutrstol.sk', // hlavná doména vo Verceli (www presmeruje sem)
-  trailingSlash: 'ignore',
+  // Adresy bez lomky na konci – musí sedieť s odkazmi na webe, sitemapou aj vercel.json
+  trailingSlash: 'never',
   // Web je čisto statický. Odosielanie formulára rieši samostatná Vercel funkcia api/dopyt.js.
-  integrations: [sitemap()],
+  integrations: [sitemap({ lastmod: new Date() })],
   vite: {
     plugins: [tailwindcss()],
   },
